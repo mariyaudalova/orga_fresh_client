@@ -1,0 +1,39 @@
+@import "../../../theme/styles/var";
+
+.container {
+    display: none;
+
+    @media (min-width: $deskMin) {
+        background-color: $darkGreen;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 30px;
+        color: white;
+    }
+    
+}
+
+.verticalLine {
+    border-left: 1px solid white;
+    height: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.contentAfterIcon {
+    padding-left: 5px;
+}
+
+.centerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
