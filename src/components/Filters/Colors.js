@@ -12,10 +12,11 @@ const Colors = ({ changeColorHandler, activeColor }) => {
     <div>
       <h2>Products colors</h2>
       <ul>
-        {colorsList.map((color) => {
+        {colorsList.map((color, index) => {
           return (
             <li
               onClick={() => changeColor(color)}
+              key={index}
               className={
                 color === activeColor ? styles.active : styles.listItem
               }

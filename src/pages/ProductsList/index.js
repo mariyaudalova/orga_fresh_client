@@ -14,34 +14,81 @@ const ProductsList = () => {
     errors: "",
   });
 
-  const [activeCategory, setActiveCategory] = useState("Fruits");
+  const [activeCategory, setActiveCategory] = useState({
+    id: "categories",
+    uiLabel: "All",
+    value: "all",
+  });
   const [activeColor, setActiveColor] = useState(null);
+  const [filterState, setFilterState] = useState([
+    {
+      id: "categories",
+      uiLabel: "All",
+      value: "all",
+    },
+  ]);
 
   const getProducts = async () => {
     const res = await getAjax(`${apiUrl}/products`);
     setProductsState(res);
   };
 
-  const getProductsByCategory = async () => {
-    const res = await getAjax(
-      `${apiUrl}/products/filter?categories=${activeCategory.toLowerCase()}`
-    );
-    console.log(res.data.products);
+  // [{id: "categories", value: "apple"},{id: "color", value: "red"} ]
+
+  // ${apiUrl}/products/filter?categories=apple&color=red
+
+  const getProductsByFilter = async () => {
+    let requestUrl = `${apiUrl}/products/filter?`;
+
+    const filterParams = getFiltersParams();
+
+    requestUrl += filterParams;
+
+    const res = await getAjax(requestUrl);
     setProductsState(res);
   };
 
+  const getFiltersParams = () => {
+    let filtersParams = "";
+    console.log(filterState);
+    filterState.forEach((item, index) => {
+      if (item.value !== "all") {
+        filtersParams += item.id + "=" + item.value;
+        if (filterState.length !== index + 1) filtersParams += "&";
+      }
+    });
+    return filtersParams;
+  };
+
   useEffect(() => {
-    getProductsByCategory();
-  }, [activeCategory]);
+    //  getProductsByCategory();
+    getProductsByFilter();
+  }, [filterState]);
 
   const changeCategoryHandler = (category) => {
     setActiveCategory(category);
-    console.log("Here will be request on server with all filters values");
+
+    const categoryIndex = filterState.findIndex(
+      (item) => item.id === "categories"
+    );
+    if (categoryIndex !== -1) {
+      filterState[categoryIndex] = category;
+    }
+
+    setFilterState([...filterState]);
   };
 
   const changeColorHandler = (color) => {
     setActiveColor(color);
-    console.log(color);
+
+    const colorIndex = filterState.findIndex((item) => item.id === "color");
+    if (colorIndex !== -1) {
+      filterState[colorIndex].value = color;
+    } else {
+      filterState.push({ id: "color", value: color });
+    }
+
+    setFilterState([...filterState]);
   };
 
   return (
