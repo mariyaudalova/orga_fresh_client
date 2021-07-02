@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Categories.module.scss";
 
 const Categories = ({ changeCategoryHandler, activeCategory }) => {
   const categoriesList = ["Fruits", "Vegetables", "Burries"];
-  // const [activeCategory, setActiveCategory] = useState("Fruits");
 
   const changeCategory = (category) => {
     changeCategoryHandler(category);
-    //setActiveCategory(category);
   };
 
   return (
@@ -18,7 +16,9 @@ const Categories = ({ changeCategoryHandler, activeCategory }) => {
           return (
             <li
               onClick={() => changeCategory(category)}
-              className={category === activeCategory ? styles.active : ""}
+              className={
+                category === activeCategory ? styles.active : styles.listItem
+              }
             >
               {category}
             </li>

@@ -5,6 +5,7 @@ import { getAjax } from "../../services";
 import styles from "./ProductsList.module.scss";
 import ProductCard from "../../components/ProductCard";
 import Categories from "../../components/Filters/Categories";
+import { Colors } from "../../components/Filters";
 
 const ProductsList = () => {
   const [productsState, setProductsState] = useState({
@@ -14,6 +15,7 @@ const ProductsList = () => {
   });
 
   const [activeCategory, setActiveCategory] = useState("Fruits");
+  const [activeColor, setActiveColor] = useState(null);
 
   const getProducts = async () => {
     const res = await getAjax(`${apiUrl}/products`);
@@ -37,6 +39,11 @@ const ProductsList = () => {
     console.log("Here will be request on server with all filters values");
   };
 
+  const changeColorHandler = (color) => {
+    setActiveColor(color);
+    console.log(color);
+  };
+
   return (
     <>
       <div className={styles.pageTitleContainer}>
@@ -48,6 +55,10 @@ const ProductsList = () => {
           <Categories
             changeCategoryHandler={changeCategoryHandler}
             activeCategory={activeCategory}
+          />
+          <Colors
+            changeColorHandler={changeColorHandler}
+            activeColor={activeColor}
           />
         </div>
         <div className={styles.productsContainer}>
