@@ -6,7 +6,14 @@
     justify-content: space-between;
     align-items: center;
     height: 80px;
-    background-color: #F8F8F8;
+    //background-color: #F8F8F8;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logoOrga {
