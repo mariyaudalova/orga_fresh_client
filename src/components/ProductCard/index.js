@@ -1,10 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import styles from "./ProductCard.module.scss";
-import Button from "../Button";
 
 const ProductCard = (props) => {
-  const { currentPrice, enabled, brand, name, imageUrls, sizes } =
-    props.product;
+  const { currentPrice, brand, name, imageUrls, sizes } = props.product;
 
   return (
     <div className={styles.cardContainer}>
@@ -17,9 +17,12 @@ const ProductCard = (props) => {
         <p className={styles.productName}>{currentPrice} </p>
         <p className={styles.manufacturer}>{sizes} кg</p>
       </div>
-      <Button title="Add to cart" className="addToCart" />
     </div>
   );
+};
+
+ProductCard.propTypes = {
+  product: PropTypes.object,
 };
 
 export default ProductCard;

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
-import styles from "./ProductsList.module.scss";
 import ProductCard from "../../components/ProductCard";
-import Categories from "../../components/Filters/Categories";
-import { Colors, Price } from "../../components/Filters";
+import { Categories, Colors, Price } from "../../components/Filters";
 import Container from "../../components/Container";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import styles from "./ProductsList.module.scss";
 
 const ProductsList = () => {
   const [productsState, setProductsState] = useState({
@@ -29,11 +28,6 @@ const ProductsList = () => {
       value: "all",
     },
   ]);
-
-  const getProducts = async () => {
-    const res = await getAjax(`${apiUrl}/products`);
-    setProductsState(res);
-  };
 
   // [{id: "categories", value: "apple"},{id: "color", value: "red"} ]
 

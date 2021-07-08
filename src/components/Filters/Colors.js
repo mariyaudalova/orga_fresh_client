@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import styles from "./Categories.module.scss";
 
 const Colors = ({ changeColorHandler, activeColor }) => {
@@ -28,6 +30,11 @@ const Colors = ({ changeColorHandler, activeColor }) => {
       </ul>
     </div>
   );
+};
+
+Colors.propTypes = {
+  changeColorHandler: PropTypes.string,
+  activeColor: PropTypes.string,
 };
 
 export { Colors };

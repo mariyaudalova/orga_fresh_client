@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import styles from "./Categories.module.scss";
 
 const Categories = ({ changeCategoryHandler, activeCategory }) => {
@@ -36,4 +38,10 @@ const Categories = ({ changeCategoryHandler, activeCategory }) => {
     </div>
   );
 };
-export default Categories;
+
+Categories.propTypes = {
+  changeCategoryHandler: PropTypes.string,
+  activeCategory: PropTypes.string,
+};
+
+export { Categories };

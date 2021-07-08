@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Slider from "@material-ui/core/Slider";
 
 const Price = ({ changePriceHandler, maxPrice }) => {
@@ -30,6 +31,11 @@ const Price = ({ changePriceHandler, maxPrice }) => {
       // getAriaValueText={valuetext}
     />
   );
+};
+
+Price.propTypes = {
+  changePriceHandler: PropTypes.string,
+  maxPrice: PropTypes.number,
 };
 
 export { Price };
