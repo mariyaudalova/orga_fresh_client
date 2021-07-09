@@ -12,7 +12,7 @@ const Colors = ({ changeColorHandler, activeColor }) => {
 
   return (
     <div>
-      <h2>Products colors</h2>
+      <h2>Colors</h2>
       <ul>
         {colorsList.map((color, index) => {
           return (
@@ -33,7 +33,7 @@ const Colors = ({ changeColorHandler, activeColor }) => {
 };
 
 Colors.propTypes = {
-  changeColorHandler: PropTypes.string,
+  changeColorHandler: PropTypes.func,
   activeColor: PropTypes.string,
 };
 

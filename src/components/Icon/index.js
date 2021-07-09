@@ -21,11 +21,11 @@ function Icon(props) {
 
 Icon.propTypes = {
   type: PropTypes.string,
-  color: PropTypes.object,
+  color: PropTypes.string,
   filled: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  onClick: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  onClick: PropTypes.func,
   className: PropTypes.string,
 };
 

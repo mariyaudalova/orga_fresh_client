@@ -17,7 +17,7 @@ const Categories = ({ changeCategoryHandler, activeCategory }) => {
 
   return (
     <div>
-      <h2>Products Categories</h2>
+      <h2>Categories</h2>
       <ul>
         {categoriesList.map((category, index) => {
           return (
@@ -40,8 +40,8 @@ const Categories = ({ changeCategoryHandler, activeCategory }) => {
 };
 
 Categories.propTypes = {
-  changeCategoryHandler: PropTypes.string,
-  activeCategory: PropTypes.string,
+  changeCategoryHandler: PropTypes.func,
+  activeCategory: PropTypes.object,
 };
 
 export { Categories };

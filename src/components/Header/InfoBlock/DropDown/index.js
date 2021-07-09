@@ -28,8 +28,8 @@ const DropDown = (props) => {
 
 DropDown.propTypes = {
   currentValue: PropTypes.string,
-  listOfOptions: PropTypes.object,
-  onClick: PropTypes.string,
+  listOfOptions: PropTypes.array,
+  onClick: PropTypes.func,
 };
 
 export default DropDown;

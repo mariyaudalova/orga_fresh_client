@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -21,6 +22,7 @@ const ProductsList = () => {
     value: "all",
   });
   const [activeColor, setActiveColor] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(1000);
   const [filterState, setFilterState] = useState([
     {
       id: "categories",
@@ -28,10 +30,6 @@ const ProductsList = () => {
       value: "all",
     },
   ]);
-
-  // [{id: "categories", value: "apple"},{id: "color", value: "red"} ]
-
-  // ${apiUrl}/products/filter?categories=apple&color=red
 
   const getProductsByFilter = async () => {
     let requestUrl = `${apiUrl}/products/filter?`;
@@ -44,11 +42,21 @@ const ProductsList = () => {
     setProductsState(res);
   };
 
+  const getMaxPriceValue = () => {
+    const max = Math.max.apply(
+      Math,
+      productsState.data?.products?.map(function (object) {
+        return object.currentPrice;
+      })
+    );
+    setMaxPrice(max);
+  };
+
   // https://orgafresh.herokuapp.com/api/products/filter?minPrice=180&maxPrice=200
 
   const getFiltersParams = () => {
     let filtersParams = "";
-    console.log(filterState);
+
     filterState.forEach((item, index) => {
       if (item.value !== "all") {
         if (item.id === "price") {
@@ -65,9 +73,19 @@ const ProductsList = () => {
   };
 
   useEffect(() => {
-    //  getProductsByCategory();
     getProductsByFilter();
   }, [filterState]);
+
+  useEffect(() => {
+    if (
+      filterState.length === 1 &&
+      filterState[0].id === "categories" &&
+      filterState[0].value === "all" &&
+      productsState.data?.products.length
+    ) {
+      getMaxPriceValue();
+    }
+  }, [productsState.data]);
 
   const changeCategoryHandler = (category) => {
     setActiveCategory(category);
@@ -91,8 +109,6 @@ const ProductsList = () => {
     }
 
     setFilterState([...filterState]);
-
-    console.log("sd");
   };
 
   const changeColorHandler = (color) => {
@@ -107,7 +123,7 @@ const ProductsList = () => {
 
     setFilterState([...filterState]);
   };
-  console.log("productsState", productsState);
+
   return (
     <div className={styles.contentContainer}>
       <Container>
@@ -125,7 +141,10 @@ const ProductsList = () => {
               changeColorHandler={changeColorHandler}
               activeColor={activeColor}
             />
-            <Price maxPrice={1500} changePriceHandler={changePriceHandler} />
+            <Price
+              maxPrice={maxPrice}
+              changePriceHandler={changePriceHandler}
+            />
           </div>
           <div className={styles.productsContainer}>
             {productsState.isLoading && <CircularProgress />}

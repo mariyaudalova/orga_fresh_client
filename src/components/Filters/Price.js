@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Slider from "@material-ui/core/Slider";
 
 const Price = ({ changePriceHandler, maxPrice }) => {
+  console.log(maxPrice);
   const priceState = {
     id: "price",
     uiLabel: "",
@@ -21,20 +22,23 @@ const Price = ({ changePriceHandler, maxPrice }) => {
   };
 
   return (
-    <Slider
-      value={value}
-      onChange={handleChange}
-      valueLabelDisplay="auto"
-      max={maxPrice}
-      onChangeCommitted={changeCommittedHandler}
-      //aria-labelledby="range-slider"
-      // getAriaValueText={valuetext}
-    />
+    <>
+      <h2>Price</h2>
+      <Slider
+        value={value}
+        onChange={handleChange}
+        valueLabelDisplay="auto"
+        max={maxPrice}
+        onChangeCommitted={changeCommittedHandler}
+        //aria-labelledby="range-slider"
+        // getAriaValueText={valuetext}
+      />
+    </>
   );
 };
 
 Price.propTypes = {
-  changePriceHandler: PropTypes.string,
+  changePriceHandler: PropTypes.func,
   maxPrice: PropTypes.number,
 };
 
