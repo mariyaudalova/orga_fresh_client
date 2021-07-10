@@ -6,12 +6,7 @@ const initialState = {
 
 export const favouritesProductsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_TO_FAVOURITES":
-      return {
-        ...state,
-        data: { ...state.data, favouritesProducts: action.payload },
-      };
-    case "REMOVE_FROM_FAVOURITES":
+    case "TOGGLE_FAVORITE":
       return {
         ...state,
         data: { ...state.data, favouritesProducts: action.payload },

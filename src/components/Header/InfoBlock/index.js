@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import Container from "@material-ui/core/Container";
+
 import styles from "./InfoBlock.module.scss";
 import Icon from "../../Icon";
 import DropDown from "./DropDown";
-import Container from "../../Container";
 
 const InfoBlock = () => {
   //мб что-то с memo

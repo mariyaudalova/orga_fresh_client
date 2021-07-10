@@ -1,14 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import Container from "@material-ui/core/Container";
+
 import { PRODUCTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
 import styles from "./NavBar.module.scss";
 import Icon from "../../Icon";
-import Container from "../../Container";
 
 const NavBar = () => {
   return (
     <div className={styles.container}>
-      <Container>
+      <Container fixed>
         <div className={styles.innerContainer}>
           <NavLink to={`${PRODUCTS_ROUTE}`}>
             <p className={styles.logoOrga}>

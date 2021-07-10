@@ -1,12 +1,12 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Container from "@material-ui/core/Container";
 
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
 import ProductCard from "../../components/ProductCard";
 import { Categories, Colors, Price } from "../../components/Filters";
-import Container from "../../components/Container";
 import styles from "./ProductsList.module.scss";
 
 const ProductsList = () => {
@@ -126,7 +126,7 @@ const ProductsList = () => {
 
   return (
     <div className={styles.contentContainer}>
-      <Container>
+      <Container fixed>
         <div className={styles.pageTitleContainer}>
           <p className={styles.pageTitle}>Products</p>
           <p>Home / Products</p>
