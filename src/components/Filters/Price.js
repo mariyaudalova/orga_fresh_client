@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Slider from "@material-ui/core/Slider";
 
 const Price = ({ changePriceHandler, maxPrice }) => {
-  console.log(maxPrice);
   const priceState = {
     id: "price",
     uiLabel: "",
     value: [0, maxPrice],
   };
+
   const [value, setValue] = React.useState(priceState.value);
+
+  useEffect(() => {
+    setValue([0, maxPrice]);
+  }, [maxPrice]);
 
   const handleChange = (e, value) => {
     setValue(value);

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
+import Pagination from "@material-ui/lab/Pagination";
 
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
@@ -23,6 +24,13 @@ const ProductsList = () => {
   });
   const [activeColor, setActiveColor] = useState(null);
   const [maxPrice, setMaxPrice] = useState(1000);
+
+  const [page, setPage] = useState({
+    perPage: 5,
+    startPage: 1,
+  });
+
+  // https://orgafresh.herokuapp.com/api/products/filter?minPrice=0&maxPrice=500&&perPage=2&startPage=3
   const [filterState, setFilterState] = useState([
     {
       id: "categories",
@@ -36,7 +44,9 @@ const ProductsList = () => {
 
     const filterParams = getFiltersParams();
 
-    requestUrl += filterParams;
+    const pageParams = getPageParams();
+
+    requestUrl += filterParams + pageParams;
 
     const res = await getAjax(requestUrl);
     setProductsState(res);
@@ -72,9 +82,14 @@ const ProductsList = () => {
     return filtersParams;
   };
 
+  // https://orgafresh.herokuapp.com/api/products/filter?minPrice=0&maxPrice=500&&perPage=2&startPage=3
+  const getPageParams = () => {
+    return "&perPage=" + page.perPage + "&startPage=" + page.startPage;
+  };
+
   useEffect(() => {
     getProductsByFilter();
-  }, [filterState]);
+  }, [filterState, page]);
 
   useEffect(() => {
     if (
@@ -109,6 +124,10 @@ const ProductsList = () => {
     }
 
     setFilterState([...filterState]);
+  };
+
+  const changePage = (e, pageNumber) => {
+    setPage({ ...page, startPage: pageNumber });
   };
 
   const changeColorHandler = (color) => {
@@ -149,11 +168,12 @@ const ProductsList = () => {
           <div className={styles.productsContainer}>
             {productsState.isLoading && <CircularProgress />}
             {productsState.data &&
-              productsState.data?.products?.map((product) => {
-                return <ProductCard key={product.id} product={product} />;
+              productsState.data?.products?.map((product, index) => {
+                return <ProductCard key={product._id} product={product} />;
               })}
             {productsState.errors && <p>{productsState.errors}</p>}
           </div>
+          <Pagination count={10} onChange={changePage} />
         </div>
       </Container>
     </div>

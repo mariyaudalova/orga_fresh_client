@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Container from "@material-ui/core/Container";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
 import styles from "./InfoBlock.module.scss";
 import Icon from "../../Icon";
@@ -80,6 +83,19 @@ const InfoBlock = () => {
               width={20}
               height={20}
             />
+
+            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={currentLanguage}
+              onChange={changeCurrentLanguage}
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+
             <DropDown
               currentValue={currentCurrency}
               listOfOptions={currencies}

@@ -1,5 +1,5 @@
-import { favouritesProductsReducer } from "./reducers";
+import { favouritesProducts } from "./favouritesProducts/reducer";
 
 export const rootReducer = {
-  favouritesProducts: favouritesProductsReducer,
+  favouritesProducts,
 };

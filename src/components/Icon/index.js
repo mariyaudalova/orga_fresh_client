@@ -22,7 +22,7 @@ function Icon(props) {
 Icon.propTypes = {
   type: PropTypes.string,
   color: PropTypes.string,
-  filled: PropTypes.string,
+  filled: PropTypes.bool,
   width: PropTypes.number,
   height: PropTypes.number,
   onClick: PropTypes.func,
