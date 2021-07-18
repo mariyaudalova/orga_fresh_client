@@ -3,18 +3,15 @@ import PropTypes from "prop-types";
 
 import styles from "./ProductCard.module.scss";
 import Icon from "../Icon";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
-import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
 
 const ProductCard = (props) => {
-  const { _id, currentPrice, brand, name, imageUrls, sizes } = props.product;
+  //const {{_id, currentPrice, brand, name, imageUrls, sizes}: product} = props;
 
-  const dispatch = useDispatch();
-
-  const formState = useSelector(getFavoutitesProducts);
-
-  console.log(formState);
+  const {
+    product: { _id, currentPrice, brand, name, imageUrls, sizes },
+    toggleFavoriteClick,
+    isFavourite,
+  } = props;
 
   return (
     <div className={styles.cardContainer}>
@@ -31,13 +28,10 @@ const ProductCard = (props) => {
         <Icon
           className={styles.iconLast}
           type="favourite"
-          color="black"
-          filled
+          color={isFavourite ? "red" : "black"}
           width={35}
           height={35}
-          onClick={() => {
-            dispatch(toggleFavorite(_id));
-          }}
+          onClick={() => toggleFavoriteClick(_id)}
         />
       </div>
     </div>
@@ -46,6 +40,8 @@ const ProductCard = (props) => {
 
 ProductCard.propTypes = {
   product: PropTypes.object,
+  toggleFavoriteClick: PropTypes.func,
+  isFavourite: PropTypes.bool,
 };
 
 export default ProductCard;

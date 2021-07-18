@@ -1,12 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Container from "@material-ui/core/Container";
+import { useSelector } from "react-redux";
 
 import { PRODUCTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
+import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
 import Icon from "../../Icon";
 
 const NavBar = () => {
+  const favouritesProducts = useSelector(getFavoutitesProducts);
+
   return (
     <div className={styles.container}>
       <Container fixed>
@@ -68,6 +72,7 @@ const NavBar = () => {
               width={35}
               height={35}
             />
+            {favouritesProducts.length}
             <Icon
               className={styles.iconLast}
               type="cart"

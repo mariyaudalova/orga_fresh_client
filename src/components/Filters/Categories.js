@@ -5,7 +5,7 @@ import styles from "./Categories.module.scss";
 
 const Categories = ({ changeCategoryHandler, activeCategory }) => {
   const categoriesList = [
-    { id: "categories", uiLabel: "All", value: "all" },
+    { id: "categories", uiLabel: "All", value: null },
     { id: "categories", uiLabel: "Fruits", value: "fruits" },
     { id: "categories", uiLabel: "Vegetables", value: "vegetables" },
     { id: "categories", uiLabel: "Burries", value: "Burries" },

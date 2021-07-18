@@ -6,22 +6,28 @@ import Pagination from "@material-ui/lab/Pagination";
 
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
+import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../../components/ProductCard";
 import { Categories, Colors, Price } from "../../components/Filters";
 import styles from "./ProductsList.module.scss";
+import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
+import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
+import { getCurrency } from "../../state/currency/selectors";
 
 const ProductsList = () => {
+  const categoryDefaultState = {
+    id: "categories",
+    uiLabel: "All",
+    value: null,
+  };
+
   const [productsState, setProductsState] = useState({
     isLoading: true,
     data: null,
     errors: "",
   });
 
-  const [activeCategory, setActiveCategory] = useState({
-    id: "categories",
-    uiLabel: "All",
-    value: "all",
-  });
+  const [activeCategory, setActiveCategory] = useState(categoryDefaultState);
   const [activeColor, setActiveColor] = useState(null);
   const [maxPrice, setMaxPrice] = useState(1000);
 
@@ -31,13 +37,34 @@ const ProductsList = () => {
   });
 
   // https://orgafresh.herokuapp.com/api/products/filter?minPrice=0&maxPrice=500&&perPage=2&startPage=3
-  const [filterState, setFilterState] = useState([
-    {
-      id: "categories",
-      uiLabel: "All",
-      value: "all",
-    },
-  ]);
+  const [filterState, setFilterState] = useState([categoryDefaultState]);
+
+  const currentCurrency = useSelector(getCurrency);
+
+  const getProductsByPrice = () => {
+    const currencyRates = {
+      USD: 1 / 27.2,
+      UAH: 27.2,
+    };
+
+    if (productsState.data?.products[0].currency !== currentCurrency) {
+      const changedCurrencyProducts = productsState.data?.products.map(
+        (item) => {
+          const newPrice = item.currentPrice * currencyRates[currentCurrency];
+          item.currentPrice = newPrice.toFixed(2);
+          item.currency = currentCurrency;
+          return item;
+        }
+      );
+      setProductsState({
+        ...productsState,
+        data: {
+          products: changedCurrencyProducts,
+        },
+      });
+      console.log(changedCurrencyProducts);
+    }
+  };
 
   const getProductsByFilter = async () => {
     let requestUrl = `${apiUrl}/products/filter?`;
@@ -49,6 +76,11 @@ const ProductsList = () => {
     requestUrl += filterParams + pageParams;
 
     const res = await getAjax(requestUrl);
+
+    res.data.products = res.data.products.map((item) => {
+      item.currency = "USD";
+      return item;
+    });
     setProductsState(res);
   };
 
@@ -67,17 +99,15 @@ const ProductsList = () => {
   const getFiltersParams = () => {
     let filtersParams = "";
 
-    filterState.forEach((item, index) => {
-      if (item.value !== "all") {
-        if (item.id === "price") {
-          filtersParams +=
-            "minPrice=" + item.value[0] + "&" + "maxPrice=" + item.value[1];
-        } else {
-          filtersParams += item.id + "=" + item.value;
-        }
+    filterState
+      .filter((item) => item.value)
+      .forEach((item, index) => {
+        filtersParams +=
+          item.id === "price"
+            ? `minPrice=${item.value[0]}&maxPrice=${item.value[1]}`
+            : `${item.id}=${item.value}`;
         if (filterState.length !== index + 1) filtersParams += "&";
-      }
-    });
+      });
 
     return filtersParams;
   };
@@ -92,6 +122,7 @@ const ProductsList = () => {
   }, [filterState, page]);
 
   useEffect(() => {
+    console.log(filterState);
     if (
       filterState.length === 1 &&
       filterState[0].id === "categories" &&
@@ -101,6 +132,10 @@ const ProductsList = () => {
       getMaxPriceValue();
     }
   }, [productsState.data]);
+
+  useEffect(() => {
+    getProductsByPrice();
+  }, [currentCurrency]);
 
   const changeCategoryHandler = (category) => {
     setActiveCategory(category);
@@ -143,6 +178,16 @@ const ProductsList = () => {
     setFilterState([...filterState]);
   };
 
+  const dispatch = useDispatch();
+
+  const formState = useSelector(getFavoutitesProducts);
+
+  const toggleFavoriteClick = (id) => {
+    dispatch(toggleFavorite(id));
+  };
+
+  console.log(formState);
+
   return (
     <div className={styles.contentContainer}>
       <Container fixed>
@@ -168,12 +213,25 @@ const ProductsList = () => {
           <div className={styles.productsContainer}>
             {productsState.isLoading && <CircularProgress />}
             {productsState.data &&
-              productsState.data?.products?.map((product, index) => {
-                return <ProductCard key={product._id} product={product} />;
+              productsState.data?.products?.map((product) => {
+                return (
+                  <ProductCard
+                    key={product._id}
+                    isFavourite={formState.includes(product._id)}
+                    product={product}
+                    toggleFavoriteClick={toggleFavoriteClick}
+                  />
+                );
               })}
             {productsState.errors && <p>{productsState.errors}</p>}
           </div>
-          <Pagination count={10} onChange={changePage} />
+          <Pagination
+            count={
+              Math.ceil(productsState.data?.productsQuantity / page.perPage) ||
+              1
+            }
+            onChange={changePage}
+          />
         </div>
       </Container>
     </div>
