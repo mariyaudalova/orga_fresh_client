@@ -21,25 +21,29 @@ import { getCurrency } from "../../state/currency/selectors";
 import { ColorList, SizeList } from "../../components/Filters/FilterList";
 
 const ProductsList = () => {
-  const categoriesList = [
+  const defaultCategoriesList = [
     { id: "categories", uiLabel: "All", value: null, isActive: true },
-    { id: "categories", uiLabel: "Fruits", value: "fruits", isActive: false },
+    { id: "categories", uiLabel: "Fruits", value: "fruits", isActive: true },
     {
       id: "categories",
       uiLabel: "Vegetables",
       value: "vegetables",
-      isActive: false,
+      isActive: true,
     },
-    { id: "categories", uiLabel: "Burries", value: "Burries", isActive: false },
+    { id: "categories", uiLabel: "Burries", value: "Burries", isActive: true },
   ];
 
-  const categoryDefaultState = [
-    {
-      id: "categories",
-      uiLabel: "All",
-      value: null,
-    },
-  ];
+  const filterDefaultState = {
+    categories: [
+      {
+        id: "categories",
+        uiLabel: "All",
+        value: null,
+        isActive: true,
+      },
+    ],
+    //color: [{ id: "color", uiLabel: "All", value: null }],
+  };
 
   const [productsState, setProductsState] = useState({
     isLoading: true,
@@ -47,7 +51,7 @@ const ProductsList = () => {
     errors: "",
   });
 
-  const [activeCategory, setActiveCategory] = useState(categoriesList);
+  const [categoriesList, setCategoriesList] = useState(defaultCategoriesList);
   const [activeColor, setActiveColor] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
   const [maxPrice, setMaxPrice] = useState(1000);
@@ -58,7 +62,7 @@ const ProductsList = () => {
   });
 
   // https://orgafresh.herokuapp.com/api/products/filter?minPrice=0&maxPrice=500&&perPage=2&startPage=3
-  const [filterState, setFilterState] = useState([categoryDefaultState]);
+  const [filterState, setFilterState] = useState(filterDefaultState);
 
   const currentCurrency = useSelector(getCurrency);
 
@@ -119,16 +123,36 @@ const ProductsList = () => {
 
   const getFiltersParams = () => {
     let filtersParams = "";
+    console.log("filterState", filterState);
 
-    filterState
-      .filter((item) => item.value)
-      .forEach((item, index) => {
-        filtersParams +=
-          item.id === "price"
-            ? `minPrice=${item.value[0]}&maxPrice=${item.value[1]}`
-            : `${item.id}=${item.value}`;
-        if (filterState.length !== index + 1) filtersParams += "&";
-      });
+    const allFilterKeys = Object.keys(filterState);
+    console.log("allFilterKeys", allFilterKeys);
+    allFilterKeys.forEach((item, index) => {
+      if (item === "price") {
+        filtersParams += `minPrice=${filterState[item].value[0]}&maxPrice=${filterState[item].value[1]}`;
+      } else {
+        const nonNullItems = filterState[item].filter((item) => item.value);
+        if (nonNullItems.length === 0) return;
+        filtersParams += `${item}=`;
+        filterState[item].forEach((filterItemState) => {
+          filtersParams += `${filterItemState.value},`;
+        });
+      }
+      if (allFilterKeys.length !== index + 1) filtersParams += "&";
+      // filtersParams +=
+      //   item === "price"
+      //     ? `minPrice=${filterState[item].value[0]}&maxPrice=${filterState[item].value[1]}`
+      //     : `${item.id}=${item.value}`;
+    });
+
+    // .filter((item) => item.value)
+    // .forEach((item, index) => {
+    //   filtersParams +=
+    //     item.id === "price"
+    //       ? `minPrice=${item.value[0]}&maxPrice=${item.value[1]}`
+    //       : `${item.id}=${item.value}`;
+    //   if (filterState.length !== index + 1) filtersParams += "&";
+    // });
 
     return filtersParams;
   };
@@ -174,21 +198,28 @@ const ProductsList = () => {
   };
 
   const changeCategoryHandler = (category) => {
-    console.log("sdvsdv", category);
-
-    const categoryForReplaceIndex = activeCategory.findIndex(
+    const categoryForReplaceIndex = categoriesList.findIndex(
       (item) => item.value === category.value
     );
-    activeCategory[categoryForReplaceIndex] = category;
+    categoriesList[categoryForReplaceIndex] = category;
 
-    setActiveCategory(activeCategory);
-
-    const categoryIndex = filterState.findIndex(
-      (item) => item.id === "categories"
-    );
-    if (categoryIndex !== -1) {
-      filterState[categoryIndex] = category;
+    if (!category.value) {
+      categoriesList.forEach((item) => {
+        item.isActive = category.isActive;
+      });
+    } else {
+      const activeCategoriesLength = categoriesList
+        .slice(1, categoriesList.length)
+        .filter((item) => item.isActive === true).length;
+      categoriesList[0].isActive =
+        activeCategoriesLength === categoriesList.length - 1;
     }
+
+    setCategoriesList([...categoriesList]);
+
+    filterState.categories = categoriesList.filter(
+      (item) => item.isActive === true
+    );
 
     setFilterState([...filterState]);
   };
@@ -251,7 +282,7 @@ const ProductsList = () => {
           <div>
             <Categories
               changeCategoryHandler={changeCategoryHandler}
-              activeCategory={activeCategory}
+              categoriesList={categoriesList}
             />
             <Colors
               changeColorHandler={changeColorHandler}
@@ -261,13 +292,13 @@ const ProductsList = () => {
               maxPrice={maxPrice}
               changePriceHandler={changePriceHandler}
             />
-            {/* <FilterL
+            {/*  <FilterL
               filterName="Category"
               activeValue={categoriesList[0]}
               listOfValues={categoriesList}
               changeFilterHandler={changeCategoryHandler}
-            /> */}
-            {/* <ColorList
+           />*
+            <ColorList
               filterName="Colors"
               activeValue={colorsList[0]}
               listOfValues={colorsList}
@@ -278,7 +309,7 @@ const ProductsList = () => {
               activeValue={sizesList[0]}
               listOfValues={sizesList}
               changeFilterHandler={changeSizeHandler}
-            /> */}
+            />*/}
           </div>
           <div className={styles.productsContainer}>
             {productsState.isLoading && <CircularProgress />}

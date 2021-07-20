@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { green } from "@material-ui/core/colors";
@@ -7,18 +8,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 import styles from "./Categories.module.scss";
 
-const Categories = ({ changeCategoryHandler, activeCategory }) => {
-  const categoriesList = [
-    { id: "categories", uiLabel: "All", value: null, isActive: true },
-    { id: "categories", uiLabel: "Fruits", value: "fruits", isActive: false },
-    {
-      id: "categories",
-      uiLabel: "Vegetables",
-      value: "vegetables",
-      isActive: false,
-    },
-    { id: "categories", uiLabel: "Burries", value: "Burries", isActive: false },
-  ];
+const Categories = ({ changeCategoryHandler, categoriesList }) => {
+  console.log(categoriesList);
 
   const GreenCheckbox = withStyles({
     root: {
@@ -37,11 +28,7 @@ const Categories = ({ changeCategoryHandler, activeCategory }) => {
           return (
             <li
               key={index}
-              className={
-                category.value === activeCategory.value
-                  ? styles.active
-                  : styles.listItem
-              }
+              className={category.isActive ? styles.active : styles.listItem}
             >
               <FormControlLabel
                 control={
