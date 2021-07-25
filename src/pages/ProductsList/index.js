@@ -22,27 +22,39 @@ import { ColorList, SizeList } from "../../components/Filters/FilterList";
 
 const ProductsList = () => {
   const defaultCategoriesList = [
-    { id: "categories", uiLabel: "All", value: null, isActive: true },
-    { id: "categories", uiLabel: "Fruits", value: "fruits", isActive: true },
+    { id: "categories", uiLabel: "Fruits", value: "fruits", isActive: false },
     {
       id: "categories",
       uiLabel: "Vegetables",
       value: "vegetables",
-      isActive: true,
+      isActive: false,
     },
-    { id: "categories", uiLabel: "Burries", value: "Burries", isActive: true },
+    { id: "categories", uiLabel: "Burries", value: "Burries", isActive: false },
   ];
-
+  const defaultColorsList = [
+    {
+      id: "color",
+      uiLabel: "red",
+      value: "red",
+      isActive: false
+    },
+    {
+      id: "color",
+      uiLabel: "yellow",
+      value: "yellow",
+      isActive: false,
+    },
+    {
+      id: "color",
+      uiLabel: "green",
+      value: "green",
+      isActive: false
+    },
+  ];
   const filterDefaultState = {
-    categories: [
-      {
-        id: "categories",
-        uiLabel: "All",
-        value: null,
-        isActive: true,
-      },
-    ],
-    //color: [{ id: "color", uiLabel: "All", value: null }],
+    categories: [],
+    color: [],
+    price: []
   };
 
   const [productsState, setProductsState] = useState({
@@ -52,7 +64,7 @@ const ProductsList = () => {
   });
 
   const [categoriesList, setCategoriesList] = useState(defaultCategoriesList);
-  const [activeColor, setActiveColor] = useState(null);
+  const [colorsList, setColorsList] = useState(defaultColorsList);
   const [activeSize, setActiveSize] = useState(null);
   const [maxPrice, setMaxPrice] = useState(1000);
 
@@ -125,34 +137,19 @@ const ProductsList = () => {
     let filtersParams = "";
     console.log("filterState", filterState);
 
-    const allFilterKeys = Object.keys(filterState);
+    const allFilterKeys = Object.keys(filterState).filter(item => filterState[item].length);
     console.log("allFilterKeys", allFilterKeys);
     allFilterKeys.forEach((item, index) => {
       if (item === "price") {
-        filtersParams += `minPrice=${filterState[item].value[0]}&maxPrice=${filterState[item].value[1]}`;
+        filtersParams += `minPrice=${filterState[item][0].value[0]}&maxPrice=${filterState[item][0].value[1]}`;
       } else {
-        const nonNullItems = filterState[item].filter((item) => item.value);
-        if (nonNullItems.length === 0) return;
         filtersParams += `${item}=`;
         filterState[item].forEach((filterItemState) => {
           filtersParams += `${filterItemState.value},`;
         });
       }
       if (allFilterKeys.length !== index + 1) filtersParams += "&";
-      // filtersParams +=
-      //   item === "price"
-      //     ? `minPrice=${filterState[item].value[0]}&maxPrice=${filterState[item].value[1]}`
-      //     : `${item.id}=${item.value}`;
     });
-
-    // .filter((item) => item.value)
-    // .forEach((item, index) => {
-    //   filtersParams +=
-    //     item.id === "price"
-    //       ? `minPrice=${item.value[0]}&maxPrice=${item.value[1]}`
-    //       : `${item.id}=${item.value}`;
-    //   if (filterState.length !== index + 1) filtersParams += "&";
-    // });
 
     return filtersParams;
   };
@@ -168,12 +165,7 @@ const ProductsList = () => {
 
   useEffect(() => {
     console.log(filterState);
-    if (
-      filterState.length === 1 &&
-      filterState[0].id === "categories" &&
-      filterState[0].value === "all" &&
-      productsState.data?.products.length
-    ) {
+    if (!filterState && productsState.data?.products?.length) {
       getMaxPriceValue();
     }
   }, [productsState.data]);
@@ -183,14 +175,13 @@ const ProductsList = () => {
   }, [currentCurrency]);
 
   const changePriceHandler = (price) => {
-    const priceIndex = filterState.findIndex((item) => item.id === "price");
-    if (priceIndex !== -1) {
-      filterState[priceIndex].value = price.value;
+    if (filterState.price.length) {
+      filterState.price[0].value = price.value;
     } else {
-      filterState.push({ id: "price", value: price.value });
+      filterState.price.push({ id: "price", value: price.value });
     }
 
-    setFilterState([...filterState]);
+    setFilterState({...filterState});
   };
 
   const changePage = (e, pageNumber) => {
@@ -203,38 +194,28 @@ const ProductsList = () => {
     );
     categoriesList[categoryForReplaceIndex] = category;
 
-    if (!category.value) {
-      categoriesList.forEach((item) => {
-        item.isActive = category.isActive;
-      });
-    } else {
-      const activeCategoriesLength = categoriesList
-        .slice(1, categoriesList.length)
-        .filter((item) => item.isActive === true).length;
-      categoriesList[0].isActive =
-        activeCategoriesLength === categoriesList.length - 1;
-    }
-
     setCategoriesList([...categoriesList]);
 
     filterState.categories = categoriesList.filter(
       (item) => item.isActive === true
     );
 
-    setFilterState([...filterState]);
+    setFilterState({...filterState});
   };
 
   const changeColorHandler = (color) => {
-    setActiveColor(color);
+    const colorForReplaceIndex = colorsList.findIndex(
+        (item) => item.value === color.value
+    );
+    colorsList[colorForReplaceIndex] = color;
 
-    const colorIndex = filterState.findIndex((item) => item.id === "color");
-    if (colorIndex !== -1) {
-      filterState[colorIndex].value = color.value;
-    } else {
-      filterState.push({ id: "color", value: color.value });
-    }
+    setColorsList([...colorsList]);
 
-    setFilterState([...filterState]);
+    filterState.color = colorsList.filter(
+        (item) => item.isActive === true
+    );
+
+    setFilterState({...filterState});
   };
 
   const changeSizeHandler = (size) => {
@@ -257,12 +238,12 @@ const ProductsList = () => {
     dispatch(toggleFavorite(id));
   };
 
-  const colorsList = [
-    { id: "color", uiLabel: "All", value: null },
-    { id: "color", uiLabel: "Red", value: "red" },
-    { id: "color", uiLabel: "Yellow", value: "yellow" },
-    { id: "color", uiLabel: "Green", value: "green" },
-  ];
+  // const colorsList = [
+  //   { id: "color", uiLabel: "All", value: null },
+  //   { id: "color", uiLabel: "Red", value: "red" },
+  //   { id: "color", uiLabel: "Yellow", value: "yellow" },
+  //   { id: "color", uiLabel: "Green", value: "green" },
+  // ];
 
   const sizesList = [
     { id: "sizes", uiLabel: "All", value: null },
@@ -286,7 +267,7 @@ const ProductsList = () => {
             />
             <Colors
               changeColorHandler={changeColorHandler}
-              activeColor={activeColor}
+              colorsList={colorsList}
             />
             <Price
               maxPrice={maxPrice}

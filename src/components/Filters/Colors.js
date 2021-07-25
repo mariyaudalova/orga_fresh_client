@@ -2,14 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import styles from "./Categories.module.scss";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { green } from "@material-ui/core/colors";
+import Checkbox from "@material-ui/core/Checkbox";
+import { withStyles } from "@material-ui/core/styles";
 
-const Colors = ({ changeColorHandler, activeColor }) => {
-  const colorsList = ["red", "yellow", "green"];
 
-  const changeColor = (color) => {
-    changeColorHandler(color);
-  };
-
+const Colors = ({ changeColorHandler, colorsList }) => {
+    const GreenCheckbox = withStyles({
+        root: {
+            color: green[400],
+            "&$checked": {
+                color: green[600],
+            },
+        },
+        checked: {},
+    })((props) => <Checkbox color="default" {...props} />);
   return (
     <div>
       <h2>Colors</h2>
@@ -17,13 +25,28 @@ const Colors = ({ changeColorHandler, activeColor }) => {
         {colorsList.map((color, index) => {
           return (
             <li
-              onClick={() => changeColor(color)}
+              // onClick={() => changeColor({...color, isActive: !color.isActive})}
               key={index}
               className={
-                color === activeColor ? styles.active : styles.listItem
+                color === color.isActive ? styles.active : styles.listItem
               }
             >
-              {color}
+                <FormControlLabel
+                    control={
+                        <GreenCheckbox
+                            checked={color.isActive}
+                            onChange={(event) => {
+                                changeColorHandler({
+                                    ...color,
+                                    isActive: event.target.checked,
+                                });
+                            }}
+                            name="checkedG"
+                        />
+                    }
+                    label={color.uiLabel}
+                />
+
             </li>
           );
         })}
@@ -34,7 +57,7 @@ const Colors = ({ changeColorHandler, activeColor }) => {
 
 Colors.propTypes = {
   changeColorHandler: PropTypes.func,
-  activeColor: PropTypes.string,
+  colorsList: PropTypes.array,
 };
 
 export { Colors };
