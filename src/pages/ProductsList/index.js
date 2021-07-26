@@ -36,7 +36,7 @@ const ProductsList = () => {
       id: "color",
       uiLabel: "red",
       value: "red",
-      isActive: false
+      isActive: false,
     },
     {
       id: "color",
@@ -48,13 +48,21 @@ const ProductsList = () => {
       id: "color",
       uiLabel: "green",
       value: "green",
-      isActive: false
+      isActive: false,
     },
   ];
+  const [maxPrice, setMaxPrice] = useState(1000);
   const filterDefaultState = {
-    categories: [],
-    color: [],
-    price: []
+    categories: defaultCategoriesList,
+    color: defaultColorsList,
+    price: [
+      {
+        id: "price",
+        uiLabel: "",
+        value: [0, maxPrice],
+        isActive: true,
+      },
+    ],
   };
 
   const [productsState, setProductsState] = useState({
@@ -63,17 +71,11 @@ const ProductsList = () => {
     errors: "",
   });
 
-  const [categoriesList, setCategoriesList] = useState(defaultCategoriesList);
-  const [colorsList, setColorsList] = useState(defaultColorsList);
-  const [activeSize, setActiveSize] = useState(null);
-  const [maxPrice, setMaxPrice] = useState(1000);
-
   const [page, setPage] = useState({
     perPage: 5,
     startPage: 1,
   });
 
-  // https://orgafresh.herokuapp.com/api/products/filter?minPrice=0&maxPrice=500&&perPage=2&startPage=3
   const [filterState, setFilterState] = useState(filterDefaultState);
 
   const currentCurrency = useSelector(getCurrency);
@@ -137,14 +139,18 @@ const ProductsList = () => {
     let filtersParams = "";
     console.log("filterState", filterState);
 
-    const allFilterKeys = Object.keys(filterState).filter(item => filterState[item].length);
+    const allFilterKeys = Object.keys(filterState).filter(
+      (item) => filterState[item].length
+    );
     console.log("allFilterKeys", allFilterKeys);
     allFilterKeys.forEach((item, index) => {
       if (item === "price") {
         filtersParams += `minPrice=${filterState[item][0].value[0]}&maxPrice=${filterState[item][0].value[1]}`;
       } else {
+        const activeFilters = filterState[item].filter((item) => item.isActive);
+        if (activeFilters.length === 0) return;
         filtersParams += `${item}=`;
-        filterState[item].forEach((filterItemState) => {
+        activeFilters.forEach((filterItemState) => {
           filtersParams += `${filterItemState.value},`;
         });
       }
@@ -154,7 +160,6 @@ const ProductsList = () => {
     return filtersParams;
   };
 
-  // https://orgafresh.herokuapp.com/api/products/filter?minPrice=0&maxPrice=500&&perPage=2&startPage=3
   const getPageParams = () => {
     return "&perPage=" + page.perPage + "&startPage=" + page.startPage;
   };
@@ -174,60 +179,25 @@ const ProductsList = () => {
     getProductsByPrice();
   }, [currentCurrency]);
 
-  const changePriceHandler = (price) => {
-    if (filterState.price.length) {
-      filterState.price[0].value = price.value;
-    } else {
-      filterState.price.push({ id: "price", value: price.value });
-    }
-
-    setFilterState({...filterState});
-  };
-
   const changePage = (e, pageNumber) => {
     setPage({ ...page, startPage: pageNumber });
   };
 
-  const changeCategoryHandler = (category) => {
-    const categoryForReplaceIndex = categoriesList.findIndex(
-      (item) => item.value === category.value
-    );
-    categoriesList[categoryForReplaceIndex] = category;
-
-    setCategoriesList([...categoriesList]);
-
-    filterState.categories = categoriesList.filter(
-      (item) => item.isActive === true
-    );
-
-    setFilterState({...filterState});
-  };
-
-  const changeColorHandler = (color) => {
-    const colorForReplaceIndex = colorsList.findIndex(
-        (item) => item.value === color.value
-    );
-    colorsList[colorForReplaceIndex] = color;
-
-    setColorsList([...colorsList]);
-
-    filterState.color = colorsList.filter(
-        (item) => item.isActive === true
-    );
-
-    setFilterState({...filterState});
-  };
-
-  const changeSizeHandler = (size) => {
-    setActiveSize(size);
-    const sizeIndex = filterState.findIndex((item) => item.id === "sizes");
-    if (sizeIndex !== -1) {
-      filterState[sizeIndex].value = size.value;
-    } else {
-      filterState.push({ id: "sizes", value: size.value });
+  const changeFilterEntity = (filterEntity) => {
+    let replaceIndex = 0;
+    if (filterEntity.id !== "price") {
+      replaceIndex = filterState[filterEntity.id].findIndex(
+        (item) => item.value === filterEntity.value
+      );
     }
+    filterState[filterEntity.id][replaceIndex] = filterEntity;
 
-    setFilterState([...filterState]);
+    setPage({ ...page, startPage: 1 });
+
+    setFilterState({
+      ...filterState,
+      [filterEntity.id]: filterState[filterEntity.id],
+    });
   };
 
   const dispatch = useDispatch();
@@ -237,13 +207,6 @@ const ProductsList = () => {
   const toggleFavoriteClick = (id) => {
     dispatch(toggleFavorite(id));
   };
-
-  // const colorsList = [
-  //   { id: "color", uiLabel: "All", value: null },
-  //   { id: "color", uiLabel: "Red", value: "red" },
-  //   { id: "color", uiLabel: "Yellow", value: "yellow" },
-  //   { id: "color", uiLabel: "Green", value: "green" },
-  // ];
 
   const sizesList = [
     { id: "sizes", uiLabel: "All", value: null },
@@ -262,35 +225,21 @@ const ProductsList = () => {
         <div className={styles.pageContainer}>
           <div>
             <Categories
-              changeCategoryHandler={changeCategoryHandler}
-              categoriesList={categoriesList}
+              changeCategoryHandler={changeFilterEntity}
+              categoriesList={filterState.categories}
             />
             <Colors
-              changeColorHandler={changeColorHandler}
-              colorsList={colorsList}
+              changeColorHandler={changeFilterEntity}
+              colorsList={filterState.color}
             />
+            {/*<Sizes
+              maxPrice={maxPrice}
+              changePriceHandler={changeFilterEntity}
+             />*/}
             <Price
               maxPrice={maxPrice}
-              changePriceHandler={changePriceHandler}
+              changePriceHandler={changeFilterEntity}
             />
-            {/*  <FilterL
-              filterName="Category"
-              activeValue={categoriesList[0]}
-              listOfValues={categoriesList}
-              changeFilterHandler={changeCategoryHandler}
-           />*
-            <ColorList
-              filterName="Colors"
-              activeValue={colorsList[0]}
-              listOfValues={colorsList}
-              changeFilterHandler={changeColorHandler}
-            />
-            <SizeList
-              filterName="Sizes"
-              activeValue={sizesList[0]}
-              listOfValues={sizesList}
-              changeFilterHandler={changeSizeHandler}
-            />*/}
           </div>
           <div className={styles.productsContainer}>
             {productsState.isLoading && <CircularProgress />}
@@ -313,6 +262,7 @@ const ProductsList = () => {
               1
             }
             onChange={changePage}
+            page={page.startPage}
           />
         </div>
       </Container>

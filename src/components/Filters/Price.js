@@ -7,6 +7,7 @@ const Price = ({ changePriceHandler, maxPrice }) => {
     id: "price",
     uiLabel: "",
     value: [0, maxPrice],
+    isActive: true,
   };
 
   const [value, setValue] = React.useState(priceState.value);
