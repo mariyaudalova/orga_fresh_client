@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
 import { green } from "@material-ui/core/colors";
@@ -6,11 +5,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { withStyles } from "@material-ui/core/styles";
 
-import styles from "./Categories.module.scss";
+import styles from "./FilterItem.module.scss";
 
 const Categories = ({ changeCategoryHandler, categoriesList }) => {
-  console.log(categoriesList);
-
   const GreenCheckbox = withStyles({
     root: {
       color: green[400],
@@ -56,6 +53,7 @@ const Categories = ({ changeCategoryHandler, categoriesList }) => {
 Categories.propTypes = {
   changeCategoryHandler: PropTypes.func,
   activeCategory: PropTypes.object,
+  categoriesList: PropTypes.array,
 };
 
 export { Categories };

@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SizeItem = ({ value }) => {
+const CategoryItem = ({ value }) => {
   return <li>{value}</li>;
 };
 
-SizeItem.propTypes = {
+CategoryItem.propTypes = {
   value: PropTypes.string,
 };
 
-export default SizeItem;
+export default CategoryItem;

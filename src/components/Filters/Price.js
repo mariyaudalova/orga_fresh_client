@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Slider from "@material-ui/core/Slider";
 
+import styles from "./Price.module.scss";
+
 const Price = ({ changePriceHandler, maxPrice }) => {
   const priceState = {
     id: "price",
@@ -22,7 +24,6 @@ const Price = ({ changePriceHandler, maxPrice }) => {
 
   const changeCommittedHandler = () => {
     priceState.value = value;
-
     changePriceHandler(priceState);
   };
 
@@ -30,13 +31,12 @@ const Price = ({ changePriceHandler, maxPrice }) => {
     <>
       <h2>Price</h2>
       <Slider
+        classes={{ root: styles.sliderColor }}
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"
         max={maxPrice}
         onChangeCommitted={changeCommittedHandler}
-        //aria-labelledby="range-slider"
-        // getAriaValueText={valuetext}
       />
     </>
   );
@@ -47,4 +47,4 @@ Price.propTypes = {
   maxPrice: PropTypes.number,
 };
 
-export { Price };
+export default Price;

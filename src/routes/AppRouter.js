@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+
 import { PRODUCTS_ROUTE } from "../utils/consts";
 import { publicRoutes } from "./routes";
 
