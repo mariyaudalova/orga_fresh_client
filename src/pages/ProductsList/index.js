@@ -1,65 +1,234 @@
 import React, { useEffect, useState } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Container from "@material-ui/core/Container";
+import Pagination from "@material-ui/lab/Pagination";
+import { useDispatch, useSelector } from "react-redux";
 
+import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
+import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
+import { getCurrency } from "../../state/currency/selectors";
+import Price from "../../components/Filters/Price";
+import {
+  CategoryList,
+  ColorList,
+  SizeList,
+} from "../../components/Filters/FilterList";
+import ProductCard from "../../components/ProductCard";
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
+import { USD_RATE } from "../../common/constants";
+import {
+  defaultCategoriesList,
+  defaultColorsList,
+  defaultSizesList,
+} from "../../common/defaultState";
+
 import styles from "./ProductsList.module.scss";
-import ProductCard from "../../components/ProductCard";
-import Categories from "../../components/Filters/Categories";
 
 const ProductsList = () => {
+  const [maxPrice, setMaxPrice] = useState(1000);
+  const filterDefaultState = {
+    categories: defaultCategoriesList,
+    color: defaultColorsList,
+    sizes: defaultSizesList,
+    price: [
+      {
+        id: "price",
+        uiLabel: "",
+        value: [0, maxPrice],
+        isActive: true,
+      },
+    ],
+  };
+
   const [productsState, setProductsState] = useState({
-    isLoading: false,
+    isLoading: true,
     data: null,
     errors: "",
   });
 
-  const [activeCategory, setActiveCategory] = useState("Fruits");
+  const [page, setPage] = useState({
+    perPage: 5,
+    startPage: 1,
+  });
 
-  const getProducts = async () => {
-    const res = await getAjax(`${apiUrl}/products`);
+  const [filterState, setFilterState] = useState(filterDefaultState);
+
+  const currentCurrency = useSelector(getCurrency);
+
+  const getProductsByPrice = () => {
+    const currencyRates = {
+      USD: 1 / USD_RATE,
+      UAH: USD_RATE,
+    };
+
+    if (productsState.data?.products[0].currency !== currentCurrency) {
+      const changedCurrencyProducts = productsState.data?.products.map(
+        (item) => {
+          const newPrice = item.currentPrice * currencyRates[currentCurrency];
+          item.currentPrice = newPrice.toFixed(2);
+          item.currency = currentCurrency;
+          return item;
+        }
+      );
+      setProductsState({
+        ...productsState,
+        data: {
+          products: changedCurrencyProducts,
+        },
+      });
+    }
+  };
+
+  const getProductsByFilter = async () => {
+    let requestUrl = `${apiUrl}/products/filter?`;
+    const filterParams = getFiltersParams();
+    const pageParams = getPageParams();
+
+    requestUrl += filterParams + pageParams;
+    const res = await getAjax(requestUrl);
+    res.data.products = res.data.products.map((item) => {
+      item.currency = "USD";
+      return item;
+    });
     setProductsState(res);
   };
 
-  const getProductsByCategory = async () => {
-    const res = await getAjax(
-      `${apiUrl}/products/filter?categories=${activeCategory.toLowerCase()}`
+  const getMaxPriceValue = () => {
+    const max = Math.max.apply(
+      Math,
+      productsState.data?.products?.map(function (object) {
+        return object.currentPrice;
+      })
     );
-    console.log(res.data.products);
-    setProductsState(res);
+    setMaxPrice(max);
+  };
+
+  const getFiltersParams = () => {
+    let filtersParams = "";
+
+    const allFilterKeys = Object.keys(filterState).filter(
+      (item) => filterState[item].length
+    );
+    allFilterKeys.forEach((item, index) => {
+      if (item === "price") {
+        filtersParams += `minPrice=${filterState[item][0].value[0]}&maxPrice=${filterState[item][0].value[1]}`;
+      } else {
+        const activeFilters = filterState[item].filter((item) => item.isActive);
+        if (activeFilters.length === 0) return;
+        filtersParams += `${item}=`;
+        activeFilters.forEach((filterItemState) => {
+          filtersParams += `${filterItemState.value},`;
+        });
+      }
+      if (allFilterKeys.length !== index + 1) filtersParams += "&";
+    });
+
+    return filtersParams;
+  };
+
+  const getPageParams = () => {
+    return "&perPage=" + page.perPage + "&startPage=" + page.startPage;
   };
 
   useEffect(() => {
-    getProductsByCategory();
-  }, [activeCategory]);
+    getProductsByFilter();
+  }, [filterState, page]);
 
-  const changeCategoryHandler = (category) => {
-    setActiveCategory(category);
-    console.log("Here will be request on server with all filters values");
+  useEffect(() => {
+    if (!filterState && productsState.data?.products?.length) {
+      getMaxPriceValue();
+    }
+  }, [productsState.data]);
+
+  useEffect(() => {
+    getProductsByPrice();
+  }, [currentCurrency]);
+
+  const changePage = (e, pageNumber) => {
+    setPage({ ...page, startPage: pageNumber });
+  };
+
+  const changeFilterEntity = (filterEntity) => {
+    let replaceIndex = 0;
+    if (filterEntity.id !== "price") {
+      replaceIndex = filterState[filterEntity.id].findIndex(
+        (item) => item.value === filterEntity.value
+      );
+    }
+    filterState[filterEntity.id][replaceIndex] = filterEntity;
+
+    setPage({ ...page, startPage: 1 });
+
+    setFilterState({
+      ...filterState,
+      [filterEntity.id]: filterState[filterEntity.id],
+    });
+  };
+
+  const dispatch = useDispatch();
+
+  const formState = useSelector(getFavoutitesProducts);
+
+  const toggleFavoriteClick = (id) => {
+    dispatch(toggleFavorite(id));
   };
 
   return (
-    <>
-      <div className={styles.pageTitleContainer}>
-        <p className={styles.pageTitle}>Products</p>
-        <p>Home / Products</p>
-      </div>
-      <div className={styles.pageContainer}>
-        <div>
-          <Categories
-            changeCategoryHandler={changeCategoryHandler}
-            activeCategory={activeCategory}
+    <div className={styles.contentContainer}>
+      <Container fixed>
+        <div className={styles.pageTitleContainer}>
+          <p className={styles.pageTitle}>Products</p>
+          <p>Home / Products</p>
+        </div>
+        <div className={styles.pageContainer}>
+          <div className={"filterWrapper"}>
+            <CategoryList
+              changeFilterEntityHandler={changeFilterEntity}
+              filterEntityList={filterState.categories}
+              filterName="Categories"
+            />
+            <ColorList
+              changeFilterEntityHandler={changeFilterEntity}
+              filterEntityList={filterState.color}
+              filterName="Colors"
+            />
+            <SizeList
+              changeFilterEntityHandler={changeFilterEntity}
+              filterEntityList={filterState.sizes}
+              filterName="Sizes"
+            />
+            <Price
+              maxPrice={maxPrice}
+              changePriceHandler={changeFilterEntity}
+            />
+          </div>
+          <div className={styles.productsContainer}>
+            {productsState.isLoading && <CircularProgress />}
+            {productsState.data &&
+              productsState.data?.products?.map((product) => {
+                return (
+                  <ProductCard
+                    key={product._id}
+                    isFavourite={formState.includes(product._id)}
+                    product={product}
+                    toggleFavoriteClick={toggleFavoriteClick}
+                  />
+                );
+              })}
+            {productsState.errors && <p>{productsState.errors}</p>}
+          </div>
+          <Pagination
+            count={
+              Math.ceil(productsState.data?.productsQuantity / page.perPage) ||
+              1
+            }
+            onChange={changePage}
+            page={page.startPage}
           />
         </div>
-        <div className={styles.productsContainer}>
-          {productsState.isLoading && <p>Loading..</p>}
-          {productsState.data &&
-            productsState.data?.products?.map((product) => {
-              return <ProductCard key={product.id} product={product} />;
-            })}
-          {productsState.errors && <p>{productsState.errors}</p>}
-        </div>
-      </div>
-    </>
+      </Container>
+    </div>
   );
 };
 

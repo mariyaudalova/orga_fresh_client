@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
+
 import styles from "./DropDown.module.scss";
 
 const DropDown = (props) => {
@@ -22,6 +24,12 @@ const DropDown = (props) => {
       <ul>{optionsView}</ul>
     </div>
   );
+};
+
+DropDown.propTypes = {
+  currentValue: PropTypes.string,
+  listOfOptions: PropTypes.array,
+  onClick: PropTypes.func,
 };
 
 export default DropDown;

@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { green } from "@material-ui/core/colors";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { withStyles } from "@material-ui/core/styles";
 
 import styles from "./FilterItem.module.scss";
 
-const Categories = ({ changeCategoryHandler, categoriesList }) => {
+const Colors = ({ changeColorHandler, colorsList }) => {
   const GreenCheckbox = withStyles({
     root: {
       color: green[400],
@@ -19,28 +19,30 @@ const Categories = ({ changeCategoryHandler, categoriesList }) => {
   })((props) => <Checkbox color="default" {...props} />);
   return (
     <div>
-      <h2>Categories</h2>
+      <h2>Colors</h2>
       <ul>
-        {categoriesList.map((category, index) => {
+        {colorsList.map((color, index) => {
           return (
             <li
               key={index}
-              className={category.isActive ? styles.active : styles.listItem}
+              className={
+                color === color.isActive ? styles.active : styles.listItem
+              }
             >
               <FormControlLabel
                 control={
                   <GreenCheckbox
-                    checked={category.isActive}
+                    checked={color.isActive}
                     onChange={(event) => {
-                      changeCategoryHandler({
-                        ...category,
+                      changeColorHandler({
+                        ...color,
                         isActive: event.target.checked,
                       });
                     }}
                     name="checkedG"
                   />
                 }
-                label={category.uiLabel}
+                label={<div className="sdvsd">{color.uiLabel}</div>}
               />
             </li>
           );
@@ -50,10 +52,9 @@ const Categories = ({ changeCategoryHandler, categoriesList }) => {
   );
 };
 
-Categories.propTypes = {
-  changeCategoryHandler: PropTypes.func,
-  activeCategory: PropTypes.object,
-  categoriesList: PropTypes.array,
+Colors.propTypes = {
+  changeColorHandler: PropTypes.func,
+  colorsList: PropTypes.array,
 };
 
-export { Categories };
+export { Colors };

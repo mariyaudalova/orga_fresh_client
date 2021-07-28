@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import * as icons from "../../theme/icons";
 
 function Icon(props) {
@@ -16,5 +18,15 @@ function Icon(props) {
     </span>
   );
 }
+
+Icon.propTypes = {
+  type: PropTypes.string,
+  color: PropTypes.string,
+  filled: PropTypes.bool,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+};
 
 export default Icon;

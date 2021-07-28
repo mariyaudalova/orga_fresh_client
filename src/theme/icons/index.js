@@ -5,3 +5,4 @@ export { currency } from "./currency";
 export { headerHeart } from "./headerHeart";
 export { cart } from "./cart";
 export { search } from "./search";
+export { favourite } from "./favourite";
