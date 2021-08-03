@@ -14,14 +14,10 @@ import { getCurrency } from "../../../state/currency/selectors";
 import { updateCurrencyCreator } from "../../../state/currency/actionsCreators";
 
 const InfoBlock = () => {
-  //мб что-то с memo
-
   const languages = ["EN", "UA"];
   const currencies = ["USD", "UAH"];
 
   const currentCurrencyState = useSelector(getCurrency);
-
-  console.log(currentCurrencyState);
 
   const [currentCurrency, setCurrentCurrency] = useState(
     localStorage.getItem("currency") || "USD"
@@ -89,7 +85,6 @@ const InfoBlock = () => {
               width={20}
               height={20}
             />
-
             <Select
               native
               value={10}

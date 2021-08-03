@@ -84,7 +84,11 @@ const NavBar = () => {
             </Badge>
 
             <Link to={CART}>
-              <Badge color="error" badgeContent={cart.length} showZero>
+              <Badge
+                color="error"
+                badgeContent={cart.data?.products.length || 0}
+                showZero
+              >
                 <Icon
                   className={styles.iconLast}
                   type="cart"

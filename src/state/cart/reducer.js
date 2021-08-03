@@ -1,5 +1,7 @@
 const initialState = {
-  cart: [],
+  isLoading: true,
+  data: null,
+  errors: "",
 };
 
 const removeFromCart = (productList, removedProduct) => {
@@ -11,9 +13,10 @@ const removeFromCart = (productList, removedProduct) => {
 };
 
 const addToCart = (state, action) => {
-  localStorage.setItem("cart", JSON.stringify([...state.cart, action.payload]));
+  // localStorage.setItem("cart", JSON.stringify([...state.cart, action.payload]));
   return {
-    cart: [...state.cart, action.payload],
+    ...state,
+    data: { products: [...(state.data?.products || []), action.payload] },
   };
 };
 

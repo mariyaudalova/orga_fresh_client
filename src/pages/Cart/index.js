@@ -13,6 +13,7 @@ import { Field } from "react-final-form";
 import { getCart } from "../../state/cart/selectors";
 import SmallProductCard from "../../components/SmallProductCard";
 import styles from "./Cart.module.scss";
+import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
 
 const BasicForm = (props) => (
   <form onSubmit={props.handleSubmit}>
@@ -23,7 +24,6 @@ const BasicForm = (props) => (
             error={props.meta.error && props.meta.touched}
             id="firstName"
             label="First name"
-            defaultValue="Hello World"
             helperText={props.meta.error}
             name={props.input.name}
             value={props.input.value}
@@ -39,7 +39,6 @@ const BasicForm = (props) => (
             error={props.meta.error && props.meta.touched}
             id="lastName"
             label="Last name"
-            defaultValue="Hello World"
             helperText={props.meta.error}
             name={props.input.name}
             value={props.input.value}
@@ -96,21 +95,23 @@ const formValidation = (values) => {
 };
 
 const Cart = () => {
-  const cart = useSelector(getCart);
+  const [cart, setCart] = useState(useSelector(getCart));
 
-  useEffect(() => {
-    //const previousData = localStorage.getItem("order");
-  }, []);
+  /**
+   *  Custom hook to update products list after changing currency
+   *
+   *  @param cart (obj): object with fields isLoading(bool), data(object), error(string)
+   *
+   *  @param setCart (func): function that updates cart
+   *
+   */
 
-  const [previousData, setPreviousData] = useState(
-    localStorage.getItem("order")
-  );
+  useProductsStateByCurrency(cart, setCart);
 
-  console.log(previousData);
-
+  const previousData = localStorage.getItem("order");
   const getTotalPrice = () => {
     let totalPrice = 0;
-    cart.map((item) => {
+    cart.data?.products?.map((item) => {
       totalPrice += item.currentPrice;
     });
     return totalPrice;
@@ -135,8 +136,8 @@ const Cart = () => {
           <Grid item xs={12} sm={4}>
             <Paper>
               <ul>
-                {cart.length > 0 ? (
-                  cart.map((item, index) => (
+                {cart.data?.products?.length > 0 ? (
+                  cart.data?.products?.map((item, index) => (
                     <li key={index}>
                       <div>
                         <SmallProductCard product={item} />

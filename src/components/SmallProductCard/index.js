@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import styles from "./SmallProductCard.module.scss";
 
 const SmallProductCard = (props) => {
-  //const {{_id, currentPrice, brand, name, imageUrls, sizes}: product} = props;
-
   const {
     product: { currentPrice, name, imageUrls, sizes },
   } = props;

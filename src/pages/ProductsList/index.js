@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
 import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
 import { getCart } from "../../state/cart/selectors";
-import { getCurrency } from "../../state/currency/selectors";
 import { addToCartCreator } from "../../state/cart/actionsCreators";
 import Price from "../../components/Filters/Price";
 import {
@@ -18,7 +17,6 @@ import {
 import ProductCard from "../../components/ProductCard";
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
-import { USD_RATE } from "../../common/constants";
 import {
   defaultCategoriesList,
   defaultColorsList,
@@ -26,6 +24,7 @@ import {
 } from "../../common/defaultState";
 
 import styles from "./ProductsList.module.scss";
+import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
 
 const ProductsList = () => {
   const [maxPrice, setMaxPrice] = useState(1000);
@@ -49,38 +48,14 @@ const ProductsList = () => {
     errors: "",
   });
 
+  useProductsStateByCurrency(productsState, setProductsState);
+
   const [page, setPage] = useState({
     perPage: 5,
     startPage: 1,
   });
 
   const [filterState, setFilterState] = useState(filterDefaultState);
-
-  const currentCurrency = useSelector(getCurrency);
-
-  const getProductsByPrice = () => {
-    const currencyRates = {
-      USD: 1 / USD_RATE,
-      UAH: USD_RATE,
-    };
-
-    if (productsState.data?.products[0].currency !== currentCurrency) {
-      const changedCurrencyProducts = productsState.data?.products.map(
-        (item) => {
-          const newPrice = item.currentPrice * currencyRates[currentCurrency];
-          item.currentPrice = newPrice.toFixed(2);
-          item.currency = currentCurrency;
-          return item;
-        }
-      );
-      setProductsState({
-        ...productsState,
-        data: {
-          products: changedCurrencyProducts,
-        },
-      });
-    }
-  };
 
   const getProductsByFilter = async () => {
     let requestUrl = `${apiUrl}/products/filter?`;
@@ -143,10 +118,6 @@ const ProductsList = () => {
     }
   }, [productsState.data]);
 
-  useEffect(() => {
-    getProductsByPrice();
-  }, [currentCurrency]);
-
   const changePage = (e, pageNumber) => {
     setPage({ ...page, startPage: pageNumber });
   };
@@ -183,10 +154,11 @@ const ProductsList = () => {
   };
 
   const isInCart = (product) => {
-    return !!userCart.find((cartItem) => cartItem._id === product._id);
+    return !!userCart.data?.products.find(
+      (cartItem) => cartItem._id === product._id
+    );
   };
 
-  console.log(userCart);
   return (
     <div className={styles.contentContainer}>
       <Container fixed>
