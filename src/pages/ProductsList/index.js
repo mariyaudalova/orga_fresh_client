@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
 import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
+import { getCart } from "../../state/cart/selectors";
 import { getCurrency } from "../../state/currency/selectors";
+import { addToCartCreator } from "../../state/cart/actionsCreators";
 import Price from "../../components/Filters/Price";
 import {
   CategoryList,
@@ -174,6 +176,17 @@ const ProductsList = () => {
     dispatch(toggleFavorite(id));
   };
 
+  const userCart = useSelector(getCart);
+
+  const onAddToCart = (id) => {
+    dispatch(addToCartCreator(id));
+  };
+
+  const isInCart = (product) => {
+    return !!userCart.find((cartItem) => cartItem._id === product._id);
+  };
+
+  console.log(userCart);
   return (
     <div className={styles.contentContainer}>
       <Container fixed>
@@ -213,6 +226,8 @@ const ProductsList = () => {
                     isFavourite={formState.includes(product._id)}
                     product={product}
                     toggleFavoriteClick={toggleFavoriteClick}
+                    addToCart={onAddToCart}
+                    isInCart={isInCart(product)}
                   />
                 );
               })}

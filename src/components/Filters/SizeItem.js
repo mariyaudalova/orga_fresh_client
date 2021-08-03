@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SizeItem = ({ value }) => {
-  return <li>{value}</li>;
+  return <span>{value}</span>;
 };
 
 SizeItem.propTypes = {

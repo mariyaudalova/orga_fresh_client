@@ -1,0 +1,40 @@
+.contentContainer {
+    background-color: #f8f8f8;
+  }
+
+  .orderLabel {
+      padding: 10px;
+      font-weight: 300;
+      font-size: 16px;
+  }
+ 
+  .orderLabel2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+  .orderValue{
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  .priceContainer {
+      display: flex;
+      justify-content: space-between;
+  }
+
+ .formContainer {
+   padding: 20px;
+ }
+
+ .noProductsLabel {
+   padding-top: 10px;
+   text-align: center;
+ }
+
+ .fieldContainer {
+   margin-top: 20px;
+ }
+
+ .submitButton {
+   margin-top: 20px;
+ }

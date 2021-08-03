@@ -1,15 +1,19 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { useSelector } from "react-redux";
+import Badge from "@material-ui/core/Badge";
 
 import { PRODUCTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
 import Icon from "../../Icon";
+import { getCart } from "../../../state/cart/selectors";
+import { CART } from "../../../utils/consts";
 
 const NavBar = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);
+  const cart = useSelector(getCart);
 
   return (
     <div className={styles.container}>
@@ -65,21 +69,31 @@ const NavBar = () => {
               width={35}
               height={35}
             />
-            <Icon
-              className={styles.icon}
-              type="headerHeart"
-              color="black"
-              width={35}
-              height={35}
-            />
-            {favouritesProducts.length}
-            <Icon
-              className={styles.iconLast}
-              type="cart"
-              color="black"
-              width={35}
-              height={35}
-            />
+            <Badge
+              color="error"
+              badgeContent={favouritesProducts.length}
+              showZero
+            >
+              <Icon
+                className={styles.icon}
+                type="headerHeart"
+                color="black"
+                width={35}
+                height={35}
+              />
+            </Badge>
+
+            <Link to={CART}>
+              <Badge color="error" badgeContent={cart.length} showZero>
+                <Icon
+                  className={styles.iconLast}
+                  type="cart"
+                  color="black"
+                  width={35}
+                  height={35}
+                />
+              </Badge>
+            </Link>
           </div>
         </div>
       </Container>

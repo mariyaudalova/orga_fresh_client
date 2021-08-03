@@ -1,6 +1,12 @@
 import ProductPage from "../pages/ProductPage";
 import ProductsList from "../pages/ProductsList";
-import { LOGIN_ROUTE, PRODUCTS_ROUTE, PRODUCT_ROUTE } from "../utils/consts";
+import Cart from "../pages/Cart";
+import {
+  LOGIN_ROUTE,
+  PRODUCTS_ROUTE,
+  PRODUCT_ROUTE,
+  CART,
+} from "../utils/consts";
 
 export const publicRoutes = [
   {
@@ -14,5 +20,9 @@ export const publicRoutes = [
   {
     path: PRODUCT_ROUTE + "/:id",
     Component: ProductPage,
+  },
+  {
+    path: CART,
+    Component: Cart,
   },
 ];
