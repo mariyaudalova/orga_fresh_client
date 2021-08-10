@@ -21,6 +21,5 @@ export const search = (
       clipRule="evenodd"
       fill={filled ? color : "none"}
     />
- 
   </svg>
 );

@@ -1,18 +1,27 @@
 import React from "react";
-import PropTypes from "prop-types";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { green } from "@material-ui/core/colors";
-import Checkbox from "@material-ui/core/Checkbox";
+import Checkbox, {CheckboxProps} from "@material-ui/core/Checkbox";
 import { withStyles } from "@material-ui/core/styles";
 
 import styles from "./FilterItem.module.scss";
+import {ListItemType} from "./types";
+import {
+  FilterItem
+} from "../../common/types";
 
-const WithFilters = (ListItem) => {
+interface FilterList {
+  filterName: string;
+  filterEntityList: Array<FilterItem>;
+  changeFilterEntityHandler: (props: FilterItem) => void;
+}
+
+const WithFilters = (ListItem: ListItemType) => {
   const Filter = ({
     changeFilterEntityHandler,
     filterEntityList,
     filterName,
-  }) => {
+  }: FilterList) => {
     const GreenCheckbox = withStyles({
       root: {
         color: green[400],
@@ -21,7 +30,7 @@ const WithFilters = (ListItem) => {
         },
       },
       checked: {},
-    })((props) => <Checkbox color="default" {...props} />);
+    })((props: CheckboxProps ) => <Checkbox color="default" {...props} />);
     return (
       <div>
         <h2>{filterName}</h2>
@@ -31,7 +40,7 @@ const WithFilters = (ListItem) => {
               <li
                 key={index}
                 className={
-                  filterEntity === filterEntity.isActive
+                  filterEntity.isActive
                     ? styles.active
                     : styles.listItem
                 }
@@ -57,14 +66,6 @@ const WithFilters = (ListItem) => {
         </ul>
       </div>
     );
-  };
-
-  Filter.propTypes = {
-    filterName: PropTypes.string,
-    filterEntityList: PropTypes.array,
-    changeFilterEntityHandler: PropTypes.func,
-    activeValue: PropTypes.object,
-    listOfValues: PropTypes.array,
   };
 
   return Filter;

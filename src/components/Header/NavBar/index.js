@@ -4,12 +4,11 @@ import Container from "@material-ui/core/Container";
 import { useSelector } from "react-redux";
 import Badge from "@material-ui/core/Badge";
 
-import { PRODUCTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
+import { PRODUCTS_ROUTE, LOGIN_ROUTE, CART } from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
 import Icon from "../../Icon";
 import { getCart } from "../../../state/cart/selectors";
-import { CART } from "../../../utils/consts";
 
 const NavBar = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);

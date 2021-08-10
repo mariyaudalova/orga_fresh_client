@@ -14,6 +14,7 @@ import { getCart } from "../../state/cart/selectors";
 import SmallProductCard from "../../components/SmallProductCard";
 import styles from "./Cart.module.scss";
 import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
+import Dialog from "../../components/Dialog";
 
 const BasicForm = (props) => (
   <form onSubmit={props.handleSubmit}>
@@ -76,10 +77,6 @@ BasicForm.propTypes = {
   handleSubmit: PropTypes.func,
 };
 
-const onSubmit = (value) => {
-  localStorage.setItem("order", JSON.stringify(value));
-};
-
 const formValidation = (values) => {
   const errors = {};
   if (!values.firstName) {
@@ -96,6 +93,13 @@ const formValidation = (values) => {
 
 const Cart = () => {
   const [cart, setCart] = useState(useSelector(getCart));
+
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const onSubmit = (value) => {
+    localStorage.setItem("order", JSON.stringify(value));
+    setDialogOpen(true);
+  };
 
   /**
    *  Custom hook to update products list after changing currency
@@ -163,6 +167,12 @@ const Cart = () => {
           </Grid>
         </Grid>
       </Container>
+      <Dialog
+        isOpen={isDialogOpen}
+        title="Title"
+        content="Content"
+        buttonName="Close"
+      />
     </div>
   );
 };
