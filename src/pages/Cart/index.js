@@ -15,6 +15,7 @@ import SmallProductCard from "../../components/SmallProductCard";
 import styles from "./Cart.module.scss";
 import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
 import Dialog from "../../components/Dialog";
+import Modal from "../../components/Modal";
 
 const BasicForm = (props) => (
   <form onSubmit={props.handleSubmit}>
@@ -173,6 +174,7 @@ const Cart = () => {
         content="Content"
         buttonName="Close"
       />
+      <Modal />
     </div>
   );
 };
