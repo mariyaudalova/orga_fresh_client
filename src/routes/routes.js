@@ -1,6 +1,7 @@
 import ProductPage from "../pages/ProductPage";
 import ProductsList from "../pages/ProductsList";
 import Cart from "../pages/Cart";
+import Login from "../pages/Login";
 import {
   LOGIN_ROUTE,
   PRODUCTS_ROUTE,
@@ -15,7 +16,7 @@ export const publicRoutes = [
   },
   {
     path: LOGIN_ROUTE,
-    Component: ProductsList,
+    Component: Login,
   },
   {
     path: PRODUCT_ROUTE + "/:id",

@@ -7,19 +7,28 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { useEffect } from "react";
 
-export default function ResponsiveDialog() {
- // const { title, content, buttonName, isOpen } = props;
-// let isOpen=true;
-  const [open, setOpen] = React.useState(true);
+interface ModalProps {
+  title: string;
+  content: string;
+  buttonName: string;
+  isOpen: boolean;
+  handleClose: () => void;
+}
 
- /* useEffect(() => {
+export default function ResponsiveDialog(props: ModalProps) {
+  const { title, content, buttonName, isOpen, handleClose } = props;
+
+  const [open, setOpen] = React.useState(isOpen);
+
+  useEffect(() => {
     setOpen(isOpen);
-  }, [isOpen]);*/
+  }, [isOpen]);
 
-  const handleClose = () => {
+  /*  const handleClose = () => {
     setOpen(false);
-  };
+  };*/
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -32,20 +41,13 @@ export default function ResponsiveDialog() {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
+        <DialogTitle id="responsive-dialog-title">{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-        dv
-          </DialogContentText>
+          <DialogContentText>{content}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
-            Disagree
-          </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Agree
+            {buttonName}
           </Button>
         </DialogActions>
       </Dialog>

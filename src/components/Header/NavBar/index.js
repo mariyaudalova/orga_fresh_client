@@ -7,8 +7,10 @@ import Badge from "@material-ui/core/Badge";
 import { PRODUCTS_ROUTE, LOGIN_ROUTE, CART } from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
-import Icon from "../../Icon";
 import { getCart } from "../../../state/cart/selectors";
+
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 
 const NavBar = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);
@@ -60,43 +62,22 @@ const NavBar = () => {
               Contact
             </NavLink>
           </nav>
-          <div>
-            <Icon
-              className={styles.icon}
-              type="search"
-              color="black"
-              width={35}
-              height={35}
-            />
-            <Badge
-              color="error"
-              badgeContent={favouritesProducts.length}
-              showZero
-            >
-              <Icon
-                className={styles.icon}
-                type="headerHeart"
-                color="black"
-                width={35}
-                height={35}
-              />
-            </Badge>
-
-            <Link to={CART}>
-              <Badge
-                color="error"
-                badgeContent={cart.data?.products.length || 0}
-                showZero
-              >
-                <Icon
-                  className={styles.iconLast}
-                  type="cart"
-                  color="black"
-                  width={35}
-                  height={35}
-                />
+          <div className={styles.innerContainer}>
+            <div className={styles.iconContainer}>
+              <Badge color="primary" badgeContent={favouritesProducts.length}>
+                <FavoriteBorderIcon fontSize="large" />
               </Badge>
-            </Link>
+            </div>
+            <div className={styles.iconContainer}>
+              <Link to={CART}>
+                <Badge
+                  color="primary"
+                  badgeContent={cart.data?.products.length || 0}
+                >
+                  <ShoppingCartOutlinedIcon fontSize="large" />
+                </Badge>
+              </Link>
+            </div>
           </div>
         </div>
       </Container>

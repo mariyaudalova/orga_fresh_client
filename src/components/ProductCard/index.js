@@ -7,9 +7,9 @@ import Icon from "../Icon";
 import { Link } from "react-router-dom";
 import { CART } from "../../utils/consts";
 
-const ProductCard = (props) => {
-  //const {{_id, currentPrice, brand, name, imageUrls, sizes}: product} = props;
+import Paper from "@material-ui/core/Paper";
 
+const ProductCard = (props) => {
   const {
     product: { _id, currentPrice, brand, name, imageUrls, sizes },
     product,
@@ -20,8 +20,8 @@ const ProductCard = (props) => {
   } = props;
 
   return (
-    <div className={styles.cardContainer}>
-      <img className={styles.imageContainer} src={imageUrls[0]} alt="watch" />
+    <Paper className={styles.cardContainer}>
+      <img className={styles.imageContainer} src={imageUrls[0]} />
       <div className={styles.nameContainer}>
         <p className={styles.productName}>{name}</p>
         <p className={styles.manufacturer}>{brand}</p>
@@ -34,20 +34,27 @@ const ProductCard = (props) => {
         <Icon
           className={styles.iconLast}
           type="favourite"
-          color={isFavourite ? "red" : "black"}
-          width={35}
-          height={35}
+          color={isFavourite ? "#ff9800" : "#989898"}
+          width={25}
+          filled={isFavourite}
+          height={25}
           onClick={() => toggleFavoriteClick(_id)}
         />
         {isInCart ? (
-          <Link to={CART}>Already in Cart</Link>
+          <Link to={CART} className={styles.linkItem}>
+            Already in Cart
+          </Link>
         ) : (
-          <Button variant="contained" onClick={() => addToCart(product)}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => addToCart(product)}
+          >
             Add to cart
           </Button>
         )}
       </div>
-    </div>
+    </Paper>
   );
 };
 

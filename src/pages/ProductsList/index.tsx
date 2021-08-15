@@ -23,9 +23,11 @@ import {
   defaultSizesList,
 } from "../../common/defaultState";
 import {
-  ProductEntity, ProductState, ProductsData, FilterItem
+  ProductEntity,
+  ProductState,
+  ProductsData,
+  FilterItem,
 } from "../../common/types";
-
 
 import styles from "./ProductsList.module.scss";
 import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
@@ -55,7 +57,7 @@ const ProductsList = () => {
   useProductsStateByCurrency(productsState, setProductsState);
 
   const [page, setPage] = useState({
-    perPage: 5,
+    perPage: 9,
     startPage: 1,
   });
 
@@ -77,21 +79,21 @@ const ProductsList = () => {
   const getMaxPriceValue = () => {
     const { data } = productsState;
     const productsData = data as ProductsData;
-    const arrayForMaping = productsData?.products?.map(function (item: ProductEntity) {
+    const arrayForMaping = productsData?.products?.map(function (
+      item: ProductEntity
+    ) {
       return item.currentPrice;
     });
-    const max = Math.max(
-      ...arrayForMaping
-    )
+    const max = Math.max(...arrayForMaping);
     setMaxPrice(max);
   };
 
   const getFiltersParams = () => {
     let filtersParams = "";
 
-    const allFilterKeys = (Object.keys(filterState) as Array<keyof typeof filterState>).filter(
-      (item) => filterState[item].length
-    );
+    const allFilterKeys = (
+      Object.keys(filterState) as Array<keyof typeof filterState>
+    ).filter((item) => filterState[item].length);
     allFilterKeys.forEach((item, index) => {
       if (item === "price") {
         filtersParams += `minPrice=${filterState[item][0].value[0]}&maxPrice=${filterState[item][0].value[1]}`;
@@ -172,7 +174,7 @@ const ProductsList = () => {
           <p>Home / Products</p>
         </div>
         <div className={styles.pageContainer}>
-          <div className={"filterWrapper"}>
+          <div>
             <CategoryList
               changeFilterEntityHandler={changeFilterEntity}
               filterEntityList={filterState.categories as Array<FilterItem>}
@@ -193,34 +195,39 @@ const ProductsList = () => {
               changePriceHandler={changeFilterEntity}
             />
           </div>
-          <div className={styles.productsContainer}>
-            {productsState.isLoading && <CircularProgress />}
-            {productsState.data &&
-              productsState.data?.products?.map((product) => {
-                return (
-                  <ProductCard
-                    key={product._id}
-                    isFavourite={formState.includes(product._id)}
-                    product={product}
-                    toggleFavoriteClick={toggleFavoriteClick}
-                    addToCart={onAddToCart}
-                    isInCart={isInCart(product)}
-                  />
-                );
-              })}
-            {productsState.errors && <p>{productsState.errors}</p>}
+          <div>
+            <div className={styles.productsContainer}>
+              {productsState.isLoading && <CircularProgress />}
+              {productsState.data &&
+                productsState.data?.products?.map((product) => {
+                  return (
+                    <ProductCard
+                      key={product._id}
+                      isFavourite={formState.includes(product._id)}
+                      product={product}
+                      toggleFavoriteClick={toggleFavoriteClick}
+                      addToCart={onAddToCart}
+                      isInCart={isInCart(product)}
+                    />
+                  );
+                })}
+              {productsState.errors && <p>{productsState.errors}</p>}
+            </div>
+            <Pagination
+              className={styles.paginationContainer}
+              count={
+                Math.ceil(
+                  (productsState.data as ProductsData)?.productsQuantity /
+                    page.perPage
+                ) || 1
+              }
+              onChange={changePage}
+              page={page.startPage}
+            />
           </div>
-          <Pagination
-            count={
-              Math.ceil((productsState.data as ProductsData)?.productsQuantity / page.perPage) ||
-              1
-            }
-            onChange={changePage}
-            page={page.startPage}
-          />
         </div>
       </Container>
-      </div>
+    </div>
   );
 };
 

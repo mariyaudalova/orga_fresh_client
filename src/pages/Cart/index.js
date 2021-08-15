@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "react-final-form";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -14,63 +14,124 @@ import { getCart } from "../../state/cart/selectors";
 import SmallProductCard from "../../components/SmallProductCard";
 import styles from "./Cart.module.scss";
 import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
-import Dialog from "../../components/Dialog";
 import Modal from "../../components/Modal";
+import { Link } from "react-router-dom";
+import { PRODUCTS_ROUTE } from "../../utils/consts";
+
+import { clearCartCreator } from "../../state/cart/actionsCreators";
+
+import { useHistory } from "react-router-dom";
 
 const BasicForm = (props) => (
   <form onSubmit={props.handleSubmit}>
-    <Field name="firstName">
-      {(props) => (
-        <div className={styles.fieldContainer}>
-          <TextField
-            error={props.meta.error && props.meta.touched}
-            id="firstName"
-            label="First name"
-            helperText={props.meta.error}
-            name={props.input.name}
-            value={props.input.value}
-            onChange={props.input.onChange}
-          />
-        </div>
-      )}
-    </Field>
-    <Field name="lastName">
-      {(props) => (
-        <div className={styles.fieldContainer}>
-          <TextField
-            error={props.meta.error && props.meta.touched}
-            id="lastName"
-            label="Last name"
-            helperText={props.meta.error}
-            name={props.input.name}
-            value={props.input.value}
-            onChange={props.input.onChange}
-          />
-        </div>
-      )}
-    </Field>
-    <Field name="delivery">
-      {(props) => (
-        <div className={styles.fieldContainer}>
-          <TextField
-            error={props.meta.error && props.meta.touched}
-            id="delivery"
-            label="Delivery"
-            name={props.input.name}
-            value={props.input.value}
-            onChange={props.input.onChange}
-          />
-        </div>
-      )}
-    </Field>
-    <Button
-      className={styles.submitButton}
-      type="submit"
-      variant="outlined"
-      color="primary"
-    >
-      Submit
-    </Button>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6}>
+        <Field name="firstName">
+          {(props) => (
+            <div className={styles.fieldContainer}>
+              <TextField
+                fullWidth
+                error={props.meta.error && props.meta.touched}
+                id="firstName"
+                label="First name"
+                helperText={props.meta.error}
+                name={props.input.name}
+                value={props.input.value}
+                onChange={props.input.onChange}
+              />
+            </div>
+          )}
+        </Field>
+        <Field name="delivery">
+          {(props) => (
+            <div className={styles.fieldContainer}>
+              <TextField
+                fullWidth
+                error={props.meta.error && props.meta.touched}
+                id="delivery"
+                label="Delivery"
+                name={props.input.name}
+                value={props.input.value}
+                onChange={props.input.onChange}
+              />
+            </div>
+          )}
+        </Field>
+        <Field name="phone">
+          {(props) => (
+            <div className={styles.fieldContainer}>
+              <TextField
+                fullWidth
+                error={props.meta.error && props.meta.touched}
+                id="phone"
+                label="Phone"
+                name={props.input.name}
+                value={props.input.value}
+                onChange={props.input.onChange}
+              />
+            </div>
+          )}
+        </Field>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Field name="lastName">
+          {(props) => (
+            <div className={styles.fieldContainer}>
+              <TextField
+                fullWidth
+                error={props.meta.error && props.meta.touched}
+                id="lastName"
+                label="Last name"
+                helperText={props.meta.error}
+                name={props.input.name}
+                value={props.input.value}
+                onChange={props.input.onChange}
+              />
+            </div>
+          )}
+        </Field>
+        <Field name="type">
+          {(props) => (
+            <div className={styles.fieldContainer}>
+              <TextField
+                error={props.meta.error && props.meta.touched}
+                id="type"
+                fullWidth
+                label="Delivery type"
+                name={props.input.name}
+                value={props.input.value}
+                onChange={props.input.onChange}
+              />
+            </div>
+          )}
+        </Field>
+        <Field name="email">
+          {(props) => (
+            <div className={styles.fieldContainer}>
+              <TextField
+                fullWidth
+                error={props.meta.error && props.meta.touched}
+                id="email"
+                label="Email"
+                name={props.input.name}
+                value={props.input.value}
+                onChange={props.input.onChange}
+              />
+            </div>
+          )}
+        </Field>
+      </Grid>
+    </Grid>
+    <div className={styles.submitButtonContainer}>
+      <Button
+        className={styles.submitButton}
+        type="submit"
+        variant="outlined"
+        color="primary"
+      >
+        Submit order
+      </Button>
+    </div>
   </form>
 );
 
@@ -79,6 +140,7 @@ BasicForm.propTypes = {
 };
 
 const formValidation = (values) => {
+  console.log(values);
   const errors = {};
   if (!values.firstName) {
     errors.firstName = "Required";
@@ -88,6 +150,15 @@ const formValidation = (values) => {
   }
   if (!values.delivery) {
     errors.delivery = "Required";
+  }
+  if (!values.phone) {
+    errors.phone = "Required";
+  }
+  if (!values.email) {
+    errors.email = "Required";
+  }
+  if (!values.type) {
+    errors.type = "Required";
   }
   return errors;
 };
@@ -100,6 +171,18 @@ const Cart = () => {
   const onSubmit = (value) => {
     localStorage.setItem("order", JSON.stringify(value));
     setDialogOpen(true);
+  };
+
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+
+  const handleClose = () => {
+    localStorage.setItem("cart", null);
+
+    dispatch(clearCartCreator());
+
+    history.push(`${PRODUCTS_ROUTE}`);
   };
 
   /**
@@ -125,56 +208,68 @@ const Cart = () => {
   return (
     <div className={styles.contentContainer}>
       <Container fixed>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={8}>
-            <Paper className={styles.formContainer}>
-              <p className={styles.orderLabel2}>Billing details</p>
-              <Form
-                onSubmit={onSubmit}
-                initialValues={JSON.parse(previousData)}
-                validate={formValidation}
-              >
-                {(props) => <BasicForm {...props} />}
-              </Form>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Paper>
-              <ul>
-                {cart.data?.products?.length > 0 ? (
-                  cart.data?.products?.map((item, index) => (
-                    <li key={index}>
-                      <div>
-                        <SmallProductCard product={item} />
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <p className={styles.noProductsLabel}>
-                    You don't have products in cart, add them first
-                  </p>
-                )}
-              </ul>
-              <hr />
-              <div className={styles.priceContainer}>
-                <p className={styles.orderLabel}>Subtotal</p>
-                <p className={styles.orderValue}>{getTotalPrice()}</p>
-              </div>
-              <div className={styles.priceContainer}>
-                <p className={styles.orderLabel}>Shipping</p>
-                <p className={styles.orderValue}>Defining...</p>
-              </div>
-            </Paper>
-          </Grid>
-        </Grid>
+        {cart.data?.products?.length > 0 ? (
+          <>
+            <p className={styles.pageTitle}>Complete your order:</p>
+            <Grid container spacing={3}>
+              <Grid className={styles.formContainer} item xs={12} sm={6}>
+                <Paper className={styles.billingDetailsContainer}>
+                  <p className={styles.orderLabel2}>Billing details</p>
+                  <Form
+                    onSubmit={onSubmit}
+                    initialValues={JSON.parse(previousData)}
+                    validate={formValidation}
+                  >
+                    {(props) => <BasicForm {...props} />}
+                  </Form>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Paper>
+                  <ul className={styles.productsListContainer}>
+                    {cart.data?.products?.length > 0 ? (
+                      cart.data?.products?.map((item, index) => (
+                        <li key={index}>
+                          <div>
+                            <SmallProductCard product={item} />
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <p className={styles.noProductsLabel}>
+                        You don't have products in cart, add them first
+                      </p>
+                    )}
+                  </ul>
+                  <hr />
+                  <div className={styles.priceContainer}>
+                    <p className={styles.orderLabel}>Subtotal</p>
+                    <p className={styles.orderValue}>{getTotalPrice()}</p>
+                  </div>
+                  <div className={styles.priceContainer}>
+                    <p className={styles.orderLabel}>Shipping</p>
+                    <p className={styles.orderValue}>Defining...</p>
+                  </div>
+                </Paper>
+              </Grid>
+            </Grid>
+          </>
+        ) : (
+          <p className={styles.noProductsWarning}>
+            You have no products in cart.{" "}
+            <Link to={`${PRODUCTS_ROUTE}`}>
+              <span className={styles.link}>Go back to Products list</span>
+            </Link>
+          </p>
+        )}
       </Container>
-      <Dialog
+      <Modal
         isOpen={isDialogOpen}
         title="Title"
         content="Content"
         buttonName="Close"
+        handleClose={handleClose}
       />
-      <Modal />
     </div>
   );
 };

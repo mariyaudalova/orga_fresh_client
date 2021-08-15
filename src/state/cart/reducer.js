@@ -20,6 +20,13 @@ const addToCart = (state, action) => {
   };
 };
 
+const clearCart = (state) => {
+  return {
+    ...state,
+    data: { products: [] },
+  };
+};
+
 export const cartState = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
@@ -28,6 +35,8 @@ export const cartState = (state = initialState, action) => {
       return {
         cart: removeFromCart(),
       };
+    case "CLEAR_CART":
+      return clearCart(state);
     default:
       return state;
   }

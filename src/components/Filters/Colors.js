@@ -8,15 +8,9 @@ import { withStyles } from "@material-ui/core/styles";
 import styles from "./FilterItem.module.scss";
 
 const Colors = ({ changeColorHandler, colorsList }) => {
-  const GreenCheckbox = withStyles({
-    root: {
-      color: green[400],
-      "&$checked": {
-        color: green[600],
-      },
-    },
-    checked: {},
-  })((props) => <Checkbox color="default" {...props} />);
+  const GreenCheckbox = withStyles()((props) => (
+    <Checkbox color="default" {...props} />
+  ));
   return (
     <div>
       <h2>Colors</h2>

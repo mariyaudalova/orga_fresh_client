@@ -10,3 +10,8 @@ export const removeFromCart = (product) => {
     payload: product,
   };
 };
+export const clearCart = () => {
+  return {
+    type: "CLEAR_CART",
+  };
+};
