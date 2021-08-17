@@ -1,3 +1,9 @@
+export interface ResponseState <T>{
+   isLoading: boolean,
+   error: string,
+   data: null | T, 
+}
+
 export interface FilterEntitiy {
     isActive: boolean;
     uiLabel: string;
@@ -57,3 +63,13 @@ export interface filterStateType {
     sizes: Array<FilterItem>,
     price: Array<PriceType>
   };
+
+  export  interface User {
+    token: string;
+    isAdmin: boolean;
+    enabled: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
+    telephone: string;
+  }

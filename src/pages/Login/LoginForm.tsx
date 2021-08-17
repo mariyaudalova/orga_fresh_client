@@ -2,32 +2,48 @@ import React from "react";
 import { Field } from "react-final-form";
 import { Form } from "react-final-form";
 import TextField from "@material-ui/core/TextField";
-import axios from "axios";
 import Button from "@material-ui/core/Button";
 
 import styles from "./Login.module.scss";
-import { createUptateAjax } from "../../services";
+import { createUptateAjax, getAjax } from "../../services";
 import { apiUrl } from "../../env";
+import { useDispatch } from "react-redux";
+import { loginCreator } from "../../state/user/actionsCreators";
 
 const LoginForm = () => {
   interface FormValues {
     loginOrEmail?: string;
     password?: string;
   }
+  const dispatch = useDispatch();
 
-  let requestUrl = `${apiUrl}/customers/login`;
+  const getTokenUrl = `${apiUrl}/customers/login`;
+  const getUserUrl = `${apiUrl}/customers/customer`;
 
   const onSubmit = async (values: FormValues) => {
-    console.log("SDvsdv");
-    const response = await createUptateAjax("post", requestUrl, values);
-    const access_token = response.data.token;
-    localStorage.setItem("token", access_token);
-    const getCustomer = await axios.get(`${apiUrl}/customers/customer`, {
-      headers: {
-        Authorization: `${access_token}`,
-      },
-    });
-    console.log(getCustomer);
+    const tokenResponse = await createUptateAjax("post", getTokenUrl, values);
+
+    console.log(tokenResponse);
+    if (tokenResponse.data) {
+      const access_token = tokenResponse.data.token;
+      localStorage.setItem("token", access_token);
+      const getCustomer = await getAjax(getUserUrl, {
+        headers: {
+          Authorization: `${access_token}`,
+        },
+      });
+      dispatch(
+        loginCreator({
+          isLoading: false,
+          error: "",
+          data: { token: access_token, ...getCustomer.data },
+        })
+      );
+
+      console.log(getCustomer);
+    } else {
+      console.log(tokenResponse.errors);
+    }
   };
 
   const formValidation = (values: FormValues) => {

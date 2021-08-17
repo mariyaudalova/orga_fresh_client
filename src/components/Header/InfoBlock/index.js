@@ -11,11 +11,16 @@ import { LOGIN_ROUTE } from "../../../utils/consts";
 
 import { getCurrency } from "../../../state/currency/selectors";
 import { updateCurrencyCreator } from "../../../state/currency/actionsCreators";
+import { getUser } from "../../../state/user/selectors";
 
 const InfoBlock = () => {
   const languages = ["EN", "UA"];
   const currencies = ["USD", "UAH"];
-  const token = localStorage.getItem("token");
+
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  const user = getUser();
+  console.log(user);
 
   const currentCurrencyState = useSelector(getCurrency);
 
@@ -40,10 +45,9 @@ const InfoBlock = () => {
     dispatch(updateCurrencyCreator(currentCurrency));
   };
 
-  const handleChange = (event) => {
-    setCurrentCurrency(event.target.value);
-    localStorage.setItem("currency", event.target.value);
-    dispatch(updateCurrencyCreator(event.target.value));
+  const logout = () => {
+    localStorage.setItem("token", null);
+    setToken(null);
   };
 
   return (
@@ -90,7 +94,12 @@ const InfoBlock = () => {
               onClick={changeCurrentCurrency}
             />
             <div className={styles.verticalLine}></div>
-            {!token && <Link to={`${LOGIN_ROUTE}`}>Login or register</Link>}
+
+            {!token ? (
+              <Link to={`${LOGIN_ROUTE}`}>Login or register</Link>
+            ) : (
+              <p onClick={logout}>Logout</p>
+            )}
           </div>
         </div>
       </Container>
