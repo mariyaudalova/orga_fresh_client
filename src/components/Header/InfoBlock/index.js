@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "@material-ui/core/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,8 +19,13 @@ const InfoBlock = () => {
 
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  const user = getUser();
-  console.log(user);
+  const user = useSelector(getUser);
+
+  useEffect(() => {
+    user.data?.token && setToken(user.data?.token);
+  }, [user]);
+
+  console.log("user", user);
 
   const currentCurrencyState = useSelector(getCurrency);
 
@@ -46,8 +51,8 @@ const InfoBlock = () => {
   };
 
   const logout = () => {
-    localStorage.setItem("token", null);
-    setToken(null);
+    localStorage.setItem("token", "");
+    setToken("");
   };
 
   return (

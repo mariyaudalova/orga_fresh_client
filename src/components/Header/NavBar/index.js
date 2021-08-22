@@ -8,13 +8,18 @@ import { PRODUCTS_ROUTE, LOGIN_ROUTE, CART } from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
 import { getCart } from "../../../state/cart/selectors";
+import { getUser } from "../../../state/user/selectors";
 
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 
 const NavBar = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);
   const cart = useSelector(getCart);
+  const authorizedUser = useSelector(getUser);
+
+  console.log("authorizedUser", authorizedUser);
 
   return (
     <div className={styles.container}>
@@ -78,6 +83,11 @@ const NavBar = () => {
                 </Badge>
               </Link>
             </div>
+            {authorizedUser && (
+              <div className={styles.iconContainer}>
+                <PersonOutlineOutlinedIcon fontSize="large" />
+              </div>
+            )}
           </div>
         </div>
       </Container>

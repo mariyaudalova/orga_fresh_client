@@ -3,12 +3,16 @@ import { Field } from "react-final-form";
 import { Form } from "react-final-form";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import styles from "./Login.module.scss";
-import { createUptateAjax, getAjax } from "../../services";
+import { createUptateAjax } from "../../services";
 import { apiUrl } from "../../env";
-import { useDispatch } from "react-redux";
-import { loginCreator } from "../../state/user/actionsCreators";
+import { PRODUCTS_ROUTE } from "../../utils/consts";
+import { getAuthorizedUser } from "../../common/helpers/getAuthorizedUser";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const LoginForm = () => {
   interface FormValues {
@@ -16,9 +20,13 @@ const LoginForm = () => {
     password?: string;
   }
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [responseError, setResponseError] = useState("");
+
+  useEffect(() => {}, []);
 
   const getTokenUrl = `${apiUrl}/customers/login`;
-  const getUserUrl = `${apiUrl}/customers/customer`;
 
   const onSubmit = async (values: FormValues) => {
     const tokenResponse = await createUptateAjax("post", getTokenUrl, values);
@@ -27,22 +35,14 @@ const LoginForm = () => {
     if (tokenResponse.data) {
       const access_token = tokenResponse.data.token;
       localStorage.setItem("token", access_token);
-      const getCustomer = await getAjax(getUserUrl, {
-        headers: {
-          Authorization: `${access_token}`,
-        },
-      });
-      dispatch(
-        loginCreator({
-          isLoading: false,
-          error: "",
-          data: { token: access_token, ...getCustomer.data },
-        })
-      );
 
-      console.log(getCustomer);
+      await getAuthorizedUser(access_token, dispatch);
+      history.push(`${PRODUCTS_ROUTE}`);
+
+      //console.log(getCustomer);
     } else {
-      console.log(tokenResponse.errors);
+      setResponseError(tokenResponse.errors);
+      // console.log(tokenResponse.errors);
     }
   };
 
@@ -57,54 +57,65 @@ const LoginForm = () => {
     return errors;
   };
 
+  const clickTextFieldHendler = () => {
+    setResponseError("");
+  };
+
   return (
     <Form validate={formValidation} onSubmit={onSubmit}>
-      {(props) => (
-        <form onSubmit={props.handleSubmit}>
-          <Field name="loginOrEmail">
-            {(props) => (
-              <div className={styles.fieldContainer}>
-                <TextField
-                  fullWidth
-                  error={props.meta.error && props.meta.touched}
-                  id="loginOrEmail"
-                  label="Login"
-                  helperText={props.meta.error}
-                  name={props.input.name}
-                  value={props.input.value}
-                  onChange={props.input.onChange}
-                />
+      {(props) => {
+        return (
+          <>
+            <p>{responseError}</p>
+            <form onSubmit={props.handleSubmit}>
+              <Field name="loginOrEmail">
+                {(props) => (
+                  <div className={styles.fieldContainer}>
+                    <TextField
+                      onClick={clickTextFieldHendler}
+                      fullWidth
+                      error={props.meta.error && props.meta.touched}
+                      helperText={props.meta.touched && props.meta.error}
+                      id="loginOrEmail"
+                      label="Login"
+                      name={props.input.name}
+                      value={props.input.value}
+                      onChange={props.input.onChange}
+                    />
+                  </div>
+                )}
+              </Field>
+              <Field name="password">
+                {(props) => (
+                  <div className={styles.fieldContainer}>
+                    <TextField
+                      fullWidth
+                      onClick={clickTextFieldHendler}
+                      error={props.meta.error && props.meta.touched}
+                      id="password"
+                      label="Password"
+                      helperText={props.meta.touched && props.meta.error}
+                      name={props.input.name}
+                      value={props.input.value}
+                      onChange={props.input.onChange}
+                    />
+                  </div>
+                )}
+              </Field>
+              <div>
+                <Button
+                  className={styles.submitButton}
+                  type="submit"
+                  variant="outlined"
+                  color="primary"
+                >
+                  Submit
+                </Button>
               </div>
-            )}
-          </Field>
-          <Field name="password">
-            {(props) => (
-              <div className={styles.fieldContainer}>
-                <TextField
-                  fullWidth
-                  error={props.meta.error && props.meta.touched}
-                  id="password"
-                  label="Password"
-                  helperText={props.meta.error}
-                  name={props.input.name}
-                  value={props.input.value}
-                  onChange={props.input.onChange}
-                />
-              </div>
-            )}
-          </Field>
-          <div>
-            <Button
-              className={styles.submitButton}
-              type="submit"
-              variant="outlined"
-              color="primary"
-            >
-              Submit
-            </Button>
-          </div>
-        </form>
-      )}
+            </form>
+          </>
+        );
+      }}
     </Form>
   );
 };
