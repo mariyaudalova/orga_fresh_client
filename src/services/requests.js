@@ -18,11 +18,20 @@ export const deleteAjax = async (url) => {
   }
 };
 
-export const createUptateAjax = async (method, url, body) => {
+export const createUptateAjax = async (method, url, body, access_token) => {
+  const headers = access_token
+    ? {
+        headers: {
+          Authorization: `${access_token}`,
+        },
+      }
+    : null;
+
   try {
-    const response = await axios[method](url, body);
+    const response = await axios[method](url, body, headers);
+
     return { isLoading: false, data: response.data, errors: "" };
   } catch (er) {
-    return { isLoading: false, data: null, errors: er.message };
+    return { isLoading: false, data: null, errors: er.response.data };
   }
 };

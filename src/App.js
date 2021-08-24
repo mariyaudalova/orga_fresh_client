@@ -10,7 +10,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Header />
-      <AppRouter />
+      <main>
+        <AppRouter />
+      </main>
       <Footer />
     </ThemeProvider>
   );

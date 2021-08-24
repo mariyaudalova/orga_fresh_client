@@ -83,7 +83,7 @@ const NavBar = () => {
                 </Badge>
               </Link>
             </div>
-            {authorizedUser && (
+            {authorizedUser.data && (
               <div className={styles.iconContainer}>
                 <PersonOutlineOutlinedIcon fontSize="large" />
               </div>

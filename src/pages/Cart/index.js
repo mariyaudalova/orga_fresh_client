@@ -19,7 +19,10 @@ import Modal from "../../components/Modal";
 import { Link } from "react-router-dom";
 import { PRODUCTS_ROUTE } from "../../utils/consts";
 
-import { clearCartCreator } from "../../state/cart/actionsCreators";
+import {
+  clearCartCreator,
+  removeFromCartCreator,
+} from "../../state/cart/actionsCreators";
 
 const BasicForm = (props) => {
   const { touched, errors } = props;
@@ -169,6 +172,14 @@ const formValidation = (values) => {
 const Cart = () => {
   const [cart, setCart] = useState(useSelector(getCart));
 
+  const currectCartState = useSelector(getCart);
+
+  useEffect(() => {
+    setCart(currectCartState);
+  }, [currectCartState]);
+
+  console.log("useSelector(getCart)", useSelector(getCart));
+
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const onSubmit = (value) => {
@@ -208,6 +219,11 @@ const Cart = () => {
     return totalPrice;
   };
 
+  const deleteFromCart = (id) => {
+    dispatch(removeFromCartCreator(id));
+    console.log(id);
+  };
+
   return (
     <div className={styles.contentContainer}>
       <Container fixed>
@@ -234,7 +250,10 @@ const Cart = () => {
                       cart.data?.products?.map((item, index) => (
                         <li key={index}>
                           <div>
-                            <SmallProductCard product={item} />
+                            <SmallProductCard
+                              product={item}
+                              deleteFromCart={() => deleteFromCart(item._id)}
+                            />
                           </div>
                         </li>
                       ))

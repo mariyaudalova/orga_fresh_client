@@ -1,18 +1,16 @@
-import React from "react";
-import { Field } from "react-final-form";
-import { Form } from "react-final-form";
+import React, { useState, useEffect } from "react";
+import { Field, Form } from "react-final-form";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./Login.module.scss";
 import { createUptateAjax } from "../../services";
 import { apiUrl } from "../../env";
 import { PRODUCTS_ROUTE } from "../../utils/consts";
 import { getAuthorizedUser } from "../../common/helpers/getAuthorizedUser";
-import { useState } from "react";
-import { useEffect } from "react";
+import { getCart } from "../../state/cart/selectors";
 
 const LoginForm = () => {
   interface FormValues {
@@ -21,22 +19,32 @@ const LoginForm = () => {
   }
   const dispatch = useDispatch();
   const history = useHistory();
+  const currentCart = useSelector(getCart);
 
   const [responseError, setResponseError] = useState("");
 
   useEffect(() => {}, []);
 
   const getTokenUrl = `${apiUrl}/customers/login`;
+  const cartUrl = `${apiUrl}/cart`;
 
   const onSubmit = async (values: FormValues) => {
     const tokenResponse = await createUptateAjax("post", getTokenUrl, values);
-
-    console.log(tokenResponse);
     if (tokenResponse.data) {
       const access_token = tokenResponse.data.token;
       localStorage.setItem("token", access_token);
 
       await getAuthorizedUser(access_token, dispatch);
+
+      const cartList = await createUptateAjax(
+        "post",
+        cartUrl,
+        currentCart.data?.products,
+        access_token
+      );
+
+      console.log(cartList);
+
       history.push(`${PRODUCTS_ROUTE}`);
 
       //console.log(getCustomer);
@@ -66,7 +74,7 @@ const LoginForm = () => {
       {(props) => {
         return (
           <>
-            <p>{responseError}</p>
+            <p className={styles.errorMessage}>{responseError}</p>
             <form onSubmit={props.handleSubmit}>
               <Field name="loginOrEmail">
                 {(props) => (

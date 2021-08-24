@@ -4,12 +4,17 @@ const initialState = {
   errors: "",
 };
 
-const removeFromCart = (productList, removedProduct) => {
-  const removedProductIndex = productList.findIndex(
-    (product) => product._id === removedProduct._id
+const removeFromCart = (state, action) => {
+  console.log("state", state);
+  const removedProductIndex = state.data.products.findIndex(
+    (product) => product._id === action.payload
   );
-  productList.splice(removedProductIndex, 1);
-  return [...productList];
+  state.data.products.splice(removedProductIndex, 1);
+
+  return {
+    ...state,
+    data: { products: [...(state.data?.products || [])] },
+  };
 };
 
 const addToCart = (state, action) => {
@@ -32,9 +37,7 @@ export const cartState = (state = initialState, action) => {
     case "ADD_TO_CART":
       return addToCart(state, action);
     case "REMOVE_FROM_CART":
-      return {
-        cart: removeFromCart(),
-      };
+      return removeFromCart(state, action);
     case "CLEAR_CART":
       return clearCart(state);
     default:

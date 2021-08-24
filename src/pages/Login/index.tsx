@@ -29,7 +29,7 @@ const Login = () => {
           {!isLogin && (
             <>
               <p className={styles.pageTitle}>Sign up to make first order</p>
-              <RegistrationForm />
+              <RegistrationForm changeLoginState={changeLoginState} />
               <button onClick={changeLoginState}>
                 Already have an account? Login
               </button>
