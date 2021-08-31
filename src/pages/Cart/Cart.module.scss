@@ -1,0 +1,73 @@
+@import "../../theme/styles/var";
+
+.contentContainer {
+    background-color: #f8f8f8;
+    padding-bottom: 40px;
+    padding-top: 30px;
+  }
+
+  .pageTitle {
+    font-size: 30px;
+    padding-bottom: 30px;
+    color: $darkGreen;
+  }
+
+  .orderLabel {
+      padding: 10px;
+      font-weight: 300;
+      font-size: 16px;
+  }
+ 
+  .orderLabel2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+  .orderValue{
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  .priceContainer {
+      display: flex;
+      justify-content: space-between;
+  }
+
+ .formContainer {
+   height: 100%;
+  
+ }
+
+ .noProductsLabel {
+   padding-top: 10px;
+   text-align: center;
+ }
+
+ .fieldContainer {
+   margin-top: 20px;
+ }
+
+ .submitButton {
+   margin-top: 20px;
+ }
+
+ .productsListContainer {
+   padding-top: 10px;
+ }
+
+ .noProductsWarning {
+   text-align: center;
+   font-size: 20px;
+ }
+
+ .link {
+   color: $darkGreen;
+ }
+
+ .billingDetailsContainer {
+   padding: 20px;
+ }
+
+ .submitButtonContainer {
+   padding-top: 20px;
+   text-align: center;
+ }

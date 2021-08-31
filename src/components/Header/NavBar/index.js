@@ -1,15 +1,25 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { useSelector } from "react-redux";
+import Badge from "@material-ui/core/Badge";
 
-import { PRODUCTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
+import { PRODUCTS_ROUTE, LOGIN_ROUTE, CART } from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
-import Icon from "../../Icon";
+import { getCart } from "../../../state/cart/selectors";
+import { getUser } from "../../../state/user/selectors";
+
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 
 const NavBar = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);
+  const cart = useSelector(getCart);
+  const authorizedUser = useSelector(getUser);
+
+  console.log("authorizedUser", authorizedUser);
 
   return (
     <div className={styles.container}>
@@ -57,29 +67,27 @@ const NavBar = () => {
               Contact
             </NavLink>
           </nav>
-          <div>
-            <Icon
-              className={styles.icon}
-              type="search"
-              color="black"
-              width={35}
-              height={35}
-            />
-            <Icon
-              className={styles.icon}
-              type="headerHeart"
-              color="black"
-              width={35}
-              height={35}
-            />
-            {favouritesProducts.length}
-            <Icon
-              className={styles.iconLast}
-              type="cart"
-              color="black"
-              width={35}
-              height={35}
-            />
+          <div className={styles.innerContainer}>
+            <div className={styles.iconContainer}>
+              <Badge color="primary" badgeContent={favouritesProducts.length}>
+                <FavoriteBorderIcon fontSize="large" />
+              </Badge>
+            </div>
+            <div className={styles.iconContainer}>
+              <Link to={CART}>
+                <Badge
+                  color="primary"
+                  badgeContent={cart.data?.products.length || 0}
+                >
+                  <ShoppingCartOutlinedIcon fontSize="large" />
+                </Badge>
+              </Link>
+            </div>
+            {authorizedUser.data && (
+              <div className={styles.iconContainer}>
+                <PersonOutlineOutlinedIcon fontSize="large" />
+              </div>
+            )}
           </div>
         </div>
       </Container>

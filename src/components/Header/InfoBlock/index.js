@@ -1,27 +1,33 @@
 /* eslint-disable */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "@material-ui/core/Container";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import styles from "./InfoBlock.module.scss";
 import Icon from "../../Icon";
 import DropDown from "./DropDown";
+import { LOGIN_ROUTE } from "../../../utils/consts";
 
 import { getCurrency } from "../../../state/currency/selectors";
 import { updateCurrencyCreator } from "../../../state/currency/actionsCreators";
+import { getUser } from "../../../state/user/selectors";
 
 const InfoBlock = () => {
-  //мб что-то с memo
-
   const languages = ["EN", "UA"];
   const currencies = ["USD", "UAH"];
 
-  const currentCurrencyState = useSelector(getCurrency);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-  console.log(currentCurrencyState);
+  const user = useSelector(getUser);
+
+  useEffect(() => {
+    user.data?.token && setToken(user.data?.token);
+  }, [user]);
+
+  console.log("user", user);
+
+  const currentCurrencyState = useSelector(getCurrency);
 
   const [currentCurrency, setCurrentCurrency] = useState(
     localStorage.getItem("currency") || "USD"
@@ -44,10 +50,9 @@ const InfoBlock = () => {
     dispatch(updateCurrencyCreator(currentCurrency));
   };
 
-  const handleChange = (event) => {
-    setCurrentCurrency(event.target.value);
-    localStorage.setItem("currency", event.target.value);
-    dispatch(updateCurrencyCreator(event.target.value));
+  const logout = () => {
+    localStorage.setItem("token", "");
+    setToken("");
   };
 
   return (
@@ -81,7 +86,6 @@ const InfoBlock = () => {
             </a>
           </div>
           <div className={styles.flexRow}>
-            <div className={styles.verticalLine}></div>
             <Icon
               className={styles.centerContainer}
               type="currency"
@@ -89,26 +93,18 @@ const InfoBlock = () => {
               width={20}
               height={20}
             />
-
-            <Select
-              native
-              value={10}
-              onChange={handleChange}
-              inputProps={{
-                name: "age",
-                id: "age-native-simple",
-              }}
-            >
-              <option value={10}>Ten</option>
-              <option value={20}>Twenty</option>
-              <option value={30}>Thirty</option>
-            </Select>
-
             <DropDown
               currentValue={currentCurrency}
               listOfOptions={currencies}
               onClick={changeCurrentCurrency}
             />
+            <div className={styles.verticalLine}></div>
+
+            {!token ? (
+              <Link to={`${LOGIN_ROUTE}`}>Login or register</Link>
+            ) : (
+              <p onClick={logout}>Logout</p>
+            )}
           </div>
         </div>
       </Container>

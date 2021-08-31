@@ -1,0 +1,37 @@
+@import "../../theme/styles/var";
+
+.contentContainer {
+    background-color: #f8f8f8;
+    padding-bottom: 40px;
+    padding-top: 30px;
+}
+
+.formContainerWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .submitButton {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+.formContainer {
+    text-align: center;
+    padding: 50px;
+}
+
+.pageTitle {
+    font-size: 30px;
+    color: $darkGreen;
+    padding-bottom: 30px;
+}
+
+.fieldContainer {
+    margin-top: 20px;
+}
+
+.errorMessage {
+    color: red;
+}

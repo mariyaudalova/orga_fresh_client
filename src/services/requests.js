@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const getAjax = async (url) => {
+export const getAjax = async (url, headers) => {
   try {
-    const request = await axios.get(url);
-    return { isLoading: false, data: request.data, errors: "" };
+    const response = await axios.get(url, headers);
+    return { isLoading: false, data: response.data, errors: "" };
   } catch (er) {
     return { isLoading: false, data: null, errors: er.message };
   }
@@ -11,18 +11,27 @@ export const getAjax = async (url) => {
 
 export const deleteAjax = async (url) => {
   try {
-    const request = await axios.delete(url);
-    return { isLoading: false, data: request.data, errors: "" };
+    const response = await axios.delete(url);
+    return { isLoading: false, data: response.data, errors: "" };
   } catch (er) {
     return { isLoading: false, data: null, errors: er.message };
   }
 };
 
-export const createUptateAjax = async (method, url, body) => {
+export const createUptateAjax = async (method, url, body, access_token) => {
+  const headers = access_token
+    ? {
+        headers: {
+          Authorization: `${access_token}`,
+        },
+      }
+    : null;
+
   try {
-    const request = await axios[method](url, body);
-    return { isLoading: false, data: request.data, errors: "" };
+    const response = await axios[method](url, body, headers);
+
+    return { isLoading: false, data: response.data, errors: "" };
   } catch (er) {
-    return { isLoading: false, data: null, errors: er.message };
+    return { isLoading: false, data: null, errors: er.response.data };
   }
 };
