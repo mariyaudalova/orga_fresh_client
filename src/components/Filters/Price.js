@@ -30,6 +30,7 @@ const Price = ({ changePriceHandler, maxPrice }) => {
     <div className={styles.filterItemContainer}>
       <p className={styles.filterName}>Price</p>
       <Slider
+        className={styles.sliderColor}
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"

@@ -40,6 +40,11 @@ export const theme = createTheme({
         maxWidth: "300px",
       },
     },
+    MuiSlider: {
+      root: {
+        width: "50%",
+      },
+    },
   },
   props: {
     MuiButton: {

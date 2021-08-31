@@ -197,7 +197,9 @@ const ProductsList = () => {
           </div>
           <div>
             <div className={styles.productsContainer}>
-              {productsState.isLoading && <CircularProgress />}
+              {productsState.isLoading && (
+                <CircularProgress className={styles.loaderContainer} />
+              )}
               {productsState.data &&
                 productsState.data?.products?.map((product) => {
                   return (
@@ -213,17 +215,19 @@ const ProductsList = () => {
                 })}
               {productsState.errors && <p>{productsState.errors}</p>}
             </div>
-            <Pagination
-              className={styles.paginationContainer}
-              count={
-                Math.ceil(
-                  (productsState.data as ProductsData)?.productsQuantity /
-                    page.perPage
-                ) || 1
-              }
-              onChange={changePage}
-              page={page.startPage}
-            />
+            {!productsState.isLoading && (
+              <Pagination
+                className={styles.paginationContainer}
+                count={
+                  Math.ceil(
+                    (productsState.data as ProductsData)?.productsQuantity /
+                      page.perPage
+                  ) || 1
+                }
+                onChange={changePage}
+                page={page.startPage}
+              />
+            )}
           </div>
         </div>
       </Container>
