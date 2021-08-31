@@ -1,0 +1,40 @@
+.contentContainer {
+    background-color: #f8f8f8;
+  }
+  
+.cardContainer {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border: 0px solid white;
+    align-items: center;
+}
+
+
+.imageContainer {
+    width: 30%;
+    height: 30%;
+}
+
+.nameContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 30px;
+    margin-right: auto;
+}
+
+
+.manufacturer {
+    font-size: 18px;
+    font-weight: bold;
+    color: 	#A9A9A9;
+}
+
+.productName {
+    padding-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+ 
+}

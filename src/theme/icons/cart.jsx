@@ -22,6 +22,5 @@ export const cart = (
       clipRule="evenodd"
       fill={filled ? color : "none"}
     />
- 
   </svg>
 );

@@ -1,12 +1,18 @@
 @import "../../../theme/styles/var";
 
 .container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
-    background-color: #F8F8F8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logoOrga {
@@ -19,23 +25,18 @@
 }
 
 .navItem {
-    padding-left: 25px;
-    padding-right: 25px;
-    color: $darkGreen;
-    font-weight: bold;
-    font-size: 20px;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: $colorSpanishGray;
+  font-weight: bold;
+  font-size: 20px;
 }
 
-.navItem:hover, .navItemActive {
-    color: $lightGreen;
+.navItem:hover,
+.navItemActive {
+  color: $lightGreen;
 }
 
-
-.icon {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.iconLast {
-  padding-left: 15px;
+.iconContainer {
+  padding-left: 20px;
 }

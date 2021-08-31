@@ -1,16 +1,41 @@
-
+@import "../../theme/styles/var";
 
 .cardContainer {
-    height: 280px;
+    width: 30%;
+    margin-left: 1.5%;
+    margin-bottom: 30px;
+    height: 320px;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    
+    background-color: white;
+    border: 0px solid white;
+    border-radius: 20px;
+    padding-bottom: 20px;
+}
+
+.imageContainer {
+    border-radius: 10px 10px 0px 0px;
+    height: 180px;
+}
+
+.nameContainer {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 100%;
+    align-items: center;
+}
+
+.manufacturer {
+    font-size: 18px;
+    font-weight: bold;
+    color: $colorSpanishGray;
 }
 
 .productName {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 10px;
 }
