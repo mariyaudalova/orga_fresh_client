@@ -1,10 +1,11 @@
 import React from "react";
 import InfoBlock from "./InfoBlock";
 import NavBar from "./NavBar";
+import styles from "./Header.module.scss";
 
 const Header = () => {
   return (
-    <div>
+    <div className={styles.headerContainer}>
       <InfoBlock />
       <NavBar />
     </div>

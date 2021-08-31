@@ -30,6 +30,7 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
       setRegisterModal(true);
       console.log("succsesfully regitred");
     } else {
+      return response.errors;
       // setResponseError(response.errors);
     }
     console.log(response);
@@ -76,7 +77,10 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                       onClick={clickTextFieldHendler}
                       fullWidth
                       error={props.meta.error && props.meta.touched}
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       id="login"
                       label="Login"
                       name={props.input.name}
