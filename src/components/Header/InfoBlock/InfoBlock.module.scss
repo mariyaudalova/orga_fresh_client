@@ -3,14 +3,13 @@
 .container {
     display: none;
 
-    @media (min-width: $deskMin) {
+    @media (min-width: $tabMax) {
         background-color: $darkGreen;
         display: block;
     }
-    
 }
 
-.innerContainer{
+.innerContainer {
     display: none;
 
     @media (min-width: $deskMin) {

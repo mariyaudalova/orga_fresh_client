@@ -99,7 +99,10 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                       error={props.meta.error && props.meta.touched}
                       id="password"
                       label="Password"
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       name={props.input.name}
                       value={props.input.value}
                       onChange={props.input.onChange}
@@ -116,7 +119,10 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                       error={props.meta.error && props.meta.touched}
                       id="email"
                       label="Email"
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       name={props.input.name}
                       value={props.input.value}
                       onChange={props.input.onChange}
@@ -133,7 +139,10 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                       error={props.meta.error && props.meta.touched}
                       id="firstName"
                       label="First name"
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       name={props.input.name}
                       value={props.input.value}
                       onChange={props.input.onChange}
@@ -150,7 +159,10 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                       error={props.meta.error && props.meta.touched}
                       id="lastName"
                       label="Last name"
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       name={props.input.name}
                       value={props.input.value}
                       onChange={props.input.onChange}

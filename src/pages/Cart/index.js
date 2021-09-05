@@ -214,7 +214,7 @@ const Cart = () => {
   const getTotalPrice = () => {
     let totalPrice = 0;
     cart.data?.products?.map((item) => {
-      totalPrice += item.currentPrice;
+      totalPrice += Number(item.currentPrice);
     });
     return totalPrice;
   };

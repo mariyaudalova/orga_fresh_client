@@ -26,7 +26,7 @@ const WithFilters = (ListItem: ListItemType) => {
     return (
       <div className={styles.filterItemContainer}>
         <p className={styles.filterName}>{filterName}</p>
-        <ul>
+        <ul className={styles.listContainer}>
           {filterEntityList.map((filterEntity, index) => {
             return (
               <li

@@ -14,7 +14,7 @@ export const theme = createTheme({
     fontFamily: "Roboto",
   },
   shape: {
-    borderRadius: 10,
+    borderRadius: 0,
   },
   spacing: 8,
   overrides: {
@@ -43,6 +43,11 @@ export const theme = createTheme({
     MuiSlider: {
       root: {
         width: "50%",
+      },
+    },
+    MuiPaper: {
+      rounded: {
+        borderRadius: "10px",
       },
     },
   },

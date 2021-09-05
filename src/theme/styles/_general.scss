@@ -1,7 +1,7 @@
 @import "./var";
 
 html {
-    min-height: 100vh;
+    height: calc(100% - 110px);
 }
 
 a {
@@ -17,6 +17,7 @@ ul {
 
 body {
     margin: 0;
+    background-color: #f8f8f8;
     position: relative;
     min-height: 100%;
 }

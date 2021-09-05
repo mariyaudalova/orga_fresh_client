@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Pagination from "@material-ui/lab/Pagination";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useDispatch, useSelector } from "react-redux";
 
 import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
@@ -71,7 +75,7 @@ const ProductsList = () => {
     requestUrl += filterParams + pageParams;
     const res = await getAjax(requestUrl);
     res.data.products = res.data.products.map((item: ProductEntity) => {
-      item.currency = "USD";
+      item.currency = localStorage.getItem("currency") || "USD";
       return item;
     });
     setProductsState(res);
@@ -166,34 +170,48 @@ const ProductsList = () => {
     );
   };
 
+  const filterDetails = (
+    <>
+      <CategoryList
+        changeFilterEntityHandler={changeFilterEntity}
+        filterEntityList={filterState.categories as Array<FilterItem>}
+        filterName="Categories"
+      />
+      <ColorList
+        changeFilterEntityHandler={changeFilterEntity}
+        filterEntityList={filterState.color as Array<FilterItem>}
+        filterName="Colors"
+      />
+      <SizeList
+        changeFilterEntityHandler={changeFilterEntity}
+        filterEntityList={filterState.sizes as Array<FilterItem>}
+        filterName="Sizes"
+      />
+      <Price maxPrice={maxPrice} changePriceHandler={changeFilterEntity} />
+    </>
+  );
   return (
     <div className={styles.contentContainer}>
-      <Container fixed>
+      <Container>
         <div className={styles.pageTitleContainer}>
           <p className={styles.pageTitle}>Products</p>
           <p>Home / Products</p>
         </div>
         <div className={styles.pageContainer}>
           <div>
-            <CategoryList
-              changeFilterEntityHandler={changeFilterEntity}
-              filterEntityList={filterState.categories as Array<FilterItem>}
-              filterName="Categories"
-            />
-            <ColorList
-              changeFilterEntityHandler={changeFilterEntity}
-              filterEntityList={filterState.color as Array<FilterItem>}
-              filterName="Colors"
-            />
-            <SizeList
-              changeFilterEntityHandler={changeFilterEntity}
-              filterEntityList={filterState.sizes as Array<FilterItem>}
-              filterName="Sizes"
-            />
-            <Price
-              maxPrice={maxPrice}
-              changePriceHandler={changeFilterEntity}
-            />
+            <Accordion className={styles.accordionContainer}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <p>Filters</p>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div>{filterDetails}</div>
+              </AccordionDetails>
+            </Accordion>
+            <div className={styles.filtersFully}>{filterDetails}</div>
           </div>
           <div>
             <div className={styles.productsContainer}>
@@ -213,6 +231,9 @@ const ProductsList = () => {
                     />
                   );
                 })}
+              {productsState.data?.products?.length === 0 && (
+                <p>No products matches search query</p>
+              )}
               {productsState.errors && <p>{productsState.errors}</p>}
             </div>
             {!productsState.isLoading && (

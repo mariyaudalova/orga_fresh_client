@@ -95,7 +95,9 @@ const InfoBlock = () => {
             />
             <DropDown
               currentValue={currentCurrency}
-              listOfOptions={currencies}
+              listOfOptions={currencies.filter(
+                (item) => item !== currentCurrency
+              )}
               onClick={changeCurrentCurrency}
             />
             <div className={styles.verticalLine}></div>

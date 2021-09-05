@@ -11,7 +11,7 @@ import Paper from "@material-ui/core/Paper";
 
 const ProductCard = (props) => {
   const {
-    product: { _id, currentPrice, brand, name, imageUrls, sizes },
+    product: { _id, currentPrice, brand, name, imageUrls, sizes, currency },
     product,
     toggleFavoriteClick,
     isFavourite,
@@ -27,7 +27,9 @@ const ProductCard = (props) => {
         <p className={styles.manufacturer}>{brand}</p>
       </div>
       <div className={styles.nameContainer}>
-        <p className={styles.productName}>{currentPrice} </p>
+        <p className={styles.productName}>
+          {currentPrice} {currency}
+        </p>
         <p className={styles.manufacturer}>{sizes} кg</p>
       </div>
       <div className={styles.nameContainer}>

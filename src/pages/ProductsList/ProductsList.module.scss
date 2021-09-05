@@ -8,6 +8,26 @@
   display: grid;
   grid-template-columns: 20% 80%;
   padding-bottom: 40px;
+  @media (max-width: $tabMax) {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+  }
+}
+
+.filtersFully {
+  display: block;
+  @media (max-width: $tabMax) {
+    display: none;
+  }
+}
+
+.accordionContainer {
+  display: none;
+  @media (max-width: $tabMax) {
+    display: block;
+    margin-bottom: 20px;
+  }
 }
 
 .pageTitleContainer {
@@ -34,6 +54,7 @@
   align-items: center;
   margin-bottom: 40px;
   min-height: 50vh;
+  margin-left: -3.25%;
 }
 
 .paginationContainer {

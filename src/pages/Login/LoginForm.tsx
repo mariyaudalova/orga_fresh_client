@@ -46,11 +46,8 @@ const LoginForm = () => {
       console.log(cartList);
 
       history.push(`${PRODUCTS_ROUTE}`);
-
-      //console.log(getCustomer);
     } else {
-      setResponseError(tokenResponse.errors);
-      // console.log(tokenResponse.errors);
+      setResponseError("Invalid login or password");
     }
   };
 
@@ -83,7 +80,10 @@ const LoginForm = () => {
                       onClick={clickTextFieldHendler}
                       fullWidth
                       error={props.meta.error && props.meta.touched}
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       id="loginOrEmail"
                       label="Login"
                       name={props.input.name}
@@ -102,7 +102,10 @@ const LoginForm = () => {
                       error={props.meta.error && props.meta.touched}
                       id="password"
                       label="Password"
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       name={props.input.name}
                       value={props.input.value}
                       onChange={props.input.onChange}

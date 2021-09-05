@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { useSelector } from "react-redux";
 import Badge from "@material-ui/core/Badge";
-
 import { PRODUCTS_ROUTE, LOGIN_ROUTE, CART } from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
@@ -13,6 +12,7 @@ import { getUser } from "../../../state/user/selectors";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
+import BurgerMenu from "./BurgerMenu";
 
 const NavBar = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);
@@ -23,14 +23,18 @@ const NavBar = () => {
 
   return (
     <div className={styles.container}>
-      <Container fixed>
+      <Container>
         <div className={styles.innerContainer}>
+          <div className={styles.burgerMenu}>
+            <BurgerMenu />
+          </div>
+
           <NavLink to={`${PRODUCTS_ROUTE}`}>
             <p className={styles.logoOrga}>
               Orga<span className={styles.logoFresh}>Fresh</span>
             </p>
           </NavLink>
-          <nav>
+          <nav className={styles.navMenu}>
             <NavLink
               className={styles.navItem}
               activeClassName={styles.navItemActive}

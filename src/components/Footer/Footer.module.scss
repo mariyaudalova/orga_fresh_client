@@ -8,15 +8,11 @@
 }
 
 .innerContainer {
-  display: none;
-
-  @media (min-width: $deskMin) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 30px;
-    color: white;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  color: white;
 }
 
 .verticalLine {
