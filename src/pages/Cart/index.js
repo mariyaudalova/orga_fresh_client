@@ -35,9 +35,9 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   fullWidth
-                  error={Boolean(touched.firstName && errors.firstName)}
                   id="firstName"
                   label="First name"
+                  error={Boolean(touched.firstName && errors.firstName)}
                   helperText={touched.firstName && errors.firstName}
                   name={props.input.name}
                   value={props.input.value}
@@ -52,6 +52,7 @@ const BasicForm = (props) => {
                 <TextField
                   fullWidth
                   error={props.meta.error && props.meta.touched}
+                  helperText={touched.delivery && errors.delivery}
                   id="delivery"
                   label="Delivery"
                   name={props.input.name}
@@ -66,7 +67,8 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   fullWidth
-                  error={props.meta.error && props.meta.touched}
+                  error={Boolean(touched.phone && errors.phone)}
+                  helperText={touched.phone && errors.phone}
                   id="phone"
                   label="Phone"
                   name={props.input.name}
@@ -83,10 +85,10 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   fullWidth
-                  error={props.meta.error && props.meta.touched}
                   id="lastName"
                   label="Last name"
-                  helperText={props.meta.error}
+                  error={Boolean(touched.lastName && errors.lastName)}
+                  helperText={touched.lastName && errors.lastName}
                   name={props.input.name}
                   value={props.input.value}
                   onChange={props.input.onChange}
@@ -99,6 +101,7 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   error={props.meta.error && props.meta.touched}
+                  helperText={touched.type && errors.type}
                   id="type"
                   fullWidth
                   label="Delivery type"
@@ -114,11 +117,11 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   fullWidth
-                  error={props.meta.error && props.meta.touched}
+                  error={Boolean(touched.email && errors.email)}
+                  helperText={touched.email && errors.email}
                   id="email"
                   label="Email"
                   name={props.input.name}
-                  helperText={touched.email && errors.email}
                   value={props.input.value}
                   onChange={props.input.onChange}
                 />
@@ -226,7 +229,7 @@ const Cart = () => {
 
   return (
     <div className={styles.contentContainer}>
-      <Container fixed>
+      <Container>
         {cart.data?.products?.length > 0 ? (
           <>
             <p className={styles.pageTitle}>Complete your order:</p>

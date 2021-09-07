@@ -55,6 +55,9 @@
   margin-bottom: 40px;
   min-height: 50vh;
   margin-left: -3.25%;
+  @media (max-width: $tabMax) and (min-width: $mobMax) {
+    margin-right: -1.75%;
+  }
 }
 
 .paginationContainer {

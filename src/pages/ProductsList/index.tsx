@@ -38,6 +38,7 @@ import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurren
 
 const ProductsList = () => {
   const [maxPrice, setMaxPrice] = useState(1000);
+
   const filterDefaultState = {
     categories: defaultCategoriesList,
     color: defaultColorsList,
@@ -57,6 +58,8 @@ const ProductsList = () => {
     data: null,
     errors: "",
   });
+
+  const [currentPrice, setCurrentPrice] = useState([0, maxPrice]);
 
   useProductsStateByCurrency(productsState, setProductsState);
 
@@ -90,6 +93,7 @@ const ProductsList = () => {
     });
     const max = Math.max(...arrayForMaping);
     setMaxPrice(max);
+    setCurrentPrice([currentPrice[0], max]);
   };
 
   const getFiltersParams = () => {
@@ -139,6 +143,8 @@ const ProductsList = () => {
       replaceIndex = filterState[filterEntity.id].findIndex(
         (item: any) => item.value === filterEntity.value
       );
+    } else {
+      setCurrentPrice(filterEntity.value as any);
     }
     filterState[filterEntity.id][replaceIndex] = filterEntity;
 
@@ -187,7 +193,11 @@ const ProductsList = () => {
         filterEntityList={filterState.sizes as Array<FilterItem>}
         filterName="Sizes"
       />
-      <Price maxPrice={maxPrice} changePriceHandler={changeFilterEntity} />
+      <Price
+        maxPrice={maxPrice}
+        changePriceHandler={changeFilterEntity}
+        currentPrice={currentPrice}
+      />
     </>
   );
   return (

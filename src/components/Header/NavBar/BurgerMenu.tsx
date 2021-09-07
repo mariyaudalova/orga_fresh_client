@@ -1,5 +1,5 @@
 /* eslint-disable no-debugger, no-console */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import clsx from "clsx";
 import {
   makeStyles,
@@ -27,10 +27,16 @@ import styles from "./NavBar.module.scss";
 import { PRODUCTS_ROUTE, LOGIN_ROUTE } from "../../../utils/consts";
 import { useSelector } from "react-redux";
 import { getUser } from "../../../state/user/selectors";
+import HeaderState from "../../../context/HeaderState";
 
 const BurgerMenu = () => {
   const drawerWidth = 240;
 
+  const toggleSidebar = (useContext(HeaderState) as any).toggleSidebar;
+
+  const isSidebarOpen = (useContext(HeaderState) as any).isSidebarOpen;
+
+  console.log(isSidebarOpen);
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
@@ -111,13 +117,16 @@ const BurgerMenu = () => {
 
   useEffect(() => {
     document.addEventListener("click", handleBurgerMenu);
+    window.addEventListener("resize", handleDrawerClose, true);
   }, []);
 
   const handleDrawerOpen = () => {
+    toggleSidebar(true);
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
+    toggleSidebar(false);
     setOpen(false);
   };
 
