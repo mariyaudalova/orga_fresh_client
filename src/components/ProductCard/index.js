@@ -11,7 +11,7 @@ import Paper from "@material-ui/core/Paper";
 
 const ProductCard = (props) => {
   const {
-    product: { _id, currentPrice, brand, name, imageUrls, sizes, currency },
+    product: { currentPrice, brand, name, imageUrls, sizes, currency },
     product,
     toggleFavoriteClick,
     isFavourite,
@@ -40,7 +40,7 @@ const ProductCard = (props) => {
           width={25}
           filled={isFavourite}
           height={25}
-          onClick={() => toggleFavoriteClick(_id)}
+          onClick={() => toggleFavoriteClick(product)}
         />
         {isInCart ? (
           <Link to={CART} className={styles.linkItem}>

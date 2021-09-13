@@ -3,7 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { useSelector } from "react-redux";
 import Badge from "@material-ui/core/Badge";
-import { PRODUCTS_ROUTE, LOGIN_ROUTE, CART } from "../../../utils/consts";
+import {
+  PRODUCTS_ROUTE,
+  LOGIN_ROUTE,
+  CART,
+  HOME_ROUTE,
+  FAVOURITES,
+} from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
 import styles from "./NavBar.module.scss";
 import { getCart } from "../../../state/cart/selectors";
@@ -38,7 +44,7 @@ const NavBar = () => {
             <NavLink
               className={styles.navItem}
               activeClassName={styles.navItemActive}
-              to={`${LOGIN_ROUTE}`}
+              to={`${HOME_ROUTE}`}
             >
               Home
             </NavLink>
@@ -73,9 +79,14 @@ const NavBar = () => {
           </nav>
           <div className={styles.innerContainer}>
             <div className={styles.iconContainer}>
-              <Badge color="primary" badgeContent={favouritesProducts.length}>
-                <FavoriteBorderIcon fontSize="large" />
-              </Badge>
+              <Link to={FAVOURITES}>
+                <Badge
+                  color="primary"
+                  badgeContent={favouritesProducts.data.products.length}
+                >
+                  <FavoriteBorderIcon fontSize="large" />
+                </Badge>
+              </Link>
             </div>
             <div className={styles.iconContainer}>
               <Link to={CART}>

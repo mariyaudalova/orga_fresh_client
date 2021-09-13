@@ -1,3 +1,3 @@
-export const getFavoutitesProductsState = (productId) => {
-  return { type: "TOGGLE_FAVORITE", payload: productId };
+export const getFavoutitesProductsState = (product) => {
+  return { type: "TOGGLE_FAVORITE", payload: product };
 };

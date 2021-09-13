@@ -7,7 +7,11 @@ import {
   PRODUCTS_ROUTE,
   PRODUCT_ROUTE,
   CART,
+  HOME_ROUTE,
+  FAVOURITES,
 } from "../utils/consts";
+import Home from "../pages/Home";
+import Favourites from "../pages/Favoutites";
 
 export const publicRoutes = [
   {
@@ -25,5 +29,13 @@ export const publicRoutes = [
   {
     path: CART,
     Component: Cart,
+  },
+  {
+    path: HOME_ROUTE,
+    Component: Home,
+  },
+  {
+    path: FAVOURITES,
+    Component: Favourites,
   },
 ];

@@ -1,5 +1,5 @@
 import { getFavoutitesProductsState } from "./actions";
 
-export const toggleFavorite = (productId) => (dispatch) => {
-  dispatch(getFavoutitesProductsState(productId));
+export const toggleFavorite = (product) => (dispatch) => {
+  dispatch(getFavoutitesProductsState(product));
 };

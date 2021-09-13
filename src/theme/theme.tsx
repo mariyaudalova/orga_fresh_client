@@ -50,6 +50,11 @@ export const theme = createTheme({
         borderRadius: "10px",
       },
     },
+    MuiSelect: {
+      root: {
+        width: "160px",
+      },
+    },
   },
   props: {
     MuiButton: {

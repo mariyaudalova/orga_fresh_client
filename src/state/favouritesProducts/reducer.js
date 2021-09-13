@@ -1,19 +1,25 @@
+/* eslint-disable no-debugger, no-console */
+
 const initialState = {
-  data: [],
+  data: {
+    products: [],
+  },
 };
 
-const getFavoutitesProducts = (favouritesProductsList, id) => {
-  let updatedList = [];
+const getFavoutitesProducts = (products, action) => {
+  //debugger;
+  console.log("products", products, "action", action);
+  const productIndex = products.findIndex(
+    (product) => product._id === action._id
+  );
 
-  if (favouritesProductsList.includes(id)) {
-    updatedList = favouritesProductsList.filter((item) => {
-      return item !== id;
-    });
+  if (productIndex !== -1) {
+    products.splice(productIndex, 1);
   } else {
-    updatedList = [...favouritesProductsList, id];
+    products.push(action);
   }
 
-  return updatedList;
+  return products;
 };
 
 export const favouritesProducts = (state = initialState, action) => {
@@ -21,8 +27,9 @@ export const favouritesProducts = (state = initialState, action) => {
     case "TOGGLE_FAVORITE":
       return {
         ...state,
-
-        data: getFavoutitesProducts(state.data, action.payload),
+        data: {
+          products: getFavoutitesProducts(state.data.products, action.payload),
+        },
       };
     default:
       return state;
