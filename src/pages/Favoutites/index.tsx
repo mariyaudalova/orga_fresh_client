@@ -10,41 +10,16 @@ import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
 import { ProductEntity } from "../../common/types";
 import { addToCartCreator } from "../../state/cart/actionsCreators";
 import { getCart } from "../../state/cart/selectors";
+import ProductsContainer from "../../components/ProductsContainer";
 
 const Favourites = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);
-  const userCart = useSelector(getCart);
-
-  const dispatch = useDispatch();
-
-  const toggleFavoriteClick = (product: ProductEntity) => {
-    dispatch(toggleFavorite(product));
-  };
-
-  const onAddToCart = (id: string) => {
-    dispatch(addToCartCreator(id));
-  };
-
-  const isInCart = (product: ProductEntity) => {
-    return !!userCart.data?.products.find(
-      (cartItem: any) => cartItem._id === product._id
-    );
-  };
 
   return (
     <div>
       <Container>
-        {favouritesProducts.data.products.map((product: ProductEntity) => {
-          return (
-            <ProductCard
-              key={product._id}
-              isFavourite={true}
-              product={product}
-              toggleFavoriteClick={toggleFavoriteClick}
-              addToCart={onAddToCart}
-              isInCart={isInCart(product)}
-            />
-          );
+        {favouritesProducts.data!.products.map((product: ProductEntity) => {
+          return <ProductsContainer key={product._id} product={product} />;
         })}
       </Container>
     </div>

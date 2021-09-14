@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const ColorItem = ({ value }) => {
+const CategoryItem = ({ value }: { value: string }) => {
   return <span>{value}</span>;
 };
 
-ColorItem.propTypes = {
+CategoryItem.propTypes = {
   value: PropTypes.string,
 };
 
-export default ColorItem;
+export default CategoryItem;

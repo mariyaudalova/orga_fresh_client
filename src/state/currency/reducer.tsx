@@ -1,8 +1,10 @@
+import { Action } from "../../common/types";
+
 const initialState = {
   currency: "USD",
 };
 
-export const currencyState = (state = initialState, action) => {
+export const currencyState = (state = initialState, action: Action<string>) => {
   switch (action.type) {
     case "UPDATE_CURRENCY":
       return {

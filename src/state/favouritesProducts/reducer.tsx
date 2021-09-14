@@ -1,4 +1,4 @@
-/* eslint-disable no-debugger, no-console */
+import { Action, ProductEntity } from "../../common/types";
 
 const initialState = {
   data: {
@@ -6,23 +6,27 @@ const initialState = {
   },
 };
 
-const getFavoutitesProducts = (products, action) => {
-  //debugger;
-  console.log("products", products, "action", action);
+const getFavoutitesProducts = (
+  products: ProductEntity[],
+  changedProduct: ProductEntity
+) => {
   const productIndex = products.findIndex(
-    (product) => product._id === action._id
+    (product) => product._id === changedProduct._id
   );
 
   if (productIndex !== -1) {
     products.splice(productIndex, 1);
   } else {
-    products.push(action);
+    products.push(changedProduct);
   }
 
   return products;
 };
 
-export const favouritesProducts = (state = initialState, action) => {
+export const favouritesProducts = (
+  state = initialState,
+  action: Action<ProductEntity>
+) => {
   switch (action.type) {
     case "TOGGLE_FAVORITE":
       return {

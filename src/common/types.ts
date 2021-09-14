@@ -4,6 +4,18 @@ export interface ResponseState <T>{
    data: null | T, 
 }
 
+export interface Action<T> {
+    type: string;
+    payload: T;
+}
+
+export interface RootState {
+    favouritesProducts: ResponseState <ProductsData>,
+    currencyState: {currency: string},
+    cartState: ResponseState <ProductsData>,
+    userState:  ResponseState <User>,
+}
+
 export interface FilterEntitiy {
     isActive: boolean;
     uiLabel: string;
@@ -27,7 +39,6 @@ export interface ProductEntity {
     itemNo: string,
     date: string,
     __v: number,
- 
 }
 
 export interface ProductState {
@@ -36,9 +47,11 @@ export interface ProductState {
     errors: string,
 }
 
+
+
 export type ProductsData = {
     products: Array<ProductEntity>,
-    productsQuantity: number
+    productsQuantity?: number
 }
 
 export type FilterNames = "categories" | "sizes" | "color" | "price";

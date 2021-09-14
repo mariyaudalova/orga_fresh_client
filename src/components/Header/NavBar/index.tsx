@@ -82,7 +82,7 @@ const NavBar = () => {
               <Link to={FAVOURITES}>
                 <Badge
                   color="primary"
-                  badgeContent={favouritesProducts.data.products.length}
+                  badgeContent={favouritesProducts.data!.products.length}
                 >
                   <FavoriteBorderIcon fontSize="large" />
                 </Badge>

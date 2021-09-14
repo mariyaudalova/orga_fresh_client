@@ -21,12 +21,7 @@ import {
   defaultColorsList,
   defaultSizesList,
 } from "../../common/defaultState";
-import {
-  ProductEntity,
-  ProductState,
-  ProductsData,
-  FilterItem,
-} from "../../common/types";
+import { ProductEntity, ProductState, FilterItem } from "../../common/types";
 
 import styles from "./ProductsList.module.scss";
 import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
@@ -88,10 +83,7 @@ const ProductsList = () => {
   };
   const getMaxPriceValue = () => {
     const { data } = productsState;
-    const productsData = data as ProductsData;
-    const arrayForMaping = productsData?.products?.map(function (
-      item: ProductEntity
-    ) {
+    const arrayForMaping = data!.products?.map(function (item: ProductEntity) {
       return item.currentPrice;
     });
     const max = Math.max(...arrayForMaping);
@@ -241,7 +233,9 @@ const ProductsList = () => {
               )}
               {productsState.data &&
                 productsState.data?.products?.map((product) => {
-                  return <ProductsContainer product={product} />;
+                  return (
+                    <ProductsContainer key={product._id} product={product} />
+                  );
                 })}
               {productsState.data?.products?.length === 0 && (
                 <p>No products matches search query</p>
@@ -253,8 +247,7 @@ const ProductsList = () => {
                 className={styles.paginationContainer}
                 count={
                   Math.ceil(
-                    (productsState.data as ProductsData)?.productsQuantity /
-                      page.perPage
+                    (productsState.data as any)?.productsQuantity / page.perPage
                   ) || 1
                 }
                 onChange={changePage}
