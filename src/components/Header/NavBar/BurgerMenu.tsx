@@ -110,8 +110,8 @@ const BurgerMenu = () => {
   const handleBurgerMenu = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
 
-    !(burgerMenuRef as any).current.contains(target) &&
-      !(burgerMenuButtonRef as any).current.contains(target) &&
+    !(burgerMenuRef as any).current?.contains(target) &&
+      !(burgerMenuButtonRef as any).current?.contains(target) &&
       handleDrawerClose();
   };
 
@@ -180,6 +180,7 @@ const BurgerMenu = () => {
                 <AccountCircleSharpIcon />
               </ListItemIcon>
               <ListItemText
+                onClick={handleDrawerClose}
                 primary={
                   authorizedUser.data
                     ? capitalizeFirstLetter(authorizedUser.data.firstName) +
@@ -211,14 +212,15 @@ const BurgerMenu = () => {
               const IconComponent = menuItem.icon;
 
               return (
-                <ListItem button key={index}>
-                  <ListItemIcon>
-                    <IconComponent />
-                  </ListItemIcon>
-                  <NavLink to={menuItem.routeName}>
+                <NavLink to={menuItem.routeName}>
+                  <ListItem onClick={handleDrawerClose} button key={index}>
+                    <ListItemIcon>
+                      <IconComponent />
+                    </ListItemIcon>
+
                     <ListItemText primary={menuItem.name} />
-                  </NavLink>
-                </ListItem>
+                  </ListItem>
+                </NavLink>
               );
             })}
           </List>

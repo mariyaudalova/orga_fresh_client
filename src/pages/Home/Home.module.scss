@@ -1,11 +1,25 @@
-.contentContainer {
-    background-color: #f8f8f8;
-}
-
-.firstScreenContainer {
-    height: 100%;
-}
-
-.imageContainer {
+.firstScreenImageContainer {
     background-image: url("https://www.getfarmfresh.co.in/wp-content/uploads/2020/10/Banner-01-a22.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 70vh;
+    background-position: center;
+}
+
+.contentContainer {
+    padding-top: 50px;
+}
+
+.firstScreenTextContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.greetingText {
+    font-size: 24px;
+    line-height: 2;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
 }

@@ -227,7 +227,7 @@ const Cart = () => {
 
   useProductsStateByCurrency(cart, setCart);
 
-  const previousData = localStorage.getItem("order") || "";
+  const previousData = localStorage.getItem("order");
   const getTotalPrice = () => {
     let totalPrice = 0;
     cart.data?.products?.map((item) => {
@@ -243,7 +243,7 @@ const Cart = () => {
   return (
     <div className={styles.contentContainer}>
       <Container>
-        {cart.data!.products?.length > 0 ? (
+        {cart.data && cart.data!.products?.length > 0 ? (
           <>
             <p className={styles.pageTitle}>Complete your order:</p>
             <Grid container spacing={3}>
@@ -252,7 +252,7 @@ const Cart = () => {
                   <p className={styles.orderLabel2}>Billing details</p>
                   <Form
                     onSubmit={onSubmit}
-                    initialValues={JSON.parse(previousData)}
+                    initialValues={previousData && JSON.parse(previousData)}
                     validate={formValidation}
                   >
                     {(props) => <BasicForm {...props} />}
