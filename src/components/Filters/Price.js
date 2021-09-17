@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import Slider from "@material-ui/core/Slider";
 import styles from "./FilterItem.module.scss";
 
@@ -39,11 +38,6 @@ const Price = ({ changePriceHandler, maxPrice, currentPrice }) => {
       />
     </div>
   );
-};
-
-Price.propTypes = {
-  changePriceHandler: PropTypes.func,
-  maxPrice: PropTypes.number,
 };
 
 export default Price;

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 
 import styles from "./ProductCard.module.scss";
@@ -8,8 +7,17 @@ import { Link } from "react-router-dom";
 import { CART } from "../../utils/consts";
 
 import Paper from "@material-ui/core/Paper";
+import { ProductEntity } from "../../common/types";
 
-const ProductCard = (props) => {
+interface ProductCardProps {
+  product: ProductEntity;
+  toggleFavoriteClick: (product: ProductEntity) => void;
+  addToCart: (product: ProductEntity) => void;
+  isInCart: boolean;
+  isFavourite: boolean;
+}
+
+const ProductCard = (props: ProductCardProps) => {
   const {
     product: { currentPrice, brand, name, imageUrls, sizes, currency },
     product,
@@ -58,14 +66,6 @@ const ProductCard = (props) => {
       </div>
     </Paper>
   );
-};
-
-ProductCard.propTypes = {
-  product: PropTypes.object,
-  toggleFavoriteClick: PropTypes.func,
-  isFavourite: PropTypes.bool,
-  addToCart: PropTypes.func,
-  isInCart: PropTypes.bool,
 };
 
 export default ProductCard;

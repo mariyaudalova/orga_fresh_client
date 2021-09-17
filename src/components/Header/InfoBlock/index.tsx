@@ -14,7 +14,6 @@ import { updateCurrencyCreator } from "../../../state/currency/actionsCreators";
 import { getUser } from "../../../state/user/selectors";
 
 const InfoBlock = () => {
-  const languages = ["EN", "UA"];
   const currencies = ["USD", "UAH"];
 
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -33,18 +32,9 @@ const InfoBlock = () => {
     localStorage.getItem("currency") || "USD"
   );
 
-  const [currentLanguage, setCurrentLanguage] = useState(
-    localStorage.getItem("language") || "EN"
-  );
-
   const dispatch = useDispatch();
 
-  const changeCurrentLanguage = (currentLanguage) => {
-    setCurrentLanguage(currentLanguage);
-    localStorage.setItem("language", currentLanguage);
-  };
-
-  const changeCurrentCurrency = (currentCurrency) => {
+  const changeCurrentCurrency = (currentCurrency: string) => {
     setCurrentCurrency(currentCurrency);
     localStorage.setItem("currency", currentCurrency);
     dispatch(updateCurrencyCreator(currentCurrency));

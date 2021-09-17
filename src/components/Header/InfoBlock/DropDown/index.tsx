@@ -1,9 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import styles from "./DropDown.module.scss";
 
-const DropDown = (props) => {
+interface DropDownProps {
+  currentValue: string;
+  listOfOptions: string[];
+  onClick: (option: string) => void;
+}
+
+const DropDown = (props: DropDownProps) => {
   const { currentValue, listOfOptions, onClick } = props;
 
   const optionsView = listOfOptions.map((option) => {
@@ -24,12 +29,6 @@ const DropDown = (props) => {
       <ul>{optionsView}</ul>
     </div>
   );
-};
-
-DropDown.propTypes = {
-  currentValue: PropTypes.string,
-  listOfOptions: PropTypes.array,
-  onClick: PropTypes.func,
 };
 
 export default DropDown;

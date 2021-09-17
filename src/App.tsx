@@ -10,13 +10,13 @@ import HeaderState from "./context/HeaderState";
 function App() {
   const [isSidebarOpen, serIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = (isSidebarOpen) => {
+  const toggleSidebar = (isSidebarOpen: boolean) => {
     console.log("from toggle", isSidebarOpen);
     serIsSidebarOpen(isSidebarOpen);
   };
 
   return (
-    <HeaderState.Provider value={{ isSidebarOpen, toggleSidebar }}>
+    <HeaderState.Provider value={{ isSidebarOpen, toggleSidebar } as any}>
       <ThemeProvider theme={theme}>
         <Header />
         <main>

@@ -3,8 +3,14 @@ import PropTypes from "prop-types";
 import ClearSharpIcon from "@material-ui/icons/ClearSharp";
 
 import styles from "./SmallProductCard.module.scss";
+import { ProductEntity } from "../../common/types";
 
-const SmallProductCard = (props) => {
+interface SmallProductCard {
+  product: ProductEntity;
+  deleteFromCart: () => void;
+}
+
+const SmallProductCard = (props: SmallProductCard) => {
   const {
     product: { currentPrice, name, imageUrls, sizes },
     deleteFromCart,

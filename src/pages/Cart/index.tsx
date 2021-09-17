@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
-import { Form } from "react-final-form";
-import PropTypes from "prop-types";
+import { Form, FormRenderProps } from "react-final-form";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
@@ -23,9 +22,25 @@ import {
   clearCartCreator,
   removeFromCartCreator,
 } from "../../state/cart/actionsCreators";
+import { ProductEntity } from "../../common/types";
 
-const BasicForm = (props) => {
-  const { touched, errors } = props;
+interface BasicFormProps {
+  touched: FormFields;
+  errors: FormFields;
+  handleSubmit?: () => void;
+}
+
+interface FormFields {
+  firstName: string;
+  lastName: string;
+  delivery: string;
+  phone: string;
+  email: string;
+  type: string;
+}
+
+const BasicForm = (props: any) => {
+  // const { touched, errors } = props;
   return (
     <form onSubmit={props.handleSubmit}>
       <Grid container spacing={3}>
@@ -37,8 +52,9 @@ const BasicForm = (props) => {
                   fullWidth
                   id="firstName"
                   label="First name"
-                  error={Boolean(touched.firstName && errors.firstName)}
-                  helperText={touched.firstName && errors.firstName}
+                  error={props.meta.error && props.meta.touched}
+                  //helperText={touched!.firstName && errors!.firstName}
+                  helperText={props.meta.touched && props.meta.error}
                   name={props.input.name}
                   value={props.input.value}
                   onChange={props.input.onChange}
@@ -52,7 +68,7 @@ const BasicForm = (props) => {
                 <TextField
                   fullWidth
                   error={props.meta.error && props.meta.touched}
-                  helperText={touched.delivery && errors.delivery}
+                  helperText={props.meta.touched && props.meta.error}
                   id="delivery"
                   label="Delivery"
                   name={props.input.name}
@@ -67,8 +83,8 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   fullWidth
-                  error={Boolean(touched.phone && errors.phone)}
-                  helperText={touched.phone && errors.phone}
+                  error={props.meta.error && props.meta.touched}
+                  helperText={props.meta.touched && props.meta.error}
                   id="phone"
                   label="Phone"
                   name={props.input.name}
@@ -87,8 +103,9 @@ const BasicForm = (props) => {
                   fullWidth
                   id="lastName"
                   label="Last name"
-                  error={Boolean(touched.lastName && errors.lastName)}
-                  helperText={touched.lastName && errors.lastName}
+                  //error={Boolean(touched.lastName && errors.lastName)}
+                  error={props.meta.error && props.meta.touched}
+                  helperText={props.meta.touched && props.meta.error}
                   name={props.input.name}
                   value={props.input.value}
                   onChange={props.input.onChange}
@@ -101,7 +118,7 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   error={props.meta.error && props.meta.touched}
-                  helperText={touched.type && errors.type}
+                  helperText={props.meta.touched && props.meta.error}
                   id="type"
                   fullWidth
                   label="Delivery type"
@@ -117,8 +134,9 @@ const BasicForm = (props) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   fullWidth
-                  error={Boolean(touched.email && errors.email)}
-                  helperText={touched.email && errors.email}
+                  //error={Boolean(touched.email && errors.email)}
+                  error={props.meta.error && props.meta.touched}
+                  helperText={props.meta.touched && props.meta.error}
                   id="email"
                   label="Email"
                   name={props.input.name}
@@ -144,13 +162,9 @@ const BasicForm = (props) => {
   );
 };
 
-BasicForm.propTypes = {
-  handleSubmit: PropTypes.func,
-};
-
-const formValidation = (values) => {
+const formValidation = (values: any) => {
   console.log(values);
-  const errors = {};
+  const errors = {} as FormFields;
   if (!values.firstName) {
     errors.firstName = "Required";
   }
@@ -185,7 +199,7 @@ const Cart = () => {
 
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const onSubmit = (value) => {
+  const onSubmit = (value: string) => {
     localStorage.setItem("order", JSON.stringify(value));
     setDialogOpen(true);
   };
@@ -195,7 +209,7 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
-    localStorage.setItem("cart", null);
+    // localStorage.setItem("cart", null);
 
     dispatch(clearCartCreator());
 
@@ -213,7 +227,7 @@ const Cart = () => {
 
   useProductsStateByCurrency(cart, setCart);
 
-  const previousData = localStorage.getItem("order");
+  const previousData = localStorage.getItem("order") || "";
   const getTotalPrice = () => {
     let totalPrice = 0;
     cart.data?.products?.map((item) => {
@@ -222,15 +236,14 @@ const Cart = () => {
     return totalPrice;
   };
 
-  const deleteFromCart = (id) => {
-    dispatch(removeFromCartCreator(id));
-    console.log(id);
+  const deleteFromCart = (product: ProductEntity) => {
+    dispatch(removeFromCartCreator(product));
   };
 
   return (
     <div className={styles.contentContainer}>
       <Container>
-        {cart.data?.products?.length > 0 ? (
+        {cart.data!.products?.length > 0 ? (
           <>
             <p className={styles.pageTitle}>Complete your order:</p>
             <Grid container spacing={3}>
@@ -249,13 +262,14 @@ const Cart = () => {
               <Grid item xs={12} sm={6}>
                 <Paper>
                   <ul className={styles.productsListContainer}>
-                    {cart.data?.products?.length > 0 ? (
+                    {cart.data!.products?.length > 0 ? (
                       cart.data?.products?.map((item, index) => (
                         <li key={index}>
                           <div>
                             <SmallProductCard
                               product={item}
-                              deleteFromCart={() => deleteFromCart(item._id)}
+                              // deleteFromCart={() => deleteFromCart(item._id)}
+                              deleteFromCart={() => deleteFromCart(item)}
                             />
                           </div>
                         </li>

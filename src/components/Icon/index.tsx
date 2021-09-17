@@ -1,9 +1,20 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import * as icons from "../../theme/icons";
 
-function Icon(props) {
+Icon.propTypes = {};
+
+interface IconProps {
+  type: keyof typeof import("../../theme/icons");
+  color: string;
+  filled?: boolean;
+  width: number;
+  height: number;
+  onClick?: () => void;
+  className: string; //?Object className={styles.centerContainer}
+}
+
+function Icon(props: IconProps) {
   const { type, color, filled, width, height, onClick, className } = props;
 
   const iconJsx = icons[type];
@@ -18,15 +29,5 @@ function Icon(props) {
     </span>
   );
 }
-
-Icon.propTypes = {
-  type: PropTypes.string,
-  color: PropTypes.string,
-  filled: PropTypes.bool,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-};
 
 export default Icon;
