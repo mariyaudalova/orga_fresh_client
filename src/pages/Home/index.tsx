@@ -4,6 +4,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 import styles from "./Home.module.scss";
+import { Button } from "@material-ui/core";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
             experience. We source the best quality produce on a daily basis,
             delivering to our loyal customers nationwide.
           </p>
+          <Button variant="contained" />
         </Grid>
         <Grid className={styles.firstScreenImageContainer} item xs={6}></Grid>
       </Grid>

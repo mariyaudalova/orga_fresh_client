@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import RegistrationForm from "./RegistrationForm";
 import LoginForm from "./LoginForm";
 import styles from "./Login.module.scss";
+import { Button } from "@material-ui/core";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -21,18 +22,18 @@ const Login = () => {
             <>
               <p className={styles.pageTitle}>Sign in to continue shopping</p>
               <LoginForm />
-              <button onClick={changeLoginState}>
+              <Button onClick={changeLoginState} variant="text">
                 Don't have an account? Create one
-              </button>
+              </Button>
             </>
           )}
           {!isLogin && (
             <>
               <p className={styles.pageTitle}>Sign up to make first order</p>
               <RegistrationForm changeLoginState={changeLoginState} />
-              <button onClick={changeLoginState}>
+              <Button onClick={changeLoginState} variant="text">
                 Already have an account? Login
-              </button>
+              </Button>
             </>
           )}
         </Paper>
