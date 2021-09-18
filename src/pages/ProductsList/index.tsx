@@ -31,6 +31,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import ProductsContainer from "../../components/ProductsContainer";
+import { Button } from "@material-ui/core";
 
 const ProductsList = () => {
   const [maxPrice, setMaxPrice] = useState(1000);
@@ -238,7 +239,14 @@ const ProductsList = () => {
                   );
                 })}
               {productsState.data?.products?.length === 0 && (
-                <p>No products matches search query</p>
+                <div className={styles.noProductsContainer}>
+                  <p className={styles.noProductsMessage}>
+                    No products matches search query
+                  </p>
+                  <Button variant="outlined" color="primary">
+                    Reset all filters
+                  </Button>
+                </div>
               )}
               {productsState.errors && <p>{productsState.errors}</p>}
             </div>

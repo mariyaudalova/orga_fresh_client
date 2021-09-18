@@ -1,4 +1,7 @@
+@import "../../theme/styles/var";
+
 .firstScreenImageContainer {
+    display: block;
     background-image: url("https://www.getfarmfresh.co.in/wp-content/uploads/2020/10/Banner-01-a22.png");
     background-size: contain;
     background-repeat: no-repeat;
@@ -20,7 +23,11 @@
 .greetingText {
     font-size: 24px;
     line-height: 2;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding: 20px;
     text-align: center;
+}
+
+.shopButton {
+    width: 100px;
+    height: 40px;
 }

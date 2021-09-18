@@ -14,7 +14,7 @@ export const theme = createTheme({
     fontFamily: "Roboto",
   },
   shape: {
-    borderRadius: 0,
+    borderRadius: 4,
   },
   spacing: 8,
   overrides: {
