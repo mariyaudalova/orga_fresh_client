@@ -26,7 +26,6 @@ import { ProductEntity, ProductState, FilterItem } from "../../common/types";
 import styles from "./ProductsList.module.scss";
 import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
 import MenuItem from "@material-ui/core/MenuItem";
-//import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -36,6 +35,8 @@ import { Button } from "@material-ui/core";
 const ProductsList = () => {
   const [maxPrice, setMaxPrice] = useState(1000);
   const [currentSortType, setCurrentSortType] = useState("");
+
+  const defaultPriceFilter = "minPrice=0&maxPrice=1000";
 
   const filterDefaultState = {
     categories: defaultCategoriesList,
@@ -93,6 +94,7 @@ const ProductsList = () => {
   };
 
   const getFiltersParams = () => {
+    console.log("dvdfv");
     let filtersParams = "";
 
     const allFilterKeys = (
@@ -108,9 +110,12 @@ const ProductsList = () => {
         activeFilters.forEach((filterItemState) => {
           filtersParams += `${filterItemState.value},`;
         });
+        console.log(isFilterExistValue);
       }
       if (allFilterKeys.length !== index + 1) filtersParams += "&";
     });
+
+    setIsFilterExistValue(filtersParams !== defaultPriceFilter);
 
     return filtersParams;
   };
@@ -122,6 +127,8 @@ const ProductsList = () => {
   const getSortParams = () => {
     return "&sort=" + currentSortType;
   };
+
+  const [isFilterExistValue, setIsFilterExistValue] = useState(false);
 
   useEffect(() => {
     getProductsByFilter();
@@ -146,14 +153,26 @@ const ProductsList = () => {
     } else {
       setCurrentPrice(filterEntity.value as any);
     }
-    filterState[filterEntity.id][replaceIndex] = filterEntity;
+    const deepFilterStateClone = {
+      ...filterState,
+      [filterEntity.id]: [
+        ...filterState[filterEntity.id].map((item) => {
+          return { ...item };
+        }),
+      ],
+    };
+
+    deepFilterStateClone[filterEntity.id][replaceIndex] = filterEntity;
 
     setPage({ ...page, startPage: 1 });
 
-    setFilterState({
-      ...filterState,
-      [filterEntity.id]: filterState[filterEntity.id],
-    });
+    setFilterState(deepFilterStateClone);
+  };
+
+  const resetFilters = () => {
+    console.log("filterDefaultState", filterDefaultState);
+    setCurrentPrice([0, maxPrice]);
+    setFilterState(filterDefaultState);
   };
 
   const handleSortControlChange = (
@@ -191,25 +210,30 @@ const ProductsList = () => {
       <Container>
         <div className={styles.pageTitleContainer}>
           <p className={styles.pageTitle}>Products</p>
-          <div className={styles.SortContainer}>
-            <FormControl variant="outlined">
-              <InputLabel id="demo-simple-select-outlined-label">
-                Sort by
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={currentSortType}
-                onChange={handleSortControlChange}
-                label="Sort by"
-              >
-                <MenuItem value={"currentPrice"}>Chepest</MenuItem>
-                <MenuItem value={"-currentPrice"}>More Expensive</MenuItem>
-                <MenuItem value={"date"}>Oldest</MenuItem>
-                <MenuItem value={"-date"}>Newest</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+          {!(
+            productsState.isLoading ||
+            productsState.data?.products?.length === 0
+          ) && (
+            <div className={styles.SortContainer}>
+              <FormControl variant="outlined">
+                <InputLabel id="demo-simple-select-outlined-label">
+                  Sort by
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={currentSortType}
+                  onChange={handleSortControlChange}
+                  label="Sort by"
+                >
+                  <MenuItem value={"currentPrice"}>Chepest</MenuItem>
+                  <MenuItem value={"-currentPrice"}>More Expensive</MenuItem>
+                  <MenuItem value={"date"}>Oldest</MenuItem>
+                  <MenuItem value={"-date"}>Newest</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          )}
         </div>
         <div className={styles.pageContainer}>
           <div>
@@ -225,13 +249,22 @@ const ProductsList = () => {
                 <div>{filterDetails}</div>
               </AccordionDetails>
             </Accordion>
-            <div className={styles.filtersFully}>{filterDetails}</div>
+            <div className={styles.filtersFully}>
+              {filterDetails}
+              {isFilterExistValue && (
+                <Button
+                  onClick={resetFilters}
+                  variant="outlined"
+                  color="primary"
+                >
+                  Reset all filters
+                </Button>
+              )}
+            </div>
           </div>
           <div>
             <div className={styles.productsContainer}>
-              {productsState.isLoading && (
-                <CircularProgress className={styles.loaderContainer} />
-              )}
+              {productsState.isLoading && <CircularProgress />}
               {productsState.data &&
                 productsState.data?.products?.map((product) => {
                   return (
@@ -243,14 +276,21 @@ const ProductsList = () => {
                   <p className={styles.noProductsMessage}>
                     No products matches search query
                   </p>
-                  <Button variant="outlined" color="primary">
+                  <Button
+                    onClick={resetFilters}
+                    variant="outlined"
+                    color="primary"
+                  >
                     Reset all filters
                   </Button>
                 </div>
               )}
               {productsState.errors && <p>{productsState.errors}</p>}
             </div>
-            {!productsState.isLoading && (
+            {!(
+              productsState.isLoading ||
+              productsState.data?.products?.length === 0
+            ) && (
               <Pagination
                 className={styles.paginationContainer}
                 count={

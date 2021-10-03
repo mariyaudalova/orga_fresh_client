@@ -70,7 +70,7 @@
 .productsContainer {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  // align-items: center;
   margin-bottom: 40px;
   min-height: 50vh;
   margin-left: -3.25%;
@@ -78,7 +78,6 @@
     margin-right: -1.75%;
   }
 }
-
 .paginationContainer {
   display: flex;
   justify-content: center;

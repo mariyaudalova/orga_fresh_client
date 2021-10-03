@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger, no-console */
 import { Action, ProductEntity } from "../../common/types";
 
 const initialState = {
@@ -10,17 +11,20 @@ const getFavoutitesProducts = (
   products: ProductEntity[],
   changedProduct: ProductEntity
 ) => {
-  const productIndex = products.findIndex(
+  const deepCopy = products.map((item) => {
+    return { ...item };
+  });
+  const productIndex = deepCopy.findIndex(
     (product) => product._id === changedProduct._id
   );
 
   if (productIndex !== -1) {
-    products.splice(productIndex, 1);
+    deepCopy.splice(productIndex, 1);
   } else {
-    products.push(changedProduct);
+    deepCopy.push(changedProduct);
   }
 
-  return products;
+  return deepCopy;
 };
 
 export const favouritesProducts = (
@@ -34,6 +38,10 @@ export const favouritesProducts = (
         data: {
           products: getFavoutitesProducts(state.data.products, action.payload),
         },
+      };
+    case "CLEAR_FAVOURITES_LIST":
+      return {
+        ...initialState,
       };
     default:
       return state;

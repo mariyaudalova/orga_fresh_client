@@ -34,9 +34,6 @@ const BurgerMenu = () => {
 
   const toggleSidebar = (useContext(HeaderState) as any).toggleSidebar;
 
-  const isSidebarOpen = (useContext(HeaderState) as any).isSidebarOpen;
-
-  console.log(isSidebarOpen);
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
@@ -212,7 +209,7 @@ const BurgerMenu = () => {
               const IconComponent = menuItem.icon;
 
               return (
-                <NavLink to={menuItem.routeName}>
+                <NavLink key={index} to={menuItem.routeName}>
                   <ListItem onClick={handleDrawerClose} button key={index}>
                     <ListItemIcon>
                       <IconComponent />

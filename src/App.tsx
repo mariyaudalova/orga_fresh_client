@@ -8,11 +8,10 @@ import { theme } from "./theme/theme";
 import HeaderState from "./context/HeaderState";
 
 function App() {
-  const [isSidebarOpen, serIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = (isSidebarOpen: boolean) => {
-    console.log("from toggle", isSidebarOpen);
-    serIsSidebarOpen(isSidebarOpen);
+    setIsSidebarOpen(isSidebarOpen);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { ProductEntity } from "../../common/types";
-import { addToCart, removeFromCart, clearCart } from "./actions";
+import { addToCart, removeFromCart, clearCart, addManyToCart } from "./actions";
 
 export const addToCartCreator =
   (product: ProductEntity) => (dispatch: Dispatch) => {
@@ -15,3 +15,8 @@ export const removeFromCartCreator =
 export const clearCartCreator = () => (dispatch: Dispatch) => {
   dispatch(clearCart());
 };
+
+export const addManyToCartCreator =
+  (productsList: ProductEntity[]) => (dispatch: Dispatch) => {
+    dispatch(addManyToCart(productsList));
+  };

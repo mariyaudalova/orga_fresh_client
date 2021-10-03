@@ -17,3 +17,10 @@ export const clearCart = () => {
     type: "CLEAR_CART",
   };
 };
+
+export const addManyToCart = (productsList: ProductEntity[]) => {
+  return {
+    type: "ADD_MANY_TO_CART",
+    payload: productsList,
+  };
+};
