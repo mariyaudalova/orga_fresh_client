@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const phone = (color = 'rgba(125,125,125, 0.5)', filled = true, width = 25, height = 25) => (
-  <svg width={width} height={height}  viewBox="0 0 482.6 482.6" xmlns='http://www.w3.org/2000/svg'>
+  <svg width={width} height={height}  viewBox="0 0 482.6 482.6" xmlns="http://www.w3.org/2000/svg">
     <path d="M98.339,320.8c47.6,56.9,104.9,101.7,170.3,133.4c24.9,11.8,58.2,25.8,95.3,28.2c2.3,0.1,4.5,0.2,6.8,0.2
 		c24.9,0,44.9-8.6,61.2-26.3c0.1-0.1,0.3-0.3,0.4-0.5c5.8-7,12.4-13.3,19.3-20c4.7-4.5,9.5-9.2,14.1-14
 		c21.3-22.2,21.3-50.4-0.2-71.9l-60.1-60.1c-10.2-10.6-22.4-16.2-35.2-16.2c-12.8,0-25.1,5.6-35.6,16.1l-35.8,35.8

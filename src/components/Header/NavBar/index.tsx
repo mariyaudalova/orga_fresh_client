@@ -1,8 +1,12 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import Container from "@material-ui/core/Container";
 import { useSelector } from "react-redux";
+import Container from "@material-ui/core/Container";
 import Badge from "@material-ui/core/Badge";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
+
 import {
   PRODUCTS_ROUTE,
   LOGIN_ROUTE,
@@ -11,21 +15,16 @@ import {
   FAVOURITES,
 } from "../../../utils/consts";
 import { getFavoutitesProducts } from "../../../state/favouritesProducts/selectors";
-import styles from "./NavBar.module.scss";
 import { getCart } from "../../../state/cart/selectors";
 import { getUser } from "../../../state/user/selectors";
-
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
-import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import BurgerMenu from "./BurgerMenu";
+
+import styles from "./NavBar.module.scss";
 
 const NavBar = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);
   const cart = useSelector(getCart);
   const authorizedUser = useSelector(getUser);
-
-  console.log("authorizedUser", authorizedUser);
 
   return (
     <div className={styles.container}>

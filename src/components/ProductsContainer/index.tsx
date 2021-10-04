@@ -1,13 +1,10 @@
-/* eslint-disable */
-import React, { useEffect, useState } from "react";
-import Container from "@material-ui/core/Container";
-
-import Modal from "../../components/Modal";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
 import ProductCard from "../../components/ProductCard";
 import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
-import { ProductEntity, ProductsData } from "../../common/types";
+import { ProductEntity } from "../../common/types";
 import { addToCartCreator } from "../../state/cart/actionsCreators";
 import { getCart } from "../../state/cart/selectors";
 

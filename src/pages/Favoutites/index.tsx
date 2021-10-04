@@ -1,17 +1,15 @@
-/* eslint-disable */
-import React, { useState } from "react";
-import Container from "@material-ui/core/Container";
-
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
-import { ProductEntity } from "../../common/types";
-
-import ProductsContainer from "../../components/ProductsContainer";
-import styles from "../ProductsList/ProductsList.module.scss";
-import { Pagination } from "@material-ui/lab";
+import Container from "@material-ui/core/Container";
 import { Button } from "@material-ui/core";
+
+import { ProductEntity } from "../../common/types";
+import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
 import { addManyToCart } from "../../state/cart/actions";
 import { clearFavouritesList } from "../../state/favouritesProducts/actions";
+import ProductsContainer from "../../components/ProductsContainer";
+
+import styles from "../ProductsList/ProductsList.module.scss";
 
 const Favourites = () => {
   const favouritesProducts = useSelector(getFavoutitesProducts);

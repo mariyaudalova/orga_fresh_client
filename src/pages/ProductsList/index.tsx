@@ -6,6 +6,11 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Button } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
 import Price from "../../components/Filters/Price";
 import {
@@ -13,7 +18,6 @@ import {
   ColorList,
   SizeList,
 } from "../../components/Filters/FilterList";
-
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
 import {
@@ -22,15 +26,10 @@ import {
   defaultSizesList,
 } from "../../common/defaultState";
 import { ProductEntity, ProductState, FilterItem } from "../../common/types";
+import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
+import ProductsContainer from "../../components/ProductsContainer";
 
 import styles from "./ProductsList.module.scss";
-import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import ProductsContainer from "../../components/ProductsContainer";
-import { Button } from "@material-ui/core";
 
 const ProductsList = () => {
   const [maxPrice, setMaxPrice] = useState(1000);

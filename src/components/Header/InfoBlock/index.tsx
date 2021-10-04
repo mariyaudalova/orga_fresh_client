@@ -1,17 +1,15 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
-import Container from "@material-ui/core/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Container from "@material-ui/core/Container";
 
-import styles from "./InfoBlock.module.scss";
-import Icon from "../../Icon";
-import DropDown from "./DropDown";
-import { LOGIN_ROUTE } from "../../../utils/consts";
-
-import { getCurrency } from "../../../state/currency/selectors";
 import { updateCurrencyCreator } from "../../../state/currency/actionsCreators";
 import { getUser } from "../../../state/user/selectors";
+import { LOGIN_ROUTE } from "../../../utils/consts";
+import Icon from "../../Icon";
+import DropDown from "./DropDown";
+
+import styles from "./InfoBlock.module.scss";
 
 const InfoBlock = () => {
   const currencies = ["USD", "UAH"];
@@ -23,10 +21,6 @@ const InfoBlock = () => {
   useEffect(() => {
     user.data?.token && setToken(user.data?.token);
   }, [user]);
-
-  console.log("user", user);
-
-  const currentCurrencyState = useSelector(getCurrency);
 
   const [currentCurrency, setCurrentCurrency] = useState(
     localStorage.getItem("currency") || "USD"

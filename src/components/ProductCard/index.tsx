@@ -1,13 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+
+import { CART } from "../../utils/consts";
+import { ProductEntity } from "../../common/types";
+import Icon from "../Icon";
 
 import styles from "./ProductCard.module.scss";
-import Icon from "../Icon";
-import { Link } from "react-router-dom";
-import { CART } from "../../utils/consts";
-
-import Paper from "@material-ui/core/Paper";
-import { ProductEntity } from "../../common/types";
 
 interface ProductCardProps {
   product: ProductEntity;

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { getAuthorizedUser } from "../common/helpers/getAuthorizedUser";
 
+import { getAuthorizedUser } from "../common/helpers/getAuthorizedUser";
 import { PRODUCTS_ROUTE } from "../utils/consts";
 import { publicRoutes } from "./routes";
 

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-
 import Paper from "@material-ui/core/Paper";
+import { Button } from "@material-ui/core";
 
 import RegistrationForm from "./RegistrationForm";
 import LoginForm from "./LoginForm";
+
 import styles from "./Login.module.scss";
-import { Button } from "@material-ui/core";
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);

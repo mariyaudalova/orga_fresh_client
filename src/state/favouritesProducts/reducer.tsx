@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger, no-console */
 import { Action, ProductEntity } from "../../common/types";
 
 const initialState = {

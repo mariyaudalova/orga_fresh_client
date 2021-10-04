@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Field, Form } from "react-final-form";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
-import styles from "./Login.module.scss";
 import { createUptateAjax } from "../../services";
 import { apiUrl } from "../../env";
 import { PRODUCTS_ROUTE } from "../../utils/consts";
 import { getAuthorizedUser } from "../../common/helpers/getAuthorizedUser";
 import { getCart } from "../../state/cart/selectors";
+
+import styles from "./Login.module.scss";
 
 const LoginForm = () => {
   interface FormValues {

@@ -11,7 +11,7 @@ interface IconProps {
   width: number;
   height: number;
   onClick?: () => void;
-  className: string; //?Object className={styles.centerContainer}
+  className: string;
 }
 
 function Icon(props: IconProps) {

@@ -25,10 +25,6 @@ export default function ResponsiveDialog(props: ModalProps) {
     setOpen(isOpen);
   }, [isOpen]);
 
-  /*  const handleClose = () => {
-    setOpen(false);
-  };*/
-
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 

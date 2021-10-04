@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Field, Form } from "react-final-form";
 import TextField from "@material-ui/core/TextField";
-import styles from "./Login.module.scss";
 import Button from "@material-ui/core/Button";
+
 import { createUptateAjax } from "../../services";
 import { apiUrl } from "../../env";
 import Modal from "../../components/Modal";
+
+import styles from "./Login.module.scss";
 
 const RegistrationForm = (props: { changeLoginState: () => void }) => {
   interface RegistrationFormValues {
@@ -18,9 +20,6 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
 
   const requestUrl = `${apiUrl}/customers`;
   const { changeLoginState } = props;
-  {
-    /* const [responseError, setResponseError] = useState(""); */
-  }
   const [registerModal, setRegisterModal] = useState(false);
 
   const onSubmit = async (values: RegistrationFormValues) => {
@@ -28,12 +27,9 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
     const response = await createUptateAjax("post", requestUrl, values);
     if (response.data) {
       setRegisterModal(true);
-      console.log("succsesfully regitred");
     } else {
       return response.errors;
-      // setResponseError(response.errors);
     }
-    console.log(response);
   };
 
   const formValidation = (values: any) => {
@@ -56,10 +52,6 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
     return errors;
   };
 
-  const clickTextFieldHendler = () => {
-    // setResponseError("");
-  };
-
   const handleCloseRegisterModal = () => {
     changeLoginState();
   };
@@ -74,7 +66,6 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                 {(props) => (
                   <div className={styles.fieldContainer}>
                     <TextField
-                      onClick={clickTextFieldHendler}
                       fullWidth
                       error={props.meta.error && props.meta.touched}
                       helperText={
@@ -94,7 +85,6 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                 {(props) => (
                   <div className={styles.fieldContainer}>
                     <TextField
-                      onClick={clickTextFieldHendler}
                       fullWidth
                       error={props.meta.error && props.meta.touched}
                       id="password"
@@ -115,7 +105,6 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                   <div className={styles.fieldContainer}>
                     <TextField
                       fullWidth
-                      onClick={clickTextFieldHendler}
                       error={props.meta.error && props.meta.touched}
                       id="email"
                       label="Email"
@@ -135,7 +124,6 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                   <div className={styles.fieldContainer}>
                     <TextField
                       fullWidth
-                      onClick={clickTextFieldHendler}
                       error={props.meta.error && props.meta.touched}
                       id="firstName"
                       label="First name"
@@ -155,7 +143,6 @@ const RegistrationForm = (props: { changeLoginState: () => void }) => {
                   <div className={styles.fieldContainer}>
                     <TextField
                       fullWidth
-                      onClick={clickTextFieldHendler}
                       error={props.meta.error && props.meta.touched}
                       id="lastName"
                       label="Last name"

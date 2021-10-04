@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger, no-console */
 import React, { useState, useEffect, useRef, useContext } from "react";
 import clsx from "clsx";
 import {
@@ -70,7 +69,6 @@ const BurgerMenu = () => {
         display: "flex",
         alignItems: "center",
         padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: "flex-end",
       },
@@ -214,7 +212,6 @@ const BurgerMenu = () => {
                     <ListItemIcon>
                       <IconComponent />
                     </ListItemIcon>
-
                     <ListItemText primary={menuItem.name} />
                   </ListItem>
                 </NavLink>

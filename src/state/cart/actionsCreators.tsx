@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+
 import { ProductEntity } from "../../common/types";
 import { addToCart, removeFromCart, clearCart, addManyToCart } from "./actions";
 

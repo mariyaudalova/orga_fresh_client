@@ -1,46 +1,36 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
-import { Form, FormRenderProps } from "react-final-form";
+import { Form, Field } from "react-final-form";
 import { useDispatch, useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import { Field } from "react-final-form";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 import { getCart } from "../../state/cart/selectors";
 import SmallProductCard from "../../components/SmallProductCard";
-import styles from "./Cart.module.scss";
 import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
 import Modal from "../../components/Modal";
-import { Link } from "react-router-dom";
 import { PRODUCTS_ROUTE } from "../../utils/consts";
-
 import {
   clearCartCreator,
   removeFromCartCreator,
 } from "../../state/cart/actionsCreators";
 import { ProductEntity } from "../../common/types";
 
-interface BasicFormProps {
-  touched: FormFields;
-  errors: FormFields;
-  handleSubmit?: () => void;
-}
+import styles from "./Cart.module.scss";
 
-interface FormFields {
+/*interface FormFields {
   firstName: string;
   lastName: string;
   delivery: string;
   phone: string;
   email: string;
   type: string;
-}
+}*/
 
 const BasicForm = (props: any) => {
-  // const { touched, errors } = props;
   return (
     <form onSubmit={props.handleSubmit}>
       <Grid container spacing={3}>
@@ -53,7 +43,6 @@ const BasicForm = (props: any) => {
                   id="firstName"
                   label="First name"
                   error={props.meta.error && props.meta.touched}
-                  //helperText={touched!.firstName && errors!.firstName}
                   helperText={props.meta.touched && props.meta.error}
                   name={props.input.name}
                   value={props.input.value}
@@ -103,7 +92,6 @@ const BasicForm = (props: any) => {
                   fullWidth
                   id="lastName"
                   label="Last name"
-                  //error={Boolean(touched.lastName && errors.lastName)}
                   error={props.meta.error && props.meta.touched}
                   helperText={props.meta.touched && props.meta.error}
                   name={props.input.name}
@@ -134,7 +122,6 @@ const BasicForm = (props: any) => {
               <div className={styles.fieldContainer}>
                 <TextField
                   fullWidth
-                  //error={Boolean(touched.email && errors.email)}
                   error={props.meta.error && props.meta.touched}
                   helperText={props.meta.touched && props.meta.error}
                   id="email"
@@ -163,26 +150,20 @@ const BasicForm = (props: any) => {
 };
 
 const formValidation = (values: any) => {
-  console.log(values);
-  const errors = {} as FormFields;
-  if (!values.firstName) {
-    errors.firstName = "Required";
-  }
-  if (!values.lastName) {
-    errors.lastName = "Required";
-  }
-  if (!values.delivery) {
-    errors.delivery = "Required";
-  }
-  if (!values.phone) {
-    errors.phone = "Required";
-  }
-  if (!values.email) {
-    errors.email = "Required";
-  }
-  if (!values.type) {
-    errors.type = "Required";
-  }
+  const errors = {} as any;
+  const fields = [
+    "firstName",
+    "lastName",
+    "delivery",
+    "email",
+    "phone",
+    "type",
+  ];
+
+  fields.forEach((fieldName) => {
+    !values[fieldName] && (errors[fieldName] = "Required");
+  });
+
   return errors;
 };
 
@@ -194,8 +175,6 @@ const Cart = () => {
   useEffect(() => {
     setCart(currectCartState);
   }, [currectCartState]);
-
-  console.log("useSelector(getCart)", useSelector(getCart));
 
   const [isDialogOpen, setDialogOpen] = useState(false);
 
@@ -209,8 +188,6 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
-    // localStorage.setItem("cart", null);
-
     dispatch(clearCartCreator());
 
     history.push(`${PRODUCTS_ROUTE}`);

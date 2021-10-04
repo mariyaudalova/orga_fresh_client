@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Slider from "@material-ui/core/Slider";
+
 import styles from "./FilterItem.module.scss";
 
 const Price = ({ changePriceHandler, maxPrice, currentPrice }) => {

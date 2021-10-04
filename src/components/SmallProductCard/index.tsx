@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import ClearSharpIcon from "@material-ui/icons/ClearSharp";
 
 import styles from "./SmallProductCard.module.scss";
@@ -27,10 +26,6 @@ const SmallProductCard = (props: SmallProductCard) => {
       <ClearSharpIcon onClick={deleteFromCart} />
     </div>
   );
-};
-
-SmallProductCard.propTypes = {
-  product: PropTypes.object,
 };
 
 export default SmallProductCard;

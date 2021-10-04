@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@material-ui/core";
+
 import AppRouter from "./routes/AppRouter";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import HeaderState from "./context/HeaderState";
 
 import { theme } from "./theme/theme";
-import HeaderState from "./context/HeaderState";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

@@ -1,12 +1,12 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import Container from "@material-ui/core/Container";
-
 import Grid from "@material-ui/core/Grid";
+import { Button, Hidden } from "@material-ui/core";
+
+import { PRODUCTS_ROUTE } from "../../utils/consts";
 
 import styles from "./Home.module.scss";
-import { Button, Hidden } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
-import { PRODUCTS_ROUTE } from "../../utils/consts";
 
 const Home = () => {
   return (
