@@ -15,7 +15,6 @@ const removeFromCart = (
   state: ResponseState<ProductsData>,
   action: Action<ProductEntity>
 ) => {
-  console.log("state", state);
   const removedProductIndex = state.data!.products.findIndex(
     (product: ProductEntity) => product._id === action.payload._id
   );

@@ -93,7 +93,6 @@ const ProductsList = () => {
   };
 
   const getFiltersParams = () => {
-    console.log("dvdfv");
     let filtersParams = "";
 
     const allFilterKeys = (
@@ -169,7 +168,6 @@ const ProductsList = () => {
   };
 
   const resetFilters = () => {
-    console.log("filterDefaultState", filterDefaultState);
     setCurrentPrice([0, maxPrice]);
     setFilterState(filterDefaultState);
   };

@@ -37,15 +37,6 @@ const LoginForm = () => {
 
       await getAuthorizedUser(access_token, dispatch);
 
-      const cartList = await createUptateAjax(
-        "post",
-        cartUrl,
-        currentCart.data?.products,
-        access_token
-      );
-
-      console.log(cartList);
-
       history.push(`${PRODUCTS_ROUTE}`);
     } else {
       setResponseError("Invalid login or password");
