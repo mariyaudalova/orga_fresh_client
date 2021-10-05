@@ -79,6 +79,7 @@
 
 .logoFresh {
   color: $lightOrange;
+  padding-right: 40px;
 }
 
 .navItem {
@@ -96,4 +97,11 @@
 
 .iconContainer {
   padding-left: 20px;
+}
+
+.menuWithNav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }

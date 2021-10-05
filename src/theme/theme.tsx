@@ -17,6 +17,13 @@ export const theme = createTheme({
   },
   spacing: 8,
   overrides: {
+    MuiCircularProgress: {
+      root: {
+        position: "relative",
+        left: "45%",
+        top: "20vh",
+      },
+    },
     MuiFilledInput: {
       root: {
         backgroundColor: "#357a38",

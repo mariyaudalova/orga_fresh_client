@@ -217,6 +217,8 @@ const Cart = () => {
     dispatch(removeFromCartCreator(product));
   };
 
+  const currency = localStorage.getItem("currency") || "USD";
+
   return (
     <div className={styles.contentContainer}>
       <Container>
@@ -260,7 +262,9 @@ const Cart = () => {
                   <hr />
                   <div className={styles.priceContainer}>
                     <p className={styles.orderLabel}>Subtotal</p>
-                    <p className={styles.orderValue}>{getTotalPrice()}</p>
+                    <p className={styles.orderValue}>
+                      {getTotalPrice().toFixed(2)} {currency}
+                    </p>
                   </div>
                   <div className={styles.priceContainer}>
                     <p className={styles.orderLabel}>Shipping</p>
@@ -272,7 +276,7 @@ const Cart = () => {
           </>
         ) : (
           <p className={styles.noProductsWarning}>
-            You have no products in cart.{" "}
+            You have no products in cart.
             <Link to={`${PRODUCTS_ROUTE}`}>
               <span className={styles.link}>Go back to Products list</span>
             </Link>

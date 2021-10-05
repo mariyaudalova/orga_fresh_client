@@ -11,7 +11,7 @@ interface SmallProductCard {
 
 const SmallProductCard = (props: SmallProductCard) => {
   const {
-    product: { currentPrice, name, imageUrls, sizes },
+    product: { currentPrice, name, imageUrls, sizes, currency },
     deleteFromCart,
   } = props;
 
@@ -23,6 +23,7 @@ const SmallProductCard = (props: SmallProductCard) => {
         <p className={styles.manufacturer}>{sizes} кg</p>
       </div>
       <p className={styles.productName}>{currentPrice} </p>
+      <p className={styles.productName}>{currency} </p>
       <ClearSharpIcon onClick={deleteFromCart} />
     </div>
   );

@@ -9,7 +9,6 @@ import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined"
 
 import {
   PRODUCTS_ROUTE,
-  LOGIN_ROUTE,
   CART,
   HOME_ROUTE,
   FAVOURITES,
@@ -33,49 +32,29 @@ const NavBar = () => {
           <div className={styles.burgerMenu}>
             <BurgerMenu />
           </div>
-
-          <NavLink to={`${PRODUCTS_ROUTE}`}>
-            <p className={styles.logoOrga}>
-              Orga<span className={styles.logoFresh}>Fresh</span>
-            </p>
-          </NavLink>
-          <nav className={styles.navMenu}>
-            <NavLink
-              className={styles.navItem}
-              activeClassName={styles.navItemActive}
-              to={`${HOME_ROUTE}`}
-            >
-              Home
+          <div className={styles.menuWithNav}>
+            <NavLink to={`${PRODUCTS_ROUTE}`}>
+              <p className={styles.logoOrga}>
+                Orga<span className={styles.logoFresh}>Fresh</span>
+              </p>
             </NavLink>
-            <NavLink
-              className={styles.navItem}
-              activeClassName={styles.navItemActive}
-              to={`${PRODUCTS_ROUTE}`}
-            >
-              Products
-            </NavLink>
-            <NavLink
-              className={styles.navItem}
-              activeClassName={styles.navItemActive}
-              to={`${LOGIN_ROUTE}`}
-            >
-              About
-            </NavLink>
-            <NavLink
-              className={styles.navItem}
-              activeClassName={styles.navItemActive}
-              to={`${LOGIN_ROUTE}`}
-            >
-              Blog
-            </NavLink>
-            <NavLink
-              className={styles.navItem}
-              activeClassName={styles.navItemActive}
-              to={`${LOGIN_ROUTE}`}
-            >
-              Contact
-            </NavLink>
-          </nav>
+            <nav className={styles.navMenu}>
+              <NavLink
+                className={styles.navItem}
+                activeClassName={styles.navItemActive}
+                to={`${HOME_ROUTE}`}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                className={styles.navItem}
+                activeClassName={styles.navItemActive}
+                to={`${PRODUCTS_ROUTE}`}
+              >
+                Products
+              </NavLink>
+            </nav>
+          </div>
           <div className={styles.innerContainer}>
             <div className={styles.iconContainer}>
               <Link to={FAVOURITES}>

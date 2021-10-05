@@ -286,15 +286,16 @@ const ProductsList = () => {
             </div>
             {!(
               productsState.isLoading ||
-              productsState.data?.products?.length === 0
+              productsState.data?.products?.length === 0 ||
+              Math.ceil(
+                (productsState.data as any)?.productsQuantity / page.perPage
+              ) === 1
             ) && (
               <Pagination
                 className={styles.paginationContainer}
-                count={
-                  Math.ceil(
-                    (productsState.data as any)?.productsQuantity / page.perPage
-                  ) || 1
-                }
+                count={Math.ceil(
+                  (productsState.data as any)?.productsQuantity / page.perPage
+                )}
                 onChange={changePage}
                 page={page.startPage}
               />
