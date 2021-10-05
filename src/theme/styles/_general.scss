@@ -1,7 +1,7 @@
 @import "./var";
 
 html {
-    min-height: 100vh;
+    height: calc(100% - 110px);
 }
 
 a {
@@ -17,10 +17,25 @@ ul {
 
 body {
     margin: 0;
+    background-color: #f8f8f8;
     position: relative;
     min-height: 100%;
+    min-width: 300px;
 }
 
 main {
     margin-top: 110px;
+}
+
+.overlay {
+    @media (max-width: $tabMax) {
+        position: fixed;
+        top: 0;
+        left: 240px;
+        background-color: rgb(44, 43, 43);
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        opacity: 0.5;
+    }
 }

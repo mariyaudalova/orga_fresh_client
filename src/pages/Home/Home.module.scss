@@ -1,0 +1,33 @@
+@import "../../theme/styles/var";
+
+.firstScreenImageContainer {
+    display: block;
+    background-image: url("https://bringal.in/images1/order_online2.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 70vh;
+    background-position: center;
+}
+
+.contentContainer {
+    padding-top: 50px;
+}
+
+.firstScreenTextContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.greetingText {
+    font-size: 24px;
+    line-height: 2;
+    padding: 20px;
+    text-align: center;
+}
+
+.shopButton {
+    width: 100px;
+    height: 40px;
+}
