@@ -1,6 +1,5 @@
 import { createTheme } from "@material-ui/core/styles";
 
-// Create a theme instance.
 export const theme = createTheme({
   palette: {
     primary: {
@@ -14,10 +13,17 @@ export const theme = createTheme({
     fontFamily: "Roboto",
   },
   shape: {
-    borderRadius: 10,
+    borderRadius: 4,
   },
   spacing: 8,
   overrides: {
+    MuiCircularProgress: {
+      root: {
+        position: "relative",
+        left: "45%",
+        top: "20vh",
+      },
+    },
     MuiFilledInput: {
       root: {
         backgroundColor: "#357a38",
@@ -38,6 +44,21 @@ export const theme = createTheme({
       },
       fullWidth: {
         maxWidth: "300px",
+      },
+    },
+    MuiSlider: {
+      root: {
+        width: "50%",
+      },
+    },
+    MuiPaper: {
+      rounded: {
+        borderRadius: "10px",
+      },
+    },
+    MuiSelect: {
+      root: {
+        width: "160px",
       },
     },
   },

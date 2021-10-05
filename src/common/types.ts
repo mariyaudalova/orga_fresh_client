@@ -1,7 +1,19 @@
-export interface ResponseState <T>{
-   isLoading: boolean,
-   error: string,
-   data: null | T, 
+export interface ResponseState<T> {
+    isLoading: boolean,
+    error: string,
+    data: null | T,
+}
+
+export interface Action<T> {
+    type: string;
+    payload: T;
+}
+
+export interface RootState {
+    favouritesProducts: ResponseState<ProductsData>,
+    currencyState: { currency: string },
+    cartState: ResponseState<ProductsData>,
+    userState: ResponseState<User>,
 }
 
 export interface FilterEntitiy {
@@ -27,7 +39,6 @@ export interface ProductEntity {
     itemNo: string,
     date: string,
     __v: number,
- 
 }
 
 export interface ProductState {
@@ -38,22 +49,22 @@ export interface ProductState {
 
 export type ProductsData = {
     products: Array<ProductEntity>,
-    productsQuantity: number
+    productsQuantity?: number
 }
 
 export type FilterNames = "categories" | "sizes" | "color" | "price";
 
-export interface FilterItem { 
-    id: FilterNames, 
-    uiLabel: string, 
-    value: string, 
+export interface FilterItem {
+    id: FilterNames,
+    uiLabel: string,
+    value: string,
     isActive: boolean
 }
 
-export interface PriceType { 
-    id: string, 
-    uiLabel: string, 
-    value: Array<string>, 
+export interface PriceType {
+    id: string,
+    uiLabel: string,
+    value: Array<string>,
     isActive: boolean
 }
 
@@ -62,9 +73,9 @@ export interface filterStateType {
     color: Array<FilterItem>,
     sizes: Array<FilterItem>,
     price: Array<PriceType>
-  };
+};
 
-  export  interface User {
+export interface User {
     token: string;
     isAdmin: boolean;
     enabled: boolean;
@@ -72,4 +83,4 @@ export interface filterStateType {
     lastName: string;
     email: string;
     telephone: string;
-  }
+}

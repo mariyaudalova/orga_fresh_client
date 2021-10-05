@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import Slider from "@material-ui/core/Slider";
+
 import styles from "./FilterItem.module.scss";
 
-const Price = ({ changePriceHandler, maxPrice }) => {
+const Price = ({ changePriceHandler, maxPrice, currentPrice }) => {
   const priceState = {
     id: "price",
     uiLabel: "",
-    value: [0, maxPrice],
+    value: currentPrice,
     isActive: true,
   };
 
-  const [value, setValue] = React.useState(priceState.value);
+  const [value, setValue] = React.useState(currentPrice);
 
   useEffect(() => {
-    setValue([0, maxPrice]);
-  }, [maxPrice]);
+    setValue(currentPrice);
+  }, [currentPrice]);
 
   const handleChange = (e, value) => {
     setValue(value);
@@ -30,6 +30,7 @@ const Price = ({ changePriceHandler, maxPrice }) => {
     <div className={styles.filterItemContainer}>
       <p className={styles.filterName}>Price</p>
       <Slider
+        className={styles.sliderColor}
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"
@@ -38,11 +39,6 @@ const Price = ({ changePriceHandler, maxPrice }) => {
       />
     </div>
   );
-};
-
-Price.propTypes = {
-  changePriceHandler: PropTypes.func,
-  maxPrice: PropTypes.number,
 };
 
 export default Price;

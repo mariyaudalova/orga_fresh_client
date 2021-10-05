@@ -1,3 +1,5 @@
+@import "../../theme/styles/var";
+
 .filterName {
     font-size: 24px;
     padding-bottom: 10px;
@@ -5,4 +7,11 @@
 
 .filterItemContainer {
     padding-bottom: 20px;
+}
+
+.listContainer {
+    @media (max-width: $tabMax) {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }

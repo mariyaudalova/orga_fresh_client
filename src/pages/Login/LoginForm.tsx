@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Field, Form } from "react-final-form";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 
-import styles from "./Login.module.scss";
 import { createUptateAjax } from "../../services";
 import { apiUrl } from "../../env";
 import { PRODUCTS_ROUTE } from "../../utils/consts";
 import { getAuthorizedUser } from "../../common/helpers/getAuthorizedUser";
-import { getCart } from "../../state/cart/selectors";
+
+import styles from "./Login.module.scss";
 
 const LoginForm = () => {
   interface FormValues {
@@ -19,14 +19,12 @@ const LoginForm = () => {
   }
   const dispatch = useDispatch();
   const history = useHistory();
-  const currentCart = useSelector(getCart);
 
   const [responseError, setResponseError] = useState("");
 
   useEffect(() => {}, []);
 
   const getTokenUrl = `${apiUrl}/customers/login`;
-  const cartUrl = `${apiUrl}/cart`;
 
   const onSubmit = async (values: FormValues) => {
     const tokenResponse = await createUptateAjax("post", getTokenUrl, values);
@@ -36,21 +34,9 @@ const LoginForm = () => {
 
       await getAuthorizedUser(access_token, dispatch);
 
-      const cartList = await createUptateAjax(
-        "post",
-        cartUrl,
-        currentCart.data?.products,
-        access_token
-      );
-
-      console.log(cartList);
-
       history.push(`${PRODUCTS_ROUTE}`);
-
-      //console.log(getCustomer);
     } else {
-      setResponseError(tokenResponse.errors);
-      // console.log(tokenResponse.errors);
+      setResponseError("Invalid login or password");
     }
   };
 
@@ -83,7 +69,10 @@ const LoginForm = () => {
                       onClick={clickTextFieldHendler}
                       fullWidth
                       error={props.meta.error && props.meta.touched}
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       id="loginOrEmail"
                       label="Login"
                       name={props.input.name}
@@ -100,9 +89,13 @@ const LoginForm = () => {
                       fullWidth
                       onClick={clickTextFieldHendler}
                       error={props.meta.error && props.meta.touched}
+                      type="password"
                       id="password"
                       label="Password"
-                      helperText={props.meta.touched && props.meta.error}
+                      helperText={
+                        props.meta.touched &&
+                        (props.meta.error || props.meta.submitError)
+                      }
                       name={props.input.name}
                       value={props.input.value}
                       onChange={props.input.onChange}

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-export const email = (color = 'rgba(125,125,125, 0.5)', filled = true, width = 25, height = 25) => (
-  <svg width={width} height={height} viewBox="0 0 512 512" xmlns='http://www.w3.org/2000/svg'>
+export const email = (color = "rgba(125,125,125, 0.5)", filled = true, width = 25, height = 25) => (
+  <svg width={width} height={height} viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
     <path
      d="M469.333,64H42.667C19.135,64,0,83.135,0,106.667v298.667C0,428.865,19.135,448,42.667,448h426.667
      C492.865,448,512,428.865,512,405.333V106.667C512,83.135,492.865,64,469.333,64z M42.667,85.333h426.667
@@ -14,9 +14,9 @@ export const email = (color = 'rgba(125,125,125, 0.5)', filled = true, width = 2
      c54.268,46.418,140.286,127.926,169.742,156.009C472.552,426.073,471.039,426.667,469.333,426.667z M490.667,405.333
      c0,1.971-0.624,3.746-1.126,5.56c-28.508-27.188-113.984-108.227-169.219-155.668c55.418-50.393,140.869-128.57,169.151-154.456
      c0.564,1.91,1.194,3.807,1.194,5.897V405.333z"
-     fillRule='evenodd'
-      clipRule='evenodd'
-      fill={filled ? color : 'none'}
+     fillRule="evenodd"
+      clipRule="evenodd"
+      fill={filled ? color : "none"}
     />
   </svg>
 );

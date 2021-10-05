@@ -2,19 +2,22 @@ import React, { useEffect, useState } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Pagination from "@material-ui/lab/Pagination";
-import { useDispatch, useSelector } from "react-redux";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Button } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 
-import { toggleFavorite } from "../../state/favouritesProducts/actionsCreators";
-import { getFavoutitesProducts } from "../../state/favouritesProducts/selectors";
-import { getCart } from "../../state/cart/selectors";
-import { addToCartCreator } from "../../state/cart/actionsCreators";
 import Price from "../../components/Filters/Price";
 import {
   CategoryList,
   ColorList,
   SizeList,
 } from "../../components/Filters/FilterList";
-import ProductCard from "../../components/ProductCard";
 import { apiUrl } from "../../env";
 import { getAjax } from "../../services";
 import {
@@ -22,18 +25,18 @@ import {
   defaultColorsList,
   defaultSizesList,
 } from "../../common/defaultState";
-import {
-  ProductEntity,
-  ProductState,
-  ProductsData,
-  FilterItem,
-} from "../../common/types";
+import { ProductEntity, ProductState, FilterItem } from "../../common/types";
+import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
+import ProductsContainer from "../../components/ProductsContainer";
 
 import styles from "./ProductsList.module.scss";
-import { useProductsStateByCurrency } from "../../hooks/useProductsStateByCurrency";
 
 const ProductsList = () => {
   const [maxPrice, setMaxPrice] = useState(1000);
+  const [currentSortType, setCurrentSortType] = useState("");
+
+  const defaultPriceFilter = "minPrice=0&maxPrice=1000";
+
   const filterDefaultState = {
     categories: defaultCategoriesList,
     color: defaultColorsList,
@@ -54,6 +57,8 @@ const ProductsList = () => {
     errors: "",
   });
 
+  const [currentPrice, setCurrentPrice] = useState([0, maxPrice]);
+
   useProductsStateByCurrency(productsState, setProductsState);
 
   const [page, setPage] = useState({
@@ -67,25 +72,24 @@ const ProductsList = () => {
     let requestUrl = `${apiUrl}/products/filter?`;
     const filterParams = getFiltersParams();
     const pageParams = getPageParams();
+    const sortParams = getSortParams();
 
-    requestUrl += filterParams + pageParams;
+    requestUrl += filterParams + pageParams + sortParams;
     const res = await getAjax(requestUrl);
     res.data.products = res.data.products.map((item: ProductEntity) => {
-      item.currency = "USD";
+      item.currency = localStorage.getItem("currency") || "USD";
       return item;
     });
     setProductsState(res);
   };
   const getMaxPriceValue = () => {
     const { data } = productsState;
-    const productsData = data as ProductsData;
-    const arrayForMaping = productsData?.products?.map(function (
-      item: ProductEntity
-    ) {
+    const arrayForMaping = data!.products?.map(function (item: ProductEntity) {
       return item.currentPrice;
     });
     const max = Math.max(...arrayForMaping);
     setMaxPrice(max);
+    setCurrentPrice([currentPrice[0], max]);
   };
 
   const getFiltersParams = () => {
@@ -104,9 +108,12 @@ const ProductsList = () => {
         activeFilters.forEach((filterItemState) => {
           filtersParams += `${filterItemState.value},`;
         });
+        console.log(isFilterExistValue);
       }
       if (allFilterKeys.length !== index + 1) filtersParams += "&";
     });
+
+    setIsFilterExistValue(filtersParams !== defaultPriceFilter);
 
     return filtersParams;
   };
@@ -115,9 +122,15 @@ const ProductsList = () => {
     return "&perPage=" + page.perPage + "&startPage=" + page.startPage;
   };
 
+  const getSortParams = () => {
+    return "&sort=" + currentSortType;
+  };
+
+  const [isFilterExistValue, setIsFilterExistValue] = useState(false);
+
   useEffect(() => {
     getProductsByFilter();
-  }, [filterState, page]);
+  }, [filterState, page, currentSortType]);
 
   useEffect(() => {
     if (!filterState && productsState.data?.products?.length) {
@@ -135,65 +148,116 @@ const ProductsList = () => {
       replaceIndex = filterState[filterEntity.id].findIndex(
         (item: any) => item.value === filterEntity.value
       );
+    } else {
+      setCurrentPrice(filterEntity.value as any);
     }
-    filterState[filterEntity.id][replaceIndex] = filterEntity;
+    const deepFilterStateClone = {
+      ...filterState,
+      [filterEntity.id]: [
+        ...filterState[filterEntity.id].map((item) => {
+          return { ...item };
+        }),
+      ],
+    };
+
+    deepFilterStateClone[filterEntity.id][replaceIndex] = filterEntity;
 
     setPage({ ...page, startPage: 1 });
 
-    setFilterState({
-      ...filterState,
-      [filterEntity.id]: filterState[filterEntity.id],
-    });
+    setFilterState(deepFilterStateClone);
   };
 
-  const dispatch = useDispatch();
-
-  const formState = useSelector(getFavoutitesProducts);
-
-  const toggleFavoriteClick = (id: string) => {
-    dispatch(toggleFavorite(id));
+  const resetFilters = () => {
+    setCurrentPrice([0, maxPrice]);
+    setFilterState(filterDefaultState);
   };
 
-  const userCart = useSelector(getCart);
-
-  const onAddToCart = (id: string) => {
-    dispatch(addToCartCreator(id));
+  const handleSortControlChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    setCurrentSortType(event.target.value as string);
   };
 
-  const isInCart = (product: ProductEntity) => {
-    return !!userCart.data?.products.find(
-      (cartItem: any) => cartItem._id === product._id
-    );
-  };
-
+  const filterDetails = (
+    <>
+      <CategoryList
+        changeFilterEntityHandler={changeFilterEntity}
+        filterEntityList={filterState.categories as Array<FilterItem>}
+        filterName="Categories"
+      />
+      <ColorList
+        changeFilterEntityHandler={changeFilterEntity}
+        filterEntityList={filterState.color as Array<FilterItem>}
+        filterName="Colors"
+      />
+      <SizeList
+        changeFilterEntityHandler={changeFilterEntity}
+        filterEntityList={filterState.sizes as Array<FilterItem>}
+        filterName="Sizes"
+      />
+      <Price
+        maxPrice={maxPrice}
+        changePriceHandler={changeFilterEntity}
+        currentPrice={currentPrice}
+      />
+    </>
+  );
   return (
     <div className={styles.contentContainer}>
-      <Container fixed>
+      <Container>
         <div className={styles.pageTitleContainer}>
           <p className={styles.pageTitle}>Products</p>
-          <p>Home / Products</p>
+          {!(
+            productsState.isLoading ||
+            productsState.data?.products?.length === 0
+          ) && (
+            <div className={styles.SortContainer}>
+              <FormControl variant="outlined">
+                <InputLabel id="demo-simple-select-outlined-label">
+                  Sort by
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={currentSortType}
+                  onChange={handleSortControlChange}
+                  label="Sort by"
+                >
+                  <MenuItem value={"currentPrice"}>Chepest</MenuItem>
+                  <MenuItem value={"-currentPrice"}>More Expensive</MenuItem>
+                  <MenuItem value={"date"}>Oldest</MenuItem>
+                  <MenuItem value={"-date"}>Newest</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          )}
         </div>
         <div className={styles.pageContainer}>
           <div>
-            <CategoryList
-              changeFilterEntityHandler={changeFilterEntity}
-              filterEntityList={filterState.categories as Array<FilterItem>}
-              filterName="Categories"
-            />
-            <ColorList
-              changeFilterEntityHandler={changeFilterEntity}
-              filterEntityList={filterState.color as Array<FilterItem>}
-              filterName="Colors"
-            />
-            <SizeList
-              changeFilterEntityHandler={changeFilterEntity}
-              filterEntityList={filterState.sizes as Array<FilterItem>}
-              filterName="Sizes"
-            />
-            <Price
-              maxPrice={maxPrice}
-              changePriceHandler={changeFilterEntity}
-            />
+            <Accordion className={styles.accordionContainer}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <p>Filters</p>
+              </AccordionSummary>
+              <AccordionDetails>
+                <div>{filterDetails}</div>
+              </AccordionDetails>
+            </Accordion>
+            <div className={styles.filtersFully}>
+              {filterDetails}
+              {isFilterExistValue && (
+                <Button
+                  onClick={resetFilters}
+                  variant="outlined"
+                  color="primary"
+                >
+                  Reset all filters
+                </Button>
+              )}
+            </div>
           </div>
           <div>
             <div className={styles.productsContainer}>
@@ -201,29 +265,41 @@ const ProductsList = () => {
               {productsState.data &&
                 productsState.data?.products?.map((product) => {
                   return (
-                    <ProductCard
-                      key={product._id}
-                      isFavourite={formState.includes(product._id)}
-                      product={product}
-                      toggleFavoriteClick={toggleFavoriteClick}
-                      addToCart={onAddToCart}
-                      isInCart={isInCart(product)}
-                    />
+                    <ProductsContainer key={product._id} product={product} />
                   );
                 })}
+              {productsState.data?.products?.length === 0 && (
+                <div className={styles.noProductsContainer}>
+                  <p className={styles.noProductsMessage}>
+                    No products matches search query
+                  </p>
+                  <Button
+                    onClick={resetFilters}
+                    variant="outlined"
+                    color="primary"
+                  >
+                    Reset all filters
+                  </Button>
+                </div>
+              )}
               {productsState.errors && <p>{productsState.errors}</p>}
             </div>
-            <Pagination
-              className={styles.paginationContainer}
-              count={
-                Math.ceil(
-                  (productsState.data as ProductsData)?.productsQuantity /
-                    page.perPage
-                ) || 1
-              }
-              onChange={changePage}
-              page={page.startPage}
-            />
+            {!(
+              productsState.isLoading ||
+              productsState.data?.products?.length === 0 ||
+              Math.ceil(
+                (productsState.data as any)?.productsQuantity / page.perPage
+              ) === 1
+            ) && (
+              <Pagination
+                className={styles.paginationContainer}
+                count={Math.ceil(
+                  (productsState.data as any)?.productsQuantity / page.perPage
+                )}
+                onChange={changePage}
+                page={page.startPage}
+              />
+            )}
           </div>
         </div>
       </Container>
