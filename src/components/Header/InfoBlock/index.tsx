@@ -10,6 +10,7 @@ import Icon from "../../Icon";
 import DropDown from "./DropDown";
 
 import styles from "./InfoBlock.module.scss";
+import { logoutCreator } from "../../../state/user/actionsCreators";
 
 const InfoBlock = () => {
   const currencies = ["USD", "UAH"];
@@ -35,6 +36,7 @@ const InfoBlock = () => {
   };
 
   const logout = () => {
+    dispatch(logoutCreator());
     localStorage.setItem("token", "");
     setToken("");
   };
@@ -89,7 +91,9 @@ const InfoBlock = () => {
             {!token ? (
               <Link to={`${LOGIN_ROUTE}`}>Login or register</Link>
             ) : (
-              <p onClick={logout}>Logout</p>
+              <p className={styles.logoutText} onClick={logout}>
+                Logout
+              </p>
             )}
           </div>
         </div>

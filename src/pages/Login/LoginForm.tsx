@@ -89,6 +89,7 @@ const LoginForm = () => {
                       fullWidth
                       onClick={clickTextFieldHendler}
                       error={props.meta.error && props.meta.touched}
+                      type="password"
                       id="password"
                       label="Password"
                       helperText={
