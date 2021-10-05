@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/orga_fresh_client/static/css/main.8ca4bc29.chunk.css",
+    "main.js": "/orga_fresh_client/static/js/main.2658d99c.chunk.js",
+    "main.js.map": "/orga_fresh_client/static/js/main.2658d99c.chunk.js.map",
+    "runtime-main.js": "/orga_fresh_client/static/js/runtime-main.365fe407.js",
+    "runtime-main.js.map": "/orga_fresh_client/static/js/runtime-main.365fe407.js.map",
+    "static/js/2.b7602bfc.chunk.js": "/orga_fresh_client/static/js/2.b7602bfc.chunk.js",
+    "static/js/2.b7602bfc.chunk.js.map": "/orga_fresh_client/static/js/2.b7602bfc.chunk.js.map",
+    "index.html": "/orga_fresh_client/index.html",
+    "static/css/main.8ca4bc29.chunk.css.map": "/orga_fresh_client/static/css/main.8ca4bc29.chunk.css.map",
+    "static/js/2.b7602bfc.chunk.js.LICENSE.txt": "/orga_fresh_client/static/js/2.b7602bfc.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.365fe407.js",
+    "static/js/2.b7602bfc.chunk.js",
+    "static/css/main.8ca4bc29.chunk.css",
+    "static/js/main.2658d99c.chunk.js"
+  ]
+}
