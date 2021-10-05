@@ -9,11 +9,16 @@ import {
   CART,
   HOME_ROUTE,
   FAVOURITES,
+  ORGA_FRESH_CLIENT,
 } from "../utils/consts";
 import Home from "../pages/Home";
 import Favourites from "../pages/Favoutites";
 
 export const publicRoutes = [
+  {
+    path: ORGA_FRESH_CLIENT,
+    Component: ProductsList,
+  },
   {
     path: PRODUCTS_ROUTE,
     Component: ProductsList,

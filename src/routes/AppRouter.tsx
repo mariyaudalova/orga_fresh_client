@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import { getAuthorizedUser } from "../common/helpers/getAuthorizedUser";
-import { PRODUCTS_ROUTE } from "../utils/consts";
+import { ORGA_FRESH_CLIENT } from "../utils/consts";
 import { publicRoutes } from "./routes";
 
 const AppRouter = () => {
@@ -21,7 +21,7 @@ const AppRouter = () => {
       {publicRoutes.map(({ path, Component }) => (
         <Route key={path} path={path} component={Component} exact />
       ))}
-      <Redirect to={PRODUCTS_ROUTE} />
+      <Redirect to={ORGA_FRESH_CLIENT} />
     </Switch>
   );
 };
