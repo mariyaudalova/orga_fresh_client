@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Field, Form } from "react-final-form";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -9,7 +9,6 @@ import { createUptateAjax } from "../../services";
 import { apiUrl } from "../../env";
 import { PRODUCTS_ROUTE } from "../../utils/consts";
 import { getAuthorizedUser } from "../../common/helpers/getAuthorizedUser";
-import { getCart } from "../../state/cart/selectors";
 
 import styles from "./Login.module.scss";
 
@@ -20,14 +19,12 @@ const LoginForm = () => {
   }
   const dispatch = useDispatch();
   const history = useHistory();
-  const currentCart = useSelector(getCart);
 
   const [responseError, setResponseError] = useState("");
 
   useEffect(() => {}, []);
 
   const getTokenUrl = `${apiUrl}/customers/login`;
-  const cartUrl = `${apiUrl}/cart`;
 
   const onSubmit = async (values: FormValues) => {
     const tokenResponse = await createUptateAjax("post", getTokenUrl, values);
