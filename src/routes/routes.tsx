@@ -2,6 +2,7 @@ import ProductPage from "../pages/ProductPage";
 import ProductsList from "../pages/ProductsList";
 import Cart from "../pages/Cart";
 import Login from "../pages/Login";
+import Home from "../pages/Home";
 import {
   LOGIN_ROUTE,
   PRODUCTS_ROUTE,
@@ -11,7 +12,6 @@ import {
   FAVOURITES,
   ORGA_FRESH_CLIENT,
 } from "../utils/consts";
-import Home from "../pages/Home";
 import Favourites from "../pages/Favoutites";
 
 export const publicRoutes = [
